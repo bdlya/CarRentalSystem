@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using CarRentalSystem.Domain.Entities;
+using CarRentalSystem.Domain.Entities.Base;
 using CarRentalSystem.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Infrastructure.Data
 {
-    public class CarRentalSystemGenericRepository<TEntity>: IRentalRepository<TEntity> where TEntity: class
+    public class CarRentalSystemGenericRepository<TEntity>: IRentalRepository<TEntity> where TEntity: BaseEntity
     {
         private readonly DbContext _context;
         private readonly DbSet<TEntity> _dbSet;

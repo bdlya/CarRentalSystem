@@ -50,14 +50,11 @@ namespace CarRental
 
             services.AddSwaggerGen();
 
-            services.AddCarService();
-            services.AddCarIdService();
+            services.AddScoped<DbContext, CarRentalSystemContext>();
+            services.AddDbContext<CarRentalSystemContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddCarRentalSystemContext();
-            services.AddCarRentalSystemContextOptions(Configuration);
-
-            services.AddCarRentalSystemRepository();
-
+            services.AddCarRentalSystemServices();
         }
 
         /// <summary>

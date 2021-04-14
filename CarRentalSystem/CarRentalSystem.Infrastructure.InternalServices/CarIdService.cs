@@ -1,7 +1,6 @@
 ﻿using System;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
-using CarRentalSystem.Infrastructure.Data;
 using CarRentalSystem.Services.InternalInterfaces;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
