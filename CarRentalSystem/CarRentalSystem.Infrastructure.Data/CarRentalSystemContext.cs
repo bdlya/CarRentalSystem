@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CarRentalSystem.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,15 +9,21 @@ namespace CarRentalSystem.Infrastructure.Data
     {
         public DbSet<Car> Cars { get; set; }
 
-        public CarRentalSystemContext()
+        public CarRentalSystemContext(DbContextOptions<CarRentalSystemContext> options)
+            :base(options)
         {
             Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CarRentalSystemDatabase;Trusted_Connection=True;");
+            modelBuilder.Entity<Car>().HasData(new List<Car>
+            {
+                new Car(1,"Toyota"),
+                new Car(2,"Mercedes")
+            });
+           
         }
     }
 }

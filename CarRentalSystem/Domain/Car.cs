@@ -7,7 +7,8 @@ namespace CarRentalSystem.Domain.Entities
     {
         public string Brand { get; set; }
 
-        public Car(string brand)
+        public Car(int id, string brand)
+            :base(id)
         {
             Brand = brand;
         }

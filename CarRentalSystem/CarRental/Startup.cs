@@ -10,10 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarRentalSystem.Domain.Entities;
+using CarRentalSystem.Domain.Interfaces;
+using CarRentalSystem.Infrastructure.Data;
 using CarRentalSystem.Infrastructure.InternalServices;
 using CarRentalSystem.Infrastructure.Services;
+using CarRentalSystem.Services.Extensions;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental
 {
@@ -45,8 +50,14 @@ namespace CarRental
 
             services.AddSwaggerGen();
 
-            services.AddScoped<ICarService, CarService>();
-            services.AddScoped<ICarIdService, CarIdService>();
+            services.AddCarService();
+            services.AddCarIdService();
+
+            services.AddCarRentalSystemContext();
+            services.AddCarRentalSystemContextOptions(Configuration);
+
+            services.AddCarRentalSystemRepository();
+
         }
 
         /// <summary>
