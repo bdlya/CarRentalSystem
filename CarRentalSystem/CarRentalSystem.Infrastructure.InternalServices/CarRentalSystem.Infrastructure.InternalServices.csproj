@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CarRentalSystem.Domain.Interfaces\CarRentalSystem.Domain.Interfaces.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.Services.InternalInterfaces\CarRentalSystem.Services.InternalInterfaces.csproj" />
+    <ProjectReference Include="..\Domain\CarRentalSystem.Domain.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

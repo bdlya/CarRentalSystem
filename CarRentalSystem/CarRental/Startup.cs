@@ -10,6 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarRentalSystem.Domain.Entities;
+using CarRentalSystem.Domain.Interfaces;
+using CarRentalSystem.Infrastructure.Data;
+using CarRentalSystem.Infrastructure.InternalServices;
+using CarRentalSystem.Infrastructure.Services;
+using CarRentalSystem.Services.Extensions;
+using CarRentalSystem.Services.Interfaces;
+using CarRentalSystem.Services.InternalInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental
 {
@@ -38,6 +47,14 @@ namespace CarRental
         {
             // Adds services for controllers
             services.AddControllers();
+
+            services.AddSwaggerGen();
+
+            services.AddScoped<DbContext, CarRentalSystemContext>();
+            services.AddDbContext<CarRentalSystemContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddCarRentalSystemServices();
         }
 
         /// <summary>
@@ -53,6 +70,13 @@ namespace CarRental
                 // if so adds middleware that enables detailed error messages to be rendered to the browser if the application raises exceptions when it is running.
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(endpoint =>
+            {
+                endpoint.SwaggerEndpoint("/swagger/v1/swagger.json", "Car rental API");
+            });
 
             // Adds middleware that redirects http requests to http.
             app.UseHttpsRedirection();
