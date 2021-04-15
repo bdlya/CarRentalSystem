@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Entities.Base;
 using CarRentalSystem.Domain.Interfaces;
@@ -50,6 +51,13 @@ namespace CarRentalSystem.Infrastructure.Data
         {
             _context.Entry(item).State = EntityState.Modified;
             _context.SaveChanges();
+        }
+
+        public IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = _dbSet.AsNoTracking();
+            return includeProperties
+                .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
     }
 }

@@ -33,7 +33,7 @@ namespace CarRentalSystem.Services.Extensions
 
         public static IServiceCollection AddCarRentalSystemRepository(this IServiceCollection collection)
         {
-            return collection.AddScoped<IRentalRepository<Car>, CarRentalSystemGenericRepository<Car>>();
+            return collection.AddScoped(typeof(IRentalRepository<>), typeof(CarRentalSystemGenericRepository<>));
         }
     }
 }

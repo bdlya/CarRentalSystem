@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace CarRentalSystem.Domain.Interfaces
 {
@@ -11,5 +13,6 @@ namespace CarRentalSystem.Domain.Interfaces
         IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
         void Remove(TEntity item);
         void Update(TEntity item);
+        IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties);
     }
 }

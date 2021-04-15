@@ -18,19 +18,19 @@ namespace CarRental.Controllers
         };
 
         private readonly ILogger<CarController> _logger;
-        private readonly ICarService _carService;
+        private readonly IOrderProviderService _orderService;
 
-        public CarController(ILogger<CarController> logger, ICarService carService)
+        public CarController(ILogger<CarController> logger, IOrderProviderService orderService)
         {
             _logger = logger;
-            _carService = carService;
+            _orderService = orderService;
         }
 
         [HttpGet]
         public string Get()
         {
-            int carId = 2;
-            return _carService.GetCar(carId);
+            int orderId = 2;
+            return _orderService.GetAdditionalServices(orderId);
         }
     }
 }

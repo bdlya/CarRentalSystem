@@ -15,7 +15,6 @@ using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data;
 using CarRentalSystem.Infrastructure.InternalServices;
 using CarRentalSystem.Infrastructure.Services;
-using CarRentalSystem.Services.Extensions;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
 using Microsoft.EntityFrameworkCore;
@@ -53,8 +52,14 @@ namespace CarRental
             services.AddScoped<DbContext, CarRentalSystemContext>();
             services.AddDbContext<CarRentalSystemContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped(typeof(IRentalRepository<>), typeof(CarRentalSystemGenericRepository<>));
 
-            services.AddCarRentalSystemServices();
+            services.AddScoped<ICarService, CarService>();
+            services.AddScoped<ICarIdService, CarIdService>();
+
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderProviderService, OrderProviderService>();
+            
         }
 
         /// <summary>
