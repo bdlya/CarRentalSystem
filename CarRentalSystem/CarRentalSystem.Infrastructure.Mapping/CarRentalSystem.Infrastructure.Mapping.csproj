@@ -8,4 +8,10 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarRentalSystem.Infrastructure.Data\CarRentalSystem.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.View.ViewModels\CarRentalSystem.View.ViewModels.csproj" />
+    <ProjectReference Include="..\Domain\CarRentalSystem.Domain.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

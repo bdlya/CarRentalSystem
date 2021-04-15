@@ -6,11 +6,11 @@ using CarRentalSystem.Services.InternalInterfaces;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
-    public class OrderService: IOrderService
+    public class ServiceOrderService: IServiceOrderService
     {
         private readonly IRentalRepository<OrderAdditionalService> _repository;
 
-        public OrderService(IRentalRepository<OrderAdditionalService> repository)
+        public ServiceOrderService(IRentalRepository<OrderAdditionalService> repository)
         {
             _repository = repository;
         }

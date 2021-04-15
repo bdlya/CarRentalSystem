@@ -9,11 +9,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data;
 using CarRentalSystem.Infrastructure.InternalServices;
+using CarRentalSystem.Infrastructure.Mapping.Profiles;
 using CarRentalSystem.Infrastructure.Services;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
@@ -49,16 +52,18 @@ namespace CarRental
 
             services.AddSwaggerGen();
 
+            services.AddAutoMapper(typeof(CarRentalSystemProfile));
+
             services.AddScoped<DbContext, CarRentalSystemContext>();
             services.AddDbContext<CarRentalSystemContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped(typeof(IRentalRepository<>), typeof(CarRentalSystemGenericRepository<>));
 
+            services.AddScoped<ICarProviderService, CarProviderService>();
             services.AddScoped<ICarService, CarService>();
-            services.AddScoped<ICarIdService, CarIdService>();
 
-            services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IOrderProviderService, OrderProviderService>();
+            services.AddScoped<IServiceOrderService, ServiceOrderService>();
+            services.AddScoped<IServiceOrderProviderService, ServiceOrderProviderService>();
             
         }
 

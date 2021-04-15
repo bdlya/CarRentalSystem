@@ -4,11 +4,11 @@ using CarRentalSystem.Services.InternalInterfaces;
 
 namespace CarRentalSystem.Infrastructure.Services
 {
-    public class OrderProviderService : IOrderProviderService
+    public class ServiceOrderProviderService : IServiceOrderProviderService
     {
-        private readonly IOrderService _service;
+        private readonly IServiceOrderService _service;
 
-        public OrderProviderService(IOrderService service)
+        public ServiceOrderProviderService(IServiceOrderService service)
         {
             _service = service;
         }

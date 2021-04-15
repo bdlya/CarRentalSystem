@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using CarRentalSystem.Domain.Entities;
-using CarRentalSystem.Infrastructure.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Infrastructure.Data

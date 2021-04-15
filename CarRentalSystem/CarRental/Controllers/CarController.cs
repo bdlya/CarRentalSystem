@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CarRentalSystem.Services.Interfaces;
 
 namespace CarRental.Controllers
@@ -18,19 +14,19 @@ namespace CarRental.Controllers
         };
 
         private readonly ILogger<CarController> _logger;
-        private readonly IOrderProviderService _orderService;
+        private readonly ICarProviderService _carProviderService;
 
-        public CarController(ILogger<CarController> logger, IOrderProviderService orderService)
+        public CarController(ILogger<CarController> logger, ICarProviderService carProviderService)
         {
             _logger = logger;
-            _orderService = orderService;
+            _carProviderService = carProviderService;
         }
 
         [HttpGet]
         public string Get()
         {
-            int orderId = 2;
-            return _orderService.GetAdditionalServices(orderId);
+            int carId = 1;
+            return _carProviderService.GetCar(carId);
         }
     }
 }

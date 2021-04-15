@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using CarRentalSystem.Domain.Entities.Base;
 
 namespace CarRentalSystem.Domain.Entities
