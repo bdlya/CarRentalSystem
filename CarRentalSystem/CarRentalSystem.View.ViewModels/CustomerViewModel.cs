@@ -10,5 +10,10 @@ namespace CarRentalSystem.View.ViewModels
         public string SurName { get; set; }
 
         public List<OrderViewModel> Orders { get; set; }
+
+        public CustomerViewModel()
+        {
+            Orders = new List<OrderViewModel>();
+        }
     }
 }

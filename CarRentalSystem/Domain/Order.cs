@@ -25,5 +25,10 @@ namespace CarRentalSystem.Domain.Entities
         public List<OrderAdditionalService> OrderAdditionalServices { get; set; }
 
         public int TotalCost { get; set; }
+
+        public Order()
+        {
+            OrderAdditionalServices = new List<OrderAdditionalService>();
+        }
     }
 }

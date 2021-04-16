@@ -10,5 +10,10 @@ namespace CarRentalSystem.View.ViewModels
         public int Cost { get; set; }
 
         public List<OrderAdditionalServiceViewModel> OrderAdditionalServices { get; set; }
+
+        public AdditionalServiceViewModel()
+        {
+            OrderAdditionalServices = new List<OrderAdditionalServiceViewModel>();
+        }
     }
 }

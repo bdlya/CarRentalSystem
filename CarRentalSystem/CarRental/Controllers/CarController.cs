@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels;
@@ -27,9 +28,17 @@ namespace CarRental.Controllers
 
         [HttpPost]
         [Route("test")]
-        public string AddCar([FromBody] CarViewModel carViewModel)
+        public ActionResult AddCar([FromBody] CarViewModel carViewModel)
         {
-            return _carProviderService.AddCar(carViewModel) ? "Car was added" : "Car wasn't added";
+            try
+            {
+                _carProviderService.AddCar(carViewModel);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

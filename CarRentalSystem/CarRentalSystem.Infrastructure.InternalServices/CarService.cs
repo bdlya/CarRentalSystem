@@ -27,17 +27,9 @@ namespace CarRentalSystem.Infrastructure.InternalServices
                 .FirstOrDefault(carId => carId.Id == id));
         }
 
-        public bool AddCar(CarModel addedCar)
+        public void AddCar(CarModel addedCar)
         {
-            try
-            {
-                _repository.Create(_mapper.Map<Car>(addedCar));
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            _repository.Create(_mapper.Map<Car>(addedCar));
         }
     }
 }

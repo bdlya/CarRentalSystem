@@ -25,5 +25,10 @@ namespace CarRentalSystem.Infrastructure.Data.Models
         public List<OrderAdditionalServiceModel> OrderAdditionalServices { get; set; }
 
         public int TotalCost { get; set; }
+
+        public OrderModel()
+        {
+            OrderAdditionalServices = new List<OrderAdditionalServiceModel>();
+        }
     }
 }

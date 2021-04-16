@@ -23,9 +23,9 @@ namespace CarRentalSystem.Infrastructure.Services
             return $"Car brand with id - {id}: {car.Brand} in point of rental {car.PointOfRental.Name}";
         }
 
-        public bool AddCar(CarViewModel addedCar)
+        public void AddCar(CarViewModel addedCar)
         {
-            return _carService.AddCar(_mapper.Map<CarModel>(addedCar));
+            _carService.AddCar(_mapper.Map<CarModel>(addedCar));
         }
     }
 

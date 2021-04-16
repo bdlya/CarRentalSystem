@@ -15,6 +15,12 @@ namespace CarRentalSystem.Domain.Entities
 
         public List<Car> Cars { get; set; }
 
-        public List<Order> Orders { get; set; } 
+        public List<Order> Orders { get; set; }
+
+        public PointOfRental()
+        {
+            Cars = new List<Car>();
+            Orders = new List<Order>();
+        }
     }
 }

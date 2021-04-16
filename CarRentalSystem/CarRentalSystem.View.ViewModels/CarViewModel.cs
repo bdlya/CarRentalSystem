@@ -16,7 +16,7 @@ namespace CarRentalSystem.View.ViewModels
 
         public OrderViewModel CurrentOrder { get; set; }
 
-        public int ? CurrentOrderId { get; set; }
+        public int? CurrentOrderId { get; set; }
 
         public PointOfRentalViewModel PointOfRental { get; set; }
 

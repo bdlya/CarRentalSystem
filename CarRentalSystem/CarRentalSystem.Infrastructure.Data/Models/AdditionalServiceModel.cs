@@ -10,5 +10,10 @@ namespace CarRentalSystem.Infrastructure.Data.Models
         public int Cost { get; set; }
 
         public List<OrderAdditionalServiceModel> OrderAdditionalServices { get; set; }
+
+        public AdditionalServiceModel()
+        {
+            OrderAdditionalServices = new List<OrderAdditionalServiceModel>();
+        }
     }
 }

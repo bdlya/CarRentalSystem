@@ -11,6 +11,5 @@ namespace CarRentalSystem.Domain.Entities
         public int AdditionalServiceId { get; set; }
 
         public AdditionalService AdditionalService { get; set; }
-        
     }
 }

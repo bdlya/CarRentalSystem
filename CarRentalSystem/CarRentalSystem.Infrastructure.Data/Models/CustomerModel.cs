@@ -9,6 +9,11 @@ namespace CarRentalSystem.Infrastructure.Data.Models
 
         public string SurName { get; set; }
 
-        public List<OrderModel> Orders { get; set; } = new List<OrderModel>();
+        public List<OrderModel> Orders { get; set; }
+
+        public CustomerModel()
+        {
+            Orders = new List<OrderModel>();
+        }
     }
 }

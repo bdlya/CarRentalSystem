@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CarRental.Migrations
+namespace CarRentalSystem.Infrastructure.Data.Migrations
 {
     public partial class InitialMigration : Migration
     {
