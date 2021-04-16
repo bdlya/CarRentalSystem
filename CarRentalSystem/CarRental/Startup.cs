@@ -39,7 +39,7 @@ namespace CarRental
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets called by a runtime. Adds services to the container and configures any options related to those services.
@@ -56,7 +56,9 @@ namespace CarRental
 
             services.AddScoped<DbContext, CarRentalSystemContext>();
             services.AddDbContext<CarRentalSystemContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    migrationOptions => migrationOptions.MigrationsAssembly("CarRental")));
+
             services.AddScoped(typeof(IRentalRepository<>), typeof(CarRentalSystemGenericRepository<>));
 
             services.AddScoped<ICarProviderService, CarProviderService>();

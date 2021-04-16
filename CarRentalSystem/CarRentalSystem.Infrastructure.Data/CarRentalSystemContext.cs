@@ -8,8 +8,6 @@ namespace CarRentalSystem.Infrastructure.Data
 {
     public sealed class CarRentalSystemContext: DbContext
     {
-        private static bool _isContextHaveBeenCreated;
-
         public DbSet<PointOfRental> PointOfRentals { get; set; }
 
         public DbSet<Car> Cars { get; set; }
@@ -23,15 +21,7 @@ namespace CarRentalSystem.Infrastructure.Data
         public DbSet<OrderAdditionalService> OrderAdditionalServices { get; set; }
 
         public CarRentalSystemContext(DbContextOptions<CarRentalSystemContext> options)
-            :base(options)
-        {
-            if (!_isContextHaveBeenCreated)
-            {
-                Database.EnsureDeleted();
-                Database.EnsureCreated();
-                _isContextHaveBeenCreated = true;
-            }
-        }
+            :base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
