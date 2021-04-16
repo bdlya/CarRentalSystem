@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CarRentalSystem.Services.Interfaces;
+using CarRentalSystem.View.ViewModels;
 
 namespace CarRental.Controllers
 {
@@ -8,11 +9,6 @@ namespace CarRental.Controllers
     [Route("[controller]")]
     public class CarController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<CarController> _logger;
         private readonly ICarProviderService _carProviderService;
 
@@ -23,10 +19,17 @@ namespace CarRental.Controllers
         }
 
         [HttpGet]
-        public string Get()
+        [Route("{id}")]
+        public string Get(int id)
         {
-            int carId = 1;
-            return _carProviderService.GetCar(carId);
+            return _carProviderService.GetCar(id);
+        }
+
+        [HttpPost]
+        [Route("test")]
+        public string AddCar([FromBody] CarViewModel carViewModel)
+        {
+            return _carProviderService.AddCar(carViewModel) ? "Car was added" : "Car wasn't added";
         }
     }
 }

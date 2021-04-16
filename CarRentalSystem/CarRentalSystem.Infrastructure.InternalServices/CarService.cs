@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
@@ -24,6 +25,19 @@ namespace CarRentalSystem.Infrastructure.InternalServices
                 .Map<CarModel>(_repository
                 .Include(car => car.PointOfRental)
                 .FirstOrDefault(carId => carId.Id == id));
+        }
+
+        public bool AddCar(CarModel addedCar)
+        {
+            try
+            {
+                _repository.Create(_mapper.Map<Car>(addedCar));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

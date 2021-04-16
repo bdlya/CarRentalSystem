@@ -16,7 +16,7 @@ namespace CarRentalSystem.Domain.Entities
 
         public Order CurrentOrder { get; set; }
 
-        public int CurrentOrderId { get; set; }
+        public int ? CurrentOrderId { get; set; }
 
         public PointOfRental PointOfRental { get; set; }
 

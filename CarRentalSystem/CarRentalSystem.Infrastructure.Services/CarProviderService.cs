@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
 using CarRentalSystem.View.ViewModels;
@@ -20,6 +21,11 @@ namespace CarRentalSystem.Infrastructure.Services
         {
             CarViewModel car = _mapper.Map<CarViewModel>(_carService.GetCar(id));
             return $"Car brand with id - {id}: {car.Brand} in point of rental {car.PointOfRental.Name}";
+        }
+
+        public bool AddCar(CarViewModel addedCar)
+        {
+            return _carService.AddCar(_mapper.Map<CarModel>(addedCar));
         }
     }
 

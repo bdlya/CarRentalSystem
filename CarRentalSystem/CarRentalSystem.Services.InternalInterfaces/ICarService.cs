@@ -5,5 +5,6 @@ namespace CarRentalSystem.Services.InternalInterfaces
     public interface ICarService
     {
         CarModel GetCar(int id);
+        bool AddCar(CarModel addedCar);
     }
 }

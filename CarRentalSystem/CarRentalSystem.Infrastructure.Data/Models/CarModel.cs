@@ -16,7 +16,7 @@ namespace CarRentalSystem.Infrastructure.Data.Models
 
         public OrderModel CurrentOrder { get; set; }
 
-        public int CurrentOrderId { get; set; }
+        public int ? CurrentOrderId { get; set; }
 
         public PointOfRentalModel PointOfRental { get; set; }
 
