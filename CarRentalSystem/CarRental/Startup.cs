@@ -1,24 +1,17 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CarRentalSystem.Domain.Entities;
+using CarRental.Helpers;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data;
 using CarRentalSystem.Infrastructure.InternalServices;
+using CarRentalSystem.Infrastructure.Mapping.Profiles;
 using CarRentalSystem.Infrastructure.Services;
-using CarRentalSystem.Services.Extensions;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace CarRental
 {
@@ -37,7 +30,7 @@ namespace CarRental
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets called by a runtime. Adds services to the container and configures any options related to those services.
@@ -50,11 +43,16 @@ namespace CarRental
 
             services.AddSwaggerGen();
 
+            services.AddAutoMapper(typeof(CarRentalSystemProfile));
+
             services.AddScoped<DbContext, CarRentalSystemContext>();
             services.AddDbContext<CarRentalSystemContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    migrationOptions => migrationOptions.MigrationsAssembly("CarRentalSystem.Infrastructure.Data")));
 
-            services.AddCarRentalSystemServices();
+            services.AddScoped(typeof(IRentalRepository<>), typeof(CarRentalSystemGenericRepository<>));
+
+            ServiceConfigurator.ConfigureProjectServices(services);
         }
 
         /// <summary>

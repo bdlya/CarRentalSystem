@@ -1,8 +1,8 @@
-﻿using CarRentalSystem.Domain.Entities.Base;
+﻿using CarRentalSystem.Infrastructure.Data.Models.Base;
 
-namespace CarRentalSystem.Domain.Entities
+namespace CarRentalSystem.Infrastructure.Data.Models
 {
-    public class Car: BaseEntity
+    public class CarModel: BaseEntityModel
     {
         public string Brand { get; set; }
 
@@ -14,11 +14,11 @@ namespace CarRentalSystem.Domain.Entities
 
         public int CostPerHour { get; set; }
 
-        public Order CurrentOrder { get; set; }
+        public OrderModel CurrentOrder { get; set; }
 
         public int? CurrentOrderId { get; set; }
 
-        public PointOfRental PointOfRental { get; set; }
+        public PointOfRentalModel PointOfRental { get; set; }
 
         public int PointOfRentalId { get; set; }
     }

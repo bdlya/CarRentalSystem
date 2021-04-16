@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarRentalSystem.View.ViewModels\CarRentalSystem.View.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

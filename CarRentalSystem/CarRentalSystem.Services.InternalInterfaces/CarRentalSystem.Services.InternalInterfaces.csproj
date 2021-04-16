@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarRentalSystem.Infrastructure.Data\CarRentalSystem.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\Domain\CarRentalSystem.Domain.Entities.csproj" />
+  </ItemGroup>
+
 </Project>
