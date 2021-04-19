@@ -1,17 +1,13 @@
 using CarRental.Helpers;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data;
-using CarRentalSystem.Infrastructure.InternalServices;
+using CarRentalSystem.Infrastructure.ExceptionHandling;
 using CarRentalSystem.Infrastructure.Mapping.Profiles;
-using CarRentalSystem.Infrastructure.Services;
-using CarRentalSystem.Services.Interfaces;
-using CarRentalSystem.Services.InternalInterfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace CarRental
 {
@@ -62,12 +58,7 @@ namespace CarRental
         /// <param name="env">provides information about the environment that the application is currently running in.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Checks if the current host environment name is "Development".
-            if (env.IsDevelopment())
-            {
-                // if so adds middleware that enables detailed error messages to be rendered to the browser if the application raises exceptions when it is running.
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseSwagger();
 
