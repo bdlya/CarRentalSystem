@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CarRentalSystem.Infrastructure.Data\CarRentalSystem.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.Infrastructure.ExceptionHandling\CarRentalSystem.Infrastructure.ExceptionHandling.csproj" />
     <ProjectReference Include="..\CarRentalSystem.Infrastructure.InternalServices\CarRentalSystem.Infrastructure.InternalServices.csproj" />
     <ProjectReference Include="..\CarRentalSystem.Infrastructure.Mapping\CarRentalSystem.Infrastructure.Mapping.csproj" />
     <ProjectReference Include="..\CarRentalSystem.Infrastructure.Services\CarRentalSystem.Infrastructure.Services.csproj" />
