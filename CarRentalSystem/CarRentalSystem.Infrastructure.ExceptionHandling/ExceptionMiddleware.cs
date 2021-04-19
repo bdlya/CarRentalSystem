@@ -29,16 +29,37 @@ namespace CarRentalSystem.Infrastructure.ExceptionHandling
         private Task HandleException(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = (int)GetResponseError(exception);
             string message = exception.Message;
+            string[] messages = GetMessages(exception);
 
             return context.Response.WriteAsync(new
             {
                 Status = context.Response.StatusCode,
                 Title = ((HttpStatusCode)context.Response.StatusCode).ToString(),
                 Message = message,
+                Messages = messages,
                 TraceId = context.TraceIdentifier
             }.ToString());
+        }
+
+        private string[] GetMessages(Exception exception)
+        {
+            switch (exception)
+            {
+                case NullReferenceException e: return new[] { e.Message };
+                default:
+                    return null;
+            }
+        }
+
+        private HttpStatusCode GetResponseError(Exception exception)
+        {
+            switch (exception)
+            {
+                case NullReferenceException _: return HttpStatusCode.NotFound;
+                default: return HttpStatusCode.InternalServerError;
+            }
         }
     }
 }
