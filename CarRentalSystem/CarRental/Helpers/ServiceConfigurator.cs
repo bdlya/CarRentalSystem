@@ -3,6 +3,7 @@ using CarRentalSystem.Infrastructure.Services;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace CarRental.Helpers
 {
@@ -15,6 +16,8 @@ namespace CarRental.Helpers
 
             services.AddScoped<IServiceOrderService, ServiceOrderService>();
             services.AddScoped<IServiceOrderProviderService, ServiceOrderProviderService>();
+
+            services.AddSingleton(Log.Logger);
         }
     }
 }

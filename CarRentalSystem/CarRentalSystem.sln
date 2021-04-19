@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "View", "View", "{2A5748D9-B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalSystem.View.ViewModels", "CarRentalSystem.View.ViewModels\CarRentalSystem.View.ViewModels.csproj", "{4E78B08F-74CD-43A4-B9C1-2F2D1AE31E2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalSystem.Infrastructure.ExceptionHandling", "CarRentalSystem.Infrastructure.ExceptionHandling\CarRentalSystem.Infrastructure.ExceptionHandling.csproj", "{5BA7D84C-AFA2-4C75-A940-054D87BDE5C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalSystem.Infrastructure.ExceptionHandling", "CarRentalSystem.Infrastructure.ExceptionHandling\CarRentalSystem.Infrastructure.ExceptionHandling.csproj", "{5BA7D84C-AFA2-4C75-A940-054D87BDE5C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
