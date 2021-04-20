@@ -6,5 +6,6 @@ namespace CarRentalSystem.Services.Interfaces
     {
         UserViewModel Authenticate(AuthenticationViewModel model);
         void RegisterUser(UserViewModel model);
+        void RemoveToken(UserViewModel viewModel);
     }
 }

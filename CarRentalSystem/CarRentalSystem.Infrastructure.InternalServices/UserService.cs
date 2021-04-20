@@ -43,5 +43,13 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             _users.Create(user);
         }
+
+        public void RemoveToken(UserModel model)
+        {
+            User user = _users.Get().FirstOrDefault(u => u.Login == _mapper.Map<User>(model).Login );
+            user.Token = null;
+
+            _users.Update(user);
+        }
     }
 }

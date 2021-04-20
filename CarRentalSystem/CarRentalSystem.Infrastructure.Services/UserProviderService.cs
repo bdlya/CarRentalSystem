@@ -1,5 +1,4 @@
-﻿using System.Data;
-using AutoMapper;
+﻿using AutoMapper;
 using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
@@ -33,6 +32,11 @@ namespace CarRentalSystem.Infrastructure.Services
         public void RegisterUser(UserViewModel model)
         {
             _userService.RegisterUser(_mapper.Map<UserModel>(model));
+        }
+
+        public void RemoveToken(UserViewModel viewModel)
+        {
+            _userService.RemoveToken(_mapper.Map<UserModel>(viewModel));
         }
     }
 }
