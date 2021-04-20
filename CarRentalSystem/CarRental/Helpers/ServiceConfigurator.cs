@@ -16,8 +16,6 @@ namespace CarRental.Helpers
 
             services.AddScoped<IServiceOrderService, ServiceOrderService>();
             services.AddScoped<IServiceOrderProviderService, ServiceOrderProviderService>();
-
-            services.AddSingleton(Log.Logger);
         }
     }
 }
