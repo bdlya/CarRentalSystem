@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
 using CarRentalSystem.Domain.Entities;
+using CarRentalSystem.Domain.Entities.Helpers;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.InternalInterfaces;
@@ -33,6 +34,14 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             _users.Update(user);
 
             return _mapper.Map<UserModel>(user);
+        }
+
+        public void RegisterUser(UserModel model)
+        {
+            User user = _mapper.Map<User>(model);
+            user.Role = Role.Customer;
+
+            _users.Create(user);
         }
     }
 }

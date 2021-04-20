@@ -5,5 +5,6 @@ namespace CarRentalSystem.Services.InternalInterfaces
     public interface IUserService
     {
         UserModel Authenticate(string login, string password);
+        void RegisterUser(UserModel model);
     }
 }

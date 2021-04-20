@@ -29,5 +29,10 @@ namespace CarRentalSystem.Infrastructure.Services
 
             return  _mapper.Map<UserViewModel>(userModel);
         }
+
+        public void RegisterUser(UserViewModel model)
+        {
+            _userService.RegisterUser(_mapper.Map<UserModel>(model));
+        }
     }
 }
