@@ -6,7 +6,7 @@ namespace CarRentalSystem.Infrastructure.Data.Models
 {
     public class OrderModel: BaseEntityModel
     {
-        public CustomerModel CurrentCustomer { get; set; }
+        public UserModel CurrentCustomer { get; set; }
 
         public int CurrentCustomerId { get; set; }
 

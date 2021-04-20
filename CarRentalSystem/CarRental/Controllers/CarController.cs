@@ -18,13 +18,13 @@ namespace CarRental.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<string> GetCarInfoAsync(int id)
+        public async Task<string> GetCarInfoAsync([FromRoute] int id)
         {
             return await Task.Run(() => _carProviderService.GetCar(id));
         }
 
         [HttpPost]
-        [Route("test")]
+        [Route("add")]
         public async Task AddCarAsync([FromBody] CarViewModel carViewModel)
         {
             await Task.Run(() => _carProviderService.AddCar(carViewModel));

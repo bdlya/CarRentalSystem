@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using CarRentalSystem.Domain.Entities;
+using CarRentalSystem.Domain.Entities.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Infrastructure.Data
@@ -12,7 +13,7 @@ namespace CarRentalSystem.Infrastructure.Data
 
         public DbSet<Car> Cars { get; set; }
 
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public DbSet<AdditionalService> AdditionalServices { get; set; }
 
@@ -64,18 +65,24 @@ namespace CarRentalSystem.Infrastructure.Data
                 CurrentOrderId = 2
             };
 
-            Customer john = new Customer
+            User john = new User
             {
                 Id = 1,
                 Name = "John",
-                SurName = "Mars"
+                SurName = "Mars",
+                Login = "ReadDead@gmail.com",
+                Password = "HnEjhGC5",
+                Role = Role.Administrator,
             };
 
-            Customer arthur = new Customer
+            User arthur = new User
             {
                 Id = 2,
                 Name = "Arthur",
-                SurName = "Morgan"
+                SurName = "Morgan",
+                Login = "Redemption2@gmail.com",
+                Password = "12345",
+                Role = Role.Customer
             };
 
             AdditionalService babyChair = new AdditionalService
@@ -108,7 +115,7 @@ namespace CarRentalSystem.Infrastructure.Data
                 Id = 2,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.MaxValue,
-                CurrentCustomerId = 2,
+                CurrentCustomerId = 1,
                 CarId = 2,
                 PointOfRentalId = 1,
                 TotalCost = 0
@@ -146,7 +153,7 @@ namespace CarRentalSystem.Infrastructure.Data
                 toyota
             });
 
-            modelBuilder.Entity<Customer>().HasData(new List<Customer>
+            modelBuilder.Entity<User>().HasData(new List<User>
             {
                 john,
                 arthur

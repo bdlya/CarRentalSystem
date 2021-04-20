@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CarRentalSystem.Infrastructure.Data.Configurations
 {
-    public class CustomerConfig : IEntityTypeConfiguration<Customer>
+    public class CustomerConfig : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Customer> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder
                 .HasMany(customer => customer.Orders)

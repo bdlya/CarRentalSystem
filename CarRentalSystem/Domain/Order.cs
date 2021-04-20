@@ -6,7 +6,7 @@ namespace CarRentalSystem.Domain.Entities
 {
     public class Order : BaseEntity
     {
-        public Customer CurrentCustomer { get; set; }
+        public User CurrentCustomer { get; set; }
 
         public int CurrentCustomerId { get; set; }
 
