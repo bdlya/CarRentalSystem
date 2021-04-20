@@ -2,16 +2,19 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace CarRentalSystem.Infrastructure.ExceptionHandling
 {
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionMiddleware> _logger;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -22,6 +25,7 @@ namespace CarRentalSystem.Infrastructure.ExceptionHandling
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Unexpected exception {ex.Message} \n{ex.StackTrace}");
                 await HandleException(httpContext, ex);
             }
         }

@@ -3,6 +3,7 @@ using CarRentalSystem.Infrastructure.Services;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace CarRental.Helpers
 {
