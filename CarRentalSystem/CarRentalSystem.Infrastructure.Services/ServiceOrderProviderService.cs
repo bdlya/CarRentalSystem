@@ -1,27 +1,32 @@
-﻿using System.Text;
+﻿using AutoMapper;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
+using CarRentalSystem.View.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CarRentalSystem.Infrastructure.Data.Models;
 
 namespace CarRentalSystem.Infrastructure.Services
 {
     public class ServiceOrderProviderService : IServiceOrderProviderService
     {
         private readonly IServiceOrderService _service;
+        private readonly IMapper _mapper;
 
-        public ServiceOrderProviderService(IServiceOrderService service)
+        public ServiceOrderProviderService(IServiceOrderService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
+
         }
-        public string GetAdditionalServices(int orderId)
+
+        public async Task<List<AdditionalServiceViewModel>> GetAdditionalServices(int orderId)
         {
-            StringBuilder builder = new StringBuilder();
+            List<AdditionalServiceModel> additionalServices =
+                await Task.Run(() => _service.GetAdditionalServices(orderId));
 
-            foreach (var service in _service.GetAdditionalServices(orderId))
-            {
-                builder.Append(service.Name);
-            }
-
-            return builder.ToString();
+            return additionalServices.Select(service => _mapper.Map<AdditionalServiceViewModel>(service)).ToList();
         }
     }
 }

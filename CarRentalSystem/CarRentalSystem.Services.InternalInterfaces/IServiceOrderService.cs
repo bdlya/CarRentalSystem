@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using CarRentalSystem.Domain.Entities;
+﻿using CarRentalSystem.Infrastructure.Data.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Services.InternalInterfaces
 {
     public interface IServiceOrderService
     {
-        List<AdditionalService> GetAdditionalServices(int orderId);
+        Task<List<AdditionalServiceModel>> GetAdditionalServices(int orderId);
     }
 }

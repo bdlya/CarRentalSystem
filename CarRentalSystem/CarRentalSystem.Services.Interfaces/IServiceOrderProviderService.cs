@@ -1,7 +1,11 @@
-﻿namespace CarRentalSystem.Services.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CarRentalSystem.View.ViewModels;
+
+namespace CarRentalSystem.Services.Interfaces
 {
     public interface IServiceOrderProviderService
     {
-        string GetAdditionalServices(int orderId);
+        Task<List<AdditionalServiceViewModel>> GetAdditionalServices(int orderId);
     }
 }

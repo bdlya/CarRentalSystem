@@ -1,10 +1,11 @@
-﻿using CarRentalSystem.View.ViewModels;
+﻿using System.Threading.Tasks;
+using CarRentalSystem.View.ViewModels;
 
 namespace CarRentalSystem.Services.Interfaces
 {
     public interface ICarProviderService
     {
-        string GetCar(int number);
-        void AddCar(CarViewModel addedCar);
+        Task<string> GetCar(int number);
+        Task AddCar(CarViewModel addedCar);
     }
 }

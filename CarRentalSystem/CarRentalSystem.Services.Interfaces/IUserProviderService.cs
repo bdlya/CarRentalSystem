@@ -1,11 +1,12 @@
-﻿using CarRentalSystem.View.ViewModels;
+﻿using System.Threading.Tasks;
+using CarRentalSystem.View.ViewModels;
 
 namespace CarRentalSystem.Services.Interfaces
 {
     public interface IUserProviderService
     {
-        UserViewModel Authenticate(AuthenticationViewModel model);
-        void RegisterUser(UserViewModel model);
-        void RemoveToken(UserViewModel viewModel);
+        Task<UserViewModel> Authenticate(AuthenticationViewModel model);
+        Task RegisterUser(UserViewModel model);
+        Task RemoveToken(UserViewModel viewModel);
     }
 }

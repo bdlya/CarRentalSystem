@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -19,10 +20,9 @@ namespace CarRental.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Register([FromBody] UserViewModel model)
+        public async Task RegisterAsync([FromBody] UserViewModel model)
         {
-            _userProviderService.RegisterUser(model);
-            return Ok();
+            await _userProviderService.RegisterUser(model);
         }
     }
 }

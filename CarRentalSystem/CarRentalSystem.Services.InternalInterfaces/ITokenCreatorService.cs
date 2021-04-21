@@ -4,6 +4,6 @@ namespace CarRentalSystem.Services.InternalInterfaces
 {
     public interface ITokenCreatorService
     {
-        User CreateTokenFor(User user);
+        User CreateTokenForUser(User user);
     }
 }

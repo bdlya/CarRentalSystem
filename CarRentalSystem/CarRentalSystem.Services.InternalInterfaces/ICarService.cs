@@ -1,10 +1,11 @@
-﻿using CarRentalSystem.Infrastructure.Data.Models;
+﻿using System.Threading.Tasks;
+using CarRentalSystem.Infrastructure.Data.Models;
 
 namespace CarRentalSystem.Services.InternalInterfaces
 {
     public interface ICarService
     {
-        CarModel GetCar(int id);
-        void AddCar(CarModel addedCar);
+        Task<CarModel> GetCar(int id);
+        Task AddCar(CarModel addedCar);
     }
 }

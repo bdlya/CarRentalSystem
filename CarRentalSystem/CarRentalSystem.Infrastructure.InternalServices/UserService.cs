@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Entities.Helpers;
@@ -21,35 +23,35 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             _tokenCreator = tokenCreator;
         }
 
-        public UserModel Authenticate(string login, string password)
+        public async Task<UserModel> Authenticate(string login, string password)
         {
-            User user = _users.Get().FirstOrDefault(u => u.Login == login && u.Password == password);
+            User user = await Task.Run(() => user = _users.Get().FirstOrDefault(u => u.Login == login && u.Password == password));
 
             if (user == null)
             {
-                return null;
+                throw new UnauthorizedAccessException();
             }
 
-            user = _tokenCreator.CreateTokenFor(user);
-            _users.Update(user);
+            user = _tokenCreator.CreateTokenForUser(user);
+            await Task.Run(() =>_users.Update(user));
 
             return _mapper.Map<UserModel>(user);
         }
 
-        public void RegisterUser(UserModel model)
+        public async Task RegisterUser(UserModel model)
         {
             User user = _mapper.Map<User>(model);
             user.Role = Role.Customer;
 
-            _users.Create(user);
+            await Task.Run(() =>_users.Create(user));
         }
 
-        public void RemoveToken(UserModel model)
+        public async Task RemoveToken(UserModel model)
         {
-            User user = _users.Get().FirstOrDefault(u => u.Login == _mapper.Map<User>(model).Login );
+            User user = await Task.Run(() => user = _users.Get().FirstOrDefault(u => u.Login == _mapper.Map<User>(model).Login)) ;
             user.Token = null;
 
-            _users.Update(user);
+            await Task.Run(() =>_users.Update(user));
         }
     }
 }

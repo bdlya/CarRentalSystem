@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CarRentalSystem.Services.Interfaces;
+﻿using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace CarRental.Controllers
 {
@@ -24,16 +20,11 @@ namespace CarRental.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Authenticate([FromBody] AuthenticationViewModel model)
+        public async Task<string> AuthenticateAsync([FromBody] AuthenticationViewModel model)
         {
-            UserViewModel userModel  = _userProviderService.Authenticate(model);
+            UserViewModel userModel = await _userProviderService.Authenticate(model);
 
-            if (userModel == null)
-            {
-                return BadRequest(new {message = "Username or password is incorrect"});
-            }
-
-            return Ok(new {message = $"Welcome, {userModel.Name} your current role is {userModel.Role} and here your token for postman test: {userModel.Token}"});
+            return $"Welcome, {userModel.Name} your current role is {userModel.Role} and here your token for postman test: {userModel.Token}";
         }
     }
 }

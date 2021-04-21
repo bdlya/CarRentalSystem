@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -19,11 +20,9 @@ namespace CarRental.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult LogOut([FromBody] UserViewModel viewModel)
+        public async Task LogOutAsync([FromBody] UserViewModel viewModel)
         {
-            _userProviderService.RemoveToken(viewModel);
-            return Ok();
+            await _userProviderService.RemoveToken(viewModel);
         }
-
     }
 }

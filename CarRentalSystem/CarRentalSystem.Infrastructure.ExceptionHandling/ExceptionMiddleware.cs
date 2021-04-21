@@ -52,6 +52,7 @@ namespace CarRentalSystem.Infrastructure.ExceptionHandling
             switch (exception)
             {
                 case NullReferenceException e: return new[] { e.Message };
+                case UnauthorizedAccessException e: return new[] {e.Message};
                 default:
                     return null;
             }
@@ -62,6 +63,7 @@ namespace CarRentalSystem.Infrastructure.ExceptionHandling
             switch (exception)
             {
                 case NullReferenceException _: return HttpStatusCode.NotFound;
+                case UnauthorizedAccessException _: return HttpStatusCode.Forbidden;
                 default: return HttpStatusCode.InternalServerError;
             }
         }

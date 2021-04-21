@@ -24,7 +24,7 @@ namespace CarRental.Controllers
         [Route("{id}")]
         public async Task<string> GetCarInfoAsync([FromRoute] int id)
         {
-            return await Task.Run(() => _carProviderService.GetCar(id));
+            return await _carProviderService.GetCar(id);
         }
 
         [Authorize(Roles = Role.Administrator)]
@@ -32,7 +32,7 @@ namespace CarRental.Controllers
         [Route("add")]
         public async Task AddCarAsync([FromBody] CarViewModel carViewModel)
         {
-            await Task.Run(() => _carProviderService.AddCar(carViewModel));
+            await _carProviderService.AddCar(carViewModel);
         }
     }
 }

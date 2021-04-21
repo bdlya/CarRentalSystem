@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
@@ -17,17 +18,17 @@ namespace CarRentalSystem.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public string GetCar(int id)
+        public async Task<string> GetCar(int id)
         {
-            CarViewModel car = _mapper.Map<CarViewModel>(_carService.GetCar(id));
-            return $"Car brand with id - {id}: {car.Brand} in point of rental {car.PointOfRental.Name}";
+            CarModel model = await Task.Run(() => _carService.GetCar(id));
+            CarViewModel viewModel = _mapper.Map<CarViewModel>(model);
+  
+            return $"Car brand with id - {id}: {viewModel.Brand} in point of rental {viewModel.PointOfRental.Name}";
         }
 
-        public void AddCar(CarViewModel addedCar)
+        public async Task AddCar(CarViewModel addedCar)
         {
-            _carService.AddCar(_mapper.Map<CarModel>(addedCar));
+            await Task.Run(() => _carService.AddCar(_mapper.Map<CarModel>(addedCar)));
         }
     }
-
-   
 }

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
@@ -17,26 +18,20 @@ namespace CarRentalSystem.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public UserViewModel Authenticate(AuthenticationViewModel model)
+        public async Task<UserViewModel> Authenticate(AuthenticationViewModel model)
         {
-            UserModel userModel = _userService.Authenticate(model.Login, model.Password);
-
-            if (userModel == null)
-            {
-                return null;
-            }
-
-            return  _mapper.Map<UserViewModel>(userModel);
+            UserModel userModel = await Task.Run(() =>_userService.Authenticate(model.Login, model.Password));
+            return _mapper.Map<UserViewModel>(userModel);
         }
 
-        public void RegisterUser(UserViewModel model)
+        public async Task RegisterUser(UserViewModel model)
         {
-            _userService.RegisterUser(_mapper.Map<UserModel>(model));
+            await Task.Run(() => _userService.RegisterUser(_mapper.Map<UserModel>(model)));
         }
 
-        public void RemoveToken(UserViewModel viewModel)
+        public async Task RemoveToken(UserViewModel viewModel)
         {
-            _userService.RemoveToken(_mapper.Map<UserModel>(viewModel));
+            await Task.Run(() => _userService.RemoveToken(_mapper.Map<UserModel>(viewModel)));
         }
     }
 }

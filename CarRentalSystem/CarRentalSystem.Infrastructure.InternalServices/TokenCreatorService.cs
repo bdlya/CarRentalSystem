@@ -18,13 +18,13 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             _configuration = configuration;
         }
 
-        public User CreateTokenFor(User user)
+        public User CreateTokenForUser(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(_configuration["SecretKey"]);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.Role)
