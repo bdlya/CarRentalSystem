@@ -4,6 +4,7 @@ using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
 using CarRentalSystem.View.ViewModels;
+using CarRentalSystem.View.ViewModels.Base;
 
 namespace CarRentalSystem.Infrastructure.Services
 {
@@ -20,18 +21,19 @@ namespace CarRentalSystem.Infrastructure.Services
 
         public async Task<UserViewModel> Authenticate(AuthenticationViewModel model)
         {
-            UserModel userModel = await Task.Run(() =>_userService.Authenticate(model.Login, model.Password));
+            UserModel userModel = await _userService.Authenticate(model.Login, model.Password);
             return _mapper.Map<UserViewModel>(userModel);
         }
 
-        public async Task RegisterUser(UserViewModel model)
+        public async Task RegisterUser(RegistrationViewModel model)
         {
-            await Task.Run(() => _userService.RegisterUser(_mapper.Map<UserModel>(model)));
+            UserModel userModel = _mapper.Map<UserModel>(model);
+            await _userService.RegisterUser(userModel, model.Password);
         }
 
         public async Task RemoveToken(UserViewModel viewModel)
         {
-            await Task.Run(() => _userService.RemoveToken(_mapper.Map<UserModel>(viewModel)));
+            await _userService.RemoveToken(_mapper.Map<UserModel>(viewModel));
         }
     }
 }

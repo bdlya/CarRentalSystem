@@ -2,6 +2,7 @@
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.View.ViewModels;
+using CarRentalSystem.View.ViewModels.Base;
 
 namespace CarRentalSystem.Infrastructure.Mapping.Profiles
 {
@@ -22,6 +23,8 @@ namespace CarRentalSystem.Infrastructure.Mapping.Profiles
             CreateMap<UserModel, UserViewModel>().ReverseMap();
             CreateMap<OrderAdditionalServiceModel, OrderAdditionalServiceViewModel>().ReverseMap();
             CreateMap<AdditionalServiceModel, AdditionalServiceViewModel>().ReverseMap();
+
+            CreateMap<RegistrationViewModel, UserModel>();
         }
     }
 }

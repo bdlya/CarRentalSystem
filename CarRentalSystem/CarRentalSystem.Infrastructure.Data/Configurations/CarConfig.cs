@@ -11,8 +11,7 @@ namespace CarRentalSystem.Infrastructure.Data.Configurations
             builder
                 .HasOne(car => car.PointOfRental)
                 .WithMany(point => point.Cars)
-                .HasForeignKey(car => car.PointOfRentalId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(car => car.PointOfRentalId);
 
             builder
                 .HasOne(car => car.CurrentOrder)

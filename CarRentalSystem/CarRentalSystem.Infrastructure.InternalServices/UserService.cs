@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRentalSystem.Domain.Entities;
@@ -25,9 +27,9 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<UserModel> Authenticate(string login, string password)
         {
-            User user = await Task.Run(() => user = _users.Get().FirstOrDefault(u => u.Login == login && u.Password == password));
+            User user = await Task.Run(() => user = _users.Get().FirstOrDefault(u => u.Login == login));
 
-            if (user == null)
+            if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 throw new UnauthorizedAccessException();
             }
@@ -38,10 +40,14 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             return _mapper.Map<UserModel>(user);
         }
 
-        public async Task RegisterUser(UserModel model)
+        public async Task RegisterUser(UserModel model, string password)
         {
             User user = _mapper.Map<User>(model);
+            CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
             user.Role = Role.Customer;
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
 
             await Task.Run(() =>_users.Create(user));
         }
@@ -52,6 +58,21 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             user.Token = null;
 
             await Task.Run(() =>_users.Update(user));
+        }
+
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using var hmac = new HMACSHA512();
+            passwordSalt = hmac.Key;
+            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        }
+
+        private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
+        {
+            using var hmac = new HMACSHA512(storedSalt);
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+            return !computedHash.Where((t, i) => t != storedHash[i]).Any();
         }
     }
 }

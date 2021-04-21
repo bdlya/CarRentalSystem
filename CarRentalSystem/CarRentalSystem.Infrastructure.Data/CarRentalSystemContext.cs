@@ -1,9 +1,7 @@
-﻿using System;
+﻿using CarRentalSystem.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection;
-using CarRentalSystem.Domain.Entities;
-using CarRentalSystem.Domain.Entities.Helpers;
-using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Infrastructure.Data
 {
@@ -50,7 +48,6 @@ namespace CarRentalSystem.Infrastructure.Data
                 CostPerHour = 1000,
                 TransmissionType = "Mechanic",
                 PointOfRentalId = 1,
-                CurrentOrderId = 1
             };
 
             Car toyota = new Car
@@ -62,27 +59,6 @@ namespace CarRentalSystem.Infrastructure.Data
                 CostPerHour = 500,
                 TransmissionType = "Automatic",
                 PointOfRentalId = 1,
-                CurrentOrderId = 2
-            };
-
-            User john = new User
-            {
-                Id = 1,
-                Name = "John",
-                SurName = "Mars",
-                Login = "ReadDead@gmail.com",
-                Password = "HnEjhGC5",
-                Role = Role.Administrator,
-            };
-
-            User arthur = new User
-            {
-                Id = 2,
-                Name = "Arthur",
-                SurName = "Morgan",
-                Login = "Redemption2@gmail.com",
-                Password = "12345",
-                Role = Role.Customer
             };
 
             AdditionalService babyChair = new AdditionalService
@@ -99,49 +75,6 @@ namespace CarRentalSystem.Infrastructure.Data
                 Cost = 100
             };
 
-            Order firstOrder = new Order
-            {
-                Id = 1,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.MaxValue,
-                CurrentCustomerId = 1,
-                CarId = 1,
-                PointOfRentalId = 1,
-                TotalCost = 0
-            };
-
-            Order secondOrder = new Order
-            {
-                Id = 2,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.MaxValue,
-                CurrentCustomerId = 1,
-                CarId = 2,
-                PointOfRentalId = 1,
-                TotalCost = 0
-            };
-
-            OrderAdditionalService firstOrderService = new OrderAdditionalService()
-            {
-                Id = 1,
-                OrderId = 1,
-                AdditionalServiceId = 1
-            };
-
-            OrderAdditionalService secondOrderService = new OrderAdditionalService()
-            {
-                Id = 2,
-                OrderId = 1,
-                AdditionalServiceId = 2
-            };
-
-            OrderAdditionalService thirdOrderService = new OrderAdditionalService()
-            {
-                Id = 3,
-                OrderId = 2,
-                AdditionalServiceId = 1
-            };
-
             modelBuilder.Entity<PointOfRental>().HasData(new List<PointOfRental>
             {
                 firstPoint
@@ -153,30 +86,12 @@ namespace CarRentalSystem.Infrastructure.Data
                 toyota
             });
 
-            modelBuilder.Entity<User>().HasData(new List<User>
-            {
-                john,
-                arthur
-            });
-
             modelBuilder.Entity<AdditionalService>().HasData(new List<AdditionalService>
             {
                 babyChair,
                 fullTank
             });
 
-            modelBuilder.Entity<Order>().HasData(new List<Order>
-            {
-                firstOrder,
-                secondOrder,
-            });
-
-            modelBuilder.Entity<OrderAdditionalService>().HasData(new List<OrderAdditionalService>
-            {
-                firstOrderService,
-                secondOrderService,
-                thirdOrderService
-            });
         }
     }
 }
