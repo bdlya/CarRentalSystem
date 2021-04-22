@@ -1,42 +1,80 @@
-﻿using System;
+﻿using CarRentalSystem.Domain.Entities;
+using CarRentalSystem.Services.InternalInterfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Configuration;
-using CarRentalSystem.Domain.Entities;
-using CarRentalSystem.Services.InternalInterfaces;
-using Microsoft.IdentityModel.Tokens;
+using CarRentalSystem.Domain.Interfaces;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
     public class TokenCreatorService: ITokenCreatorService
     {
         private readonly IConfiguration _configuration;
+        private readonly IRentalRepository<RefreshToken> _refreshTokens;
 
-        public TokenCreatorService(IConfiguration configuration)
+        public TokenCreatorService(IConfiguration configuration, IRentalRepository<RefreshToken> refreshTokens)
         {
             _configuration = configuration;
+            _refreshTokens = refreshTokens;
         }
 
-        public User CreateTokenForUser(User user)
+        public User CreateTokensForUser(User user)
+        {
+            user.Token = CreateTokenForUser(user);
+            user.RefreshToken = CreateRefreshTokenForUser(user);
+
+            return user;
+        }
+
+        private string CreateTokenForUser(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(_configuration["SecretKey"]);
-            var tokenDescriptor = new SecurityTokenDescriptor()
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
-                Expires = DateTime.Now.AddDays(1),
+                Expires = DateTime.Now.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
+            return tokenHandler.WriteToken(token);
+        }
 
-            return user;
+        private RefreshToken CreateRefreshTokenForUser(User user)
+        {
+            if (user.RefreshTokenId != null)
+            {
+                RefreshToken currentRefreshToken = user.RefreshToken;
+                _refreshTokens.Remove(currentRefreshToken);
+            }
+
+            RefreshToken newRefreshToken = CreateRefreshToken();
+            _refreshTokens.Create(newRefreshToken);
+
+            return newRefreshToken;
+        }
+
+        private RefreshToken CreateRefreshToken()
+        {
+            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            var randomBytes = new byte[64];
+            rngCryptoServiceProvider.GetBytes(randomBytes);
+
+            return new RefreshToken
+            {
+                Token = Convert.ToBase64String(randomBytes),
+                Created = DateTime.Now,
+                Expires = DateTime.Now.AddDays(7)
+            };
         }
     }
 }

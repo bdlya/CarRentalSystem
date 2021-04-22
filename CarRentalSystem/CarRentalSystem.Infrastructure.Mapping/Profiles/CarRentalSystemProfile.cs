@@ -16,6 +16,7 @@ namespace CarRentalSystem.Infrastructure.Mapping.Profiles
             CreateMap<User, UserModel>().ReverseMap();
             CreateMap<OrderAdditionalService, OrderAdditionalServiceModel>().ReverseMap();
             CreateMap<AdditionalService, AdditionalServiceModel>().ReverseMap();
+            CreateMap<RefreshToken, RefreshTokenModel>().ReverseMap();
 
             CreateMap<CarModel, CarViewModel>().ReverseMap();
             CreateMap<OrderModel, OrderViewModel>().ReverseMap();
@@ -23,6 +24,7 @@ namespace CarRentalSystem.Infrastructure.Mapping.Profiles
             CreateMap<UserModel, UserViewModel>().ReverseMap();
             CreateMap<OrderAdditionalServiceModel, OrderAdditionalServiceViewModel>().ReverseMap();
             CreateMap<AdditionalServiceModel, AdditionalServiceViewModel>().ReverseMap();
+            CreateMap<RefreshTokenModel, RefreshTokenViewModel>().ReverseMap();
 
             CreateMap<RegistrationViewModel, UserModel>();
         }

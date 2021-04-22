@@ -19,6 +19,8 @@ namespace CarRentalSystem.Infrastructure.Data
 
         public DbSet<OrderAdditionalService> OrderAdditionalServices { get; set; }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         public CarRentalSystemContext(DbContextOptions<CarRentalSystemContext> options)
             :base(options) { }
 
@@ -91,7 +93,6 @@ namespace CarRentalSystem.Infrastructure.Data
                 babyChair,
                 fullTank
             });
-
         }
     }
 }

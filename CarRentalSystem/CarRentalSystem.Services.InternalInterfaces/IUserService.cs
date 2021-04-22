@@ -8,5 +8,6 @@ namespace CarRentalSystem.Services.InternalInterfaces
         Task<UserModel> Authenticate(string login, string password);
         Task RegisterUser(UserModel model, string password);
         Task RemoveToken(UserModel model);
+        Task<RefreshTokenModel> RefreshToken(string refreshToken);
     }
 }

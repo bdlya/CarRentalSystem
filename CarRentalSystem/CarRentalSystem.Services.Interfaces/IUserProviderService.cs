@@ -9,5 +9,6 @@ namespace CarRentalSystem.Services.Interfaces
         Task<UserViewModel> Authenticate(AuthenticationViewModel model);
         Task RegisterUser(RegistrationViewModel model);
         Task RemoveToken(UserViewModel viewModel);
+        Task<RefreshTokenViewModel> RefreshToken(string refreshToken);
     }
 }

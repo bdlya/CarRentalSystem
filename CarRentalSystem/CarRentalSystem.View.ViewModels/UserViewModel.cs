@@ -19,6 +19,10 @@ namespace CarRentalSystem.View.ViewModels
 
         public string Token { get; set; }
 
+        public int RefreshTokenId { get; set; }
+
+        public RefreshTokenViewModel RefreshToken { get; set; }
+
         public List<OrderViewModel> Orders { get; set; }
 
         public UserViewModel()

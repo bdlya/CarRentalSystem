@@ -19,6 +19,10 @@ namespace CarRentalSystem.Domain.Entities
 
         public string Token { get; set; }
 
+        public int? RefreshTokenId { get; set; }
+
+        public RefreshToken RefreshToken { get; set; }
+
         public List<Order> Orders { get; set; }
 
         public User()

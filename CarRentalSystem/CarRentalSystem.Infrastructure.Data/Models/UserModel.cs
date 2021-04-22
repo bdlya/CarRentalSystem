@@ -19,6 +19,10 @@ namespace CarRentalSystem.Infrastructure.Data.Models
 
         public string Token { get; set; }
 
+        public int? RefreshTokenId { get; set; }
+
+        public RefreshTokenModel RefreshToken { get; set; }
+
         public List<OrderModel> Orders { get; set; }
 
         public UserModel()

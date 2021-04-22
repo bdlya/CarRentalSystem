@@ -13,7 +13,14 @@ namespace CarRentalSystem.Infrastructure.Data.Configurations
                 .WithOne(order => order.CurrentCustomer)
                 .HasForeignKey(order => order.CurrentCustomerId);
 
-            builder.Property(p => p.Id).ValueGeneratedOnAdd();
+            builder
+                .HasOne(user => user.RefreshToken)
+                .WithOne(token => token.User)
+                .HasForeignKey<User>(user => user.RefreshTokenId);
+            
+            builder
+                .Property(p => p.Id)
+                .ValueGeneratedOnAdd();
         }
     }
 }

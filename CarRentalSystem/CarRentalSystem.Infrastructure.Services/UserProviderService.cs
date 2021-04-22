@@ -35,5 +35,11 @@ namespace CarRentalSystem.Infrastructure.Services
         {
             await _userService.RemoveToken(_mapper.Map<UserModel>(viewModel));
         }
+
+        public async Task<RefreshTokenViewModel> RefreshToken(string refreshToken)
+        {
+            RefreshTokenModel refreshTokenModel = await _userService.RefreshToken(refreshToken);
+            return _mapper.Map<RefreshTokenViewModel>(refreshTokenModel);
+        }
     }
 }

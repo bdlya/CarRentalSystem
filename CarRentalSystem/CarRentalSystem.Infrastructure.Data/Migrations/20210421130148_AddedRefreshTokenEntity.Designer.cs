@@ -4,14 +4,16 @@ using CarRentalSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarRentalSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CarRentalSystemContext))]
-    partial class CarRentalSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210421130148_AddedRefreshTokenEntity")]
+    partial class AddedRefreshTokenEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,33 +200,6 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RefreshTokens");
-                });
-
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -244,9 +219,6 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("RefreshTokenId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
@@ -257,10 +229,6 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RefreshTokenId")
-                        .IsUnique()
-                        .HasFilter("[RefreshTokenId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -322,9 +290,35 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.User", b =>
                 {
-                    b.HasOne("CarRentalSystem.Domain.Entities.RefreshToken", "RefreshToken")
-                        .WithOne("User")
-                        .HasForeignKey("CarRentalSystem.Domain.Entities.User", "RefreshTokenId");
+                    b.OwnsOne("CarRentalSystem.Domain.Entities.RefreshToken", "RefreshToken", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<DateTime>("Created")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("Expires")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<int>("Id")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime?>("Revoked")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Token")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
 
                     b.Navigation("RefreshToken");
                 });
@@ -346,11 +340,6 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                     b.Navigation("Cars");
 
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.User", b =>
