@@ -6,7 +6,7 @@ namespace CarRentalSystem.View.ViewModels
 {
     public class OrderViewModel: BaseEntityViewModel
     {
-        public CustomerViewModel CurrentCustomer { get; set; }
+        public UserViewModel CurrentCustomer { get; set; }
 
         public int CurrentCustomerId { get; set; }
 

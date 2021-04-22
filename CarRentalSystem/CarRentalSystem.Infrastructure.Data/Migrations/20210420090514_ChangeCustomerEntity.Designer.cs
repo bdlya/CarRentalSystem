@@ -4,14 +4,16 @@ using CarRentalSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarRentalSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CarRentalSystemContext))]
-    partial class CarRentalSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210420090514_ChangeCustomerEntity")]
+    partial class ChangeCustomerEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,6 +98,7 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                             AverageFuelConsumption = 100,
                             Brand = "Nissan",
                             CostPerHour = 1000,
+                            CurrentOrderId = 1,
                             NumberOfSeats = 2,
                             PointOfRentalId = 1,
                             TransmissionType = "Mechanic"
@@ -106,6 +109,7 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                             AverageFuelConsumption = 200,
                             Brand = "Toyota",
                             CostPerHour = 500,
+                            CurrentOrderId = 2,
                             NumberOfSeats = 4,
                             PointOfRentalId = 1,
                             TransmissionType = "Automatic"
@@ -144,6 +148,28 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                     b.HasIndex("PointOfRentalId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CarId = 1,
+                            CurrentCustomerId = 1,
+                            EndDate = new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999),
+                            PointOfRentalId = 1,
+                            StartDate = new DateTime(2021, 4, 20, 12, 5, 14, 226, DateTimeKind.Local).AddTicks(5749),
+                            TotalCost = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CarId = 2,
+                            CurrentCustomerId = 1,
+                            EndDate = new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999),
+                            PointOfRentalId = 1,
+                            StartDate = new DateTime(2021, 4, 20, 12, 5, 14, 227, DateTimeKind.Local).AddTicks(8223),
+                            TotalCost = 0
+                        });
                 });
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.OrderAdditionalService", b =>
@@ -162,6 +188,26 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderAdditionalServices");
+
+                    b.HasData(
+                        new
+                        {
+                            AdditionalServiceId = 1,
+                            OrderId = 1,
+                            Id = 1
+                        },
+                        new
+                        {
+                            AdditionalServiceId = 2,
+                            OrderId = 1,
+                            Id = 2
+                        },
+                        new
+                        {
+                            AdditionalServiceId = 1,
+                            OrderId = 2,
+                            Id = 3
+                        });
                 });
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.PointOfRental", b =>
@@ -198,33 +244,6 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RefreshTokens");
-                });
-
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -238,14 +257,8 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int?>("RefreshTokenId")
-                        .HasColumnType("int");
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
@@ -258,11 +271,27 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RefreshTokenId")
-                        .IsUnique()
-                        .HasFilter("[RefreshTokenId] IS NOT NULL");
-
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Login = "ReadDead@gmail.com",
+                            Name = "John",
+                            Password = "HnEjhGC5",
+                            Role = "Administrator",
+                            SurName = "Mars"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Login = "Redemption2@gmail.com",
+                            Name = "Arthur",
+                            Password = "12345",
+                            Role = "Customer",
+                            SurName = "Morgan"
+                        });
                 });
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.Car", b =>
@@ -274,7 +303,7 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                     b.HasOne("CarRentalSystem.Domain.Entities.PointOfRental", "PointOfRental")
                         .WithMany("Cars")
                         .HasForeignKey("PointOfRentalId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CurrentOrder");
@@ -320,15 +349,6 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.User", b =>
-                {
-                    b.HasOne("CarRentalSystem.Domain.Entities.RefreshToken", "RefreshToken")
-                        .WithOne("User")
-                        .HasForeignKey("CarRentalSystem.Domain.Entities.User", "RefreshTokenId");
-
-                    b.Navigation("RefreshToken");
-                });
-
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.AdditionalService", b =>
                 {
                     b.Navigation("OrderAdditionalServices");
@@ -346,11 +366,6 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                     b.Navigation("Cars");
 
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.User", b =>

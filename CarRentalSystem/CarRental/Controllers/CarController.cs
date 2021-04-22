@@ -1,10 +1,13 @@
 ﻿using System.Threading.Tasks;
+using CarRentalSystem.Infrastructure.Data.Policies;
 using Microsoft.AspNetCore.Mvc;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarRental.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CarController : ControllerBase
@@ -16,18 +19,20 @@ namespace CarRental.Controllers
             _carProviderService = carProviderService;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{id}")]
-        public async Task<string> GetCarInfoAsync(int id)
+        public async Task<string> GetCarInfoAsync([FromRoute] int id)
         {
-            return await Task.Run(() => _carProviderService.GetCar(id));
+            return await _carProviderService.GetCar(id);
         }
 
+        [Authorize(Policy = Policy.Administrator)]
         [HttpPost]
-        [Route("test")]
+        [Route("add")]
         public async Task AddCarAsync([FromBody] CarViewModel carViewModel)
         {
-            await Task.Run(() => _carProviderService.AddCar(carViewModel));
+            await _carProviderService.AddCar(carViewModel);
         }
     }
 }

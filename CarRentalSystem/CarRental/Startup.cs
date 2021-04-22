@@ -48,6 +48,7 @@ namespace CarRental
 
             services.AddScoped(typeof(IRentalRepository<>), typeof(CarRentalSystemGenericRepository<>));
 
+            JwtConfigurator.Configure(Configuration, services);
             ServiceConfigurator.ConfigureProjectServices(services);
         }
 
@@ -73,7 +74,7 @@ namespace CarRental
             // Adds middleware that enables routing (route matching). Middleware looks at the set of endpoints defined in the app and selects the best match based on request.
             app.UseRouting();
 
-            // Adds middleware that enables authorization capabilities.
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // Adds middleware that enables routing (endpoint execution). Middleware runs the delegate associated with the selected endpoint.
