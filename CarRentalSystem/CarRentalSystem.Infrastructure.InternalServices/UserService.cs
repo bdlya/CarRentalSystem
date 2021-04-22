@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRentalSystem.Domain.Entities;
-using CarRentalSystem.Domain.Entities.Helpers;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
+using CarRentalSystem.Infrastructure.Data.Policies;
 using CarRentalSystem.Services.InternalInterfaces;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
@@ -46,7 +46,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             User user = _mapper.Map<User>(model);
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.Role = Role.Customer;
+            user.Role = Policy.Customer;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 

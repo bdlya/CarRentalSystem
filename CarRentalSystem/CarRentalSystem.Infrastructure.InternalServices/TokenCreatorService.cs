@@ -51,30 +51,34 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         private RefreshToken CreateRefreshTokenForUser(User user)
         {
+            RefreshToken newRefreshToken;
+
             if (user.RefreshTokenId != null)
             {
-                RefreshToken currentRefreshToken = user.RefreshToken;
-                _refreshTokens.Remove(currentRefreshToken);
+                newRefreshToken = user.RefreshToken;
+                newRefreshToken = UpdateRefreshTokenData(newRefreshToken);
+                _refreshTokens.Update(newRefreshToken);
             }
-
-            RefreshToken newRefreshToken = CreateRefreshToken();
-            _refreshTokens.Create(newRefreshToken);
+            else
+            {
+                newRefreshToken = UpdateRefreshTokenData(new RefreshToken());
+                _refreshTokens.Create(newRefreshToken);
+            }
 
             return newRefreshToken;
         }
 
-        private RefreshToken CreateRefreshToken()
+        private RefreshToken UpdateRefreshTokenData(RefreshToken refreshToken)
         {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
             var randomBytes = new byte[64];
             rngCryptoServiceProvider.GetBytes(randomBytes);
 
-            return new RefreshToken
-            {
-                Token = Convert.ToBase64String(randomBytes),
-                Created = DateTime.Now,
-                Expires = DateTime.Now.AddDays(7)
-            };
+            refreshToken.Token = Convert.ToBase64String(randomBytes);
+            refreshToken.Created = DateTime.Now;
+            refreshToken.Expires = DateTime.Now.AddDays(7);
+
+            return refreshToken;
         }
     }
 }

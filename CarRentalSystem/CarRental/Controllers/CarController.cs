@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using CarRentalSystem.Domain.Entities.Helpers;
+using CarRentalSystem.Infrastructure.Data.Policies;
 using Microsoft.AspNetCore.Mvc;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels;
@@ -27,7 +27,7 @@ namespace CarRental.Controllers
             return await _carProviderService.GetCar(id);
         }
 
-        [Authorize(Roles = Role.Administrator)]
+        [Authorize(Policy = Policy.Administrator)]
         [HttpPost]
         [Route("add")]
         public async Task AddCarAsync([FromBody] CarViewModel carViewModel)

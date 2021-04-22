@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using CarRentalSystem.Infrastructure.Data.Policies;
 using CarRentalSystem.Infrastructure.InternalServices;
 using CarRentalSystem.Services.InternalInterfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,6 +14,7 @@ namespace CarRental.Helpers
         public static void Configure(IConfiguration configuration, IServiceCollection services)
         {
             var key = Encoding.ASCII.GetBytes(configuration["SecretKey"]);
+
             services.AddAuthentication(options => 
             { 
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; 
@@ -29,6 +31,12 @@ namespace CarRental.Helpers
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Policy.Administrator, Policy.AdministratorPolicy());
+                options.AddPolicy(Policy.Customer, Policy.CustomerPolicy());
             });
 
             services.AddScoped<ITokenCreatorService, TokenCreatorService>();
