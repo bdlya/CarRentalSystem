@@ -22,12 +22,14 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<List<AdditionalServiceModel>> GetAdditionalServices(int orderId)
         {
-            return await Task.Run(() => _repository
-                .Include(order => order.Order)
-                .Where(id => id.OrderId == orderId)
-                .Select(service => service.AdditionalService)
-                .Select(service => _mapper.Map<AdditionalServiceModel>(service))
-                .ToList());
+            //return await Task.Run(() => _repository
+            //    .Include(order => order.Order)
+            //    .Where(id => id.OrderId == orderId)
+            //    .Select(service => service.AdditionalService)
+            //    .Select(service => _mapper.Map<AdditionalServiceModel>(service))
+            //    .ToList());
+
+            return default;
         }
     }
 }

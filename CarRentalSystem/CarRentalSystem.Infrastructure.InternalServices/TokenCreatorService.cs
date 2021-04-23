@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using CarRentalSystem.Domain.Interfaces;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
@@ -22,10 +23,10 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             _refreshTokens = refreshTokens;
         }
 
-        public User CreateTokensForUser(User user)
+        public async Task<User> CreateTokensForUser(User user)
         {
             user.Token = CreateTokenForUser(user);
-            user.RefreshToken = CreateRefreshTokenForUser(user);
+            user.RefreshToken = await CreateRefreshTokenForUser(user);
 
             return user;
         }
@@ -49,7 +50,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             return tokenHandler.WriteToken(token);
         }
 
-        private RefreshToken CreateRefreshTokenForUser(User user)
+        private async Task<RefreshToken> CreateRefreshTokenForUser(User user)
         {
             RefreshToken newRefreshToken;
 
@@ -57,12 +58,12 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             {
                 newRefreshToken = user.RefreshToken;
                 newRefreshToken = UpdateRefreshTokenData(newRefreshToken);
-                _refreshTokens.Update(newRefreshToken);
+                await _refreshTokens.Update(newRefreshToken);
             }
             else
             {
                 newRefreshToken = UpdateRefreshTokenData(new RefreshToken());
-                _refreshTokens.Create(newRefreshToken);
+                await _refreshTokens.Create(newRefreshToken);
             }
 
             return newRefreshToken;

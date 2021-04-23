@@ -27,16 +27,18 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<UserModel> Authenticate(string login, string password)
         {
-            User user = await Task.Run(() => user = _users.Include(token => token.RefreshToken).FirstOrDefault(u => u.Login == login));
+            User user = await _users.Include(token => token.RefreshToken)
+                .ContinueWith(users => users.Result
+                    .FirstOrDefault(u => u.Login == login));
 
             if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 throw new UnauthorizedAccessException();
             }
 
-            user = _tokenCreator.CreateTokensForUser(user);
+            user = await _tokenCreator.CreateTokensForUser(user);
 
-            await Task.Run(() =>_users.Update(user));
+            await _users.Update(user);
 
             return _mapper.Map<UserModel>(user);
         }
@@ -50,23 +52,25 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            await Task.Run(() =>_users.Create(user));
+            await _users.Create(user);
         }
 
         public async Task RemoveToken(UserModel model)
         {
-            User user = await Task.Run(() => user = _users.Get().FirstOrDefault(u => u.Login == _mapper.Map<User>(model).Login)) ;
+            User user = await _users.Get()
+                .ContinueWith(users => users.Result
+                    .FirstOrDefault(u => u.Login == _mapper.Map<User>(model).Login));
             user.Token = null;
 
-            await Task.Run(() =>_users.Update(user));
+            await _users.Update(user);
         }
 
         public async Task<RefreshTokenModel> RefreshToken(string refreshToken)
         {
-            User user = await Task.Run(() =>
-                _users.Include(u => u.RefreshToken)
+            User user = await _users.Include(u => u.RefreshToken)
+                .ContinueWith(users => users.Result
                     .SingleOrDefault(u => u.RefreshToken.Token == refreshToken));
-
+            
             if (user == null)
             {
                 throw new UnauthorizedAccessException();
@@ -79,9 +83,9 @@ namespace CarRentalSystem.Infrastructure.InternalServices
                 throw new UnauthorizedAccessException();
             }
 
-            user = _tokenCreator.CreateTokensForUser(user);
+            user = await _tokenCreator.CreateTokensForUser(user);
 
-            await Task.Run(() => _users.Update(user));
+            await _users.Update(user);
 
             return _mapper.Map<RefreshTokenModel>(user.RefreshToken);
         }

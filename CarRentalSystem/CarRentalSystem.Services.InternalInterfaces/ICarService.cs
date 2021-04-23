@@ -5,7 +5,9 @@ namespace CarRentalSystem.Services.InternalInterfaces
 {
     public interface ICarService
     {
-        Task<CarModel> GetCar(int id);
-        Task AddCar(CarModel addedCar);
+        Task AddCarAsync(CarModel addableCar);
+        Task<CarModel> GetCarAsync(int id);
+        Task DeleteCarAsync(int id);
+        Task ModifyCarAsync(int id, CarModel modifiedCar);
     }
 }
