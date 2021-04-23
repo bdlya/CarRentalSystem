@@ -4,7 +4,7 @@ using CarRentalSystem.View.ViewModels;
 
 namespace CarRentalSystem.Services.Interfaces
 {
-    public interface IAdminFunctionalityProviderService
+    public interface IAdminCarFunctionalityProviderService
     {
         Task AddCarAsync(CarViewModel addableCar);
         Task<CarViewModel> GetCarAsync(int id);

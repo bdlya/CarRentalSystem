@@ -7,12 +7,12 @@ using CarRentalSystem.View.ViewModels;
 
 namespace CarRentalSystem.Infrastructure.Services
 {
-    public class AdminFunctionalityProviderService: IAdminFunctionalityProviderService
+    public class AdminCarFunctionalityProviderService: IAdminCarFunctionalityProviderService
     {
         private readonly ICarService _carService;
         private readonly IMapper _mapper;
 
-        public AdminFunctionalityProviderService(ICarService carService, IMapper mapper)
+        public AdminCarFunctionalityProviderService(ICarService carService, IMapper mapper)
         {
             _carService = carService;
             _mapper = mapper;

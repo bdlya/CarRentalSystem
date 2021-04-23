@@ -10,8 +10,11 @@ namespace CarRental.Helpers
     {
         public static void ConfigureProjectServices(IServiceCollection services)
         {
-            services.AddScoped<IAdminFunctionalityProviderService, AdminFunctionalityProviderService>();
+            services.AddScoped<IAdminCarFunctionalityProviderService, AdminCarFunctionalityProviderService>();
             services.AddScoped<ICarService, CarService>();
+
+            services.AddScoped<IAdminPointFunctionalityProviderService, AdminPointFunctionalityProviderService>();
+            services.AddScoped<IPointService, PointService>();
 
             services.AddScoped<IServiceOrderService, ServiceOrderService>();
             services.AddScoped<IServiceOrderProviderService, ServiceOrderProviderService>();

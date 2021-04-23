@@ -5,43 +5,43 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace CarRental.Controllers
+namespace CarRental.Controllers.Admin
 {
     [Authorize(Policy = Policy.Administrator)]
     [Route("[controller]")]
     [ApiController]
-    public class AdminController : ControllerBase
+    public class AdminCarController : ControllerBase
     {
-        private readonly IAdminFunctionalityProviderService _adminService;
+        private readonly IAdminCarFunctionalityProviderService _adminCarService;
 
-        public AdminController(IAdminFunctionalityProviderService adminService)
+        public AdminCarController(IAdminCarFunctionalityProviderService adminCarService)
         {
-            _adminService = adminService;
-        }
-
-        [HttpPost]
-        [Route("addCar")]
-        public async Task<IActionResult> AddCarAsync([FromBody] CarViewModel addableCar)
-        {
-            await _adminService.AddCarAsync(addableCar);
-
-            return Ok(new {Message = "Car was successfully added"});
+            _adminCarService = adminCarService;
         }
 
         [HttpGet]
         [Route("getCar/{id}")]
         public async Task<IActionResult> GetCarAsync([FromRoute] int id)
         {
-            CarViewModel car = await _adminService.GetCarAsync(id);
+            CarViewModel car = await _adminCarService.GetCarAsync(id);
 
             return Ok(new {Message = GenerateCarInfo(car)});
+        }
+
+        [HttpPost]
+        [Route("addCar")]
+        public async Task<IActionResult> AddCarAsync([FromBody] CarViewModel addableCar)
+        {
+            await _adminCarService.AddCarAsync(addableCar);
+
+            return Ok(new {Message = "Car was successfully added"});
         }
 
         [HttpPost]
         [Route("deleteCar/{id}")]
         public async Task<IActionResult> DeleteCarAsync([FromRoute] int id)
         {
-            await _adminService.DeleteCarAsync(id);
+            await _adminCarService.DeleteCarAsync(id);
 
             return Ok(new {Message = "Car was successfully deleted"});
         }
@@ -50,7 +50,7 @@ namespace CarRental.Controllers
         [Route("modifyCar/{id}")]
         public async Task<IActionResult> ModifyCarAsync([FromRoute] int id, [FromBody] CarViewModel modifiedCar)
         {
-            await _adminService.ModifyCarAsync(id, modifiedCar);
+            await _adminCarService.ModifyCarAsync(id, modifiedCar);
 
             return Ok(new {Message = "Car was successfully modified"});
         }

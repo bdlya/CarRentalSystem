@@ -42,7 +42,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task DeleteCarAsync(int id)
         {
-            Car car = await FindCar(id);
+            Car car = await _repository.FindById(id);
 
             if (car == null)
             {
@@ -54,7 +54,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task ModifyCarAsync(int id, CarModel modifiedCar)
         {
-            Car car = await FindCar(id);
+            Car car = await _repository.FindById(id);
 
             if (car == null)
             {
@@ -64,14 +64,6 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             car = UpdateCarProperties(car, _mapper.Map<Car>(modifiedCar));
 
             await _repository.Update(car);
-        }
-
-        private async Task<Car> FindCar(int id)
-        {
-            return await _repository
-                .Get()
-                .ContinueWith(cars => cars.Result
-                    .FirstOrDefault(c => c.Id == id));
         }
 
         private Car UpdateCarProperties(Car car, Car modifiedCar)
