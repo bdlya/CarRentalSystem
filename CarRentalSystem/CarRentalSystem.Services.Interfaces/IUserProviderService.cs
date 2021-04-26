@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
-using CarRentalSystem.View.ViewModels;
-using CarRentalSystem.View.ViewModels.Base;
+﻿using CarRentalSystem.Infrastructure.Data.Models;
+using CarRentalSystem.Infrastructure.Data.Models.Base;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Services.Interfaces
 {
     public interface IUserProviderService
     {
-        Task<UserViewModel> Authenticate(AuthenticationViewModel model);
-        Task RegisterUser(RegistrationViewModel model);
-        Task RemoveToken(UserViewModel viewModel);
-        Task<RefreshTokenViewModel> RefreshToken(string refreshToken);
+        Task<UserModel> AuthenticateAsync(AuthenticationModel model);
+        Task RegisterUserAsync(RegistrationModel model);
+        Task RemoveTokenAsync(UserModel viewModel);
+        Task<RefreshTokenModel> RefreshTokenAsync(string refreshToken);
     }
 }

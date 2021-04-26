@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
+using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 using CarRentalSystem.Services.InternalInterfaces;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
@@ -21,22 +20,62 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             _mapper = mapper;
         }
 
-        public async Task<CarModel> GetCar(int id)
+        public async Task AddCarAsync(CarModel addableCar)
         {
-            Car car = await Task.Run(() =>
-                _repository.Include(c => c.PointOfRental).FirstOrDefault(carId => carId.Id == id));
+            await _repository.CreateAsync(_mapper.Map<Car>(addableCar));
+        }
+
+        public async Task<CarModel> GetCarAsync(int id)
+        {
+            CarModel car = _mapper.Map<CarModel>(await _repository
+                .IncludeAsync(c => c.PointOfRental)
+                .ContinueWith(cars => cars.Result
+                    .FirstOrDefault(c => c.Id == id)));
 
             if (car == null)
             {
-                throw new NullReferenceException();
+                throw new EntityNotFoundException(nameof(Car));
             }
 
-            return _mapper.Map<CarModel>(car);
+            return car;
         }
 
-        public async Task AddCar(CarModel addedCar)
+        public async Task DeleteCarAsync(int id)
         {
-            await Task.Run(() =>_repository.Create(_mapper.Map<Car>(addedCar)));
+            CarModel car = _mapper.Map<CarModel>(await _repository.FindByIdAsync(id));
+
+            if (car == null)
+            {
+                throw new EntityNotFoundException(nameof(Car));
+            }
+
+            await _repository.RemoveAsync(_mapper.Map<Car>(car));
+        }
+
+        public async Task ModifyCarAsync(int id, CarModel modifiedCar)
+        {
+            CarModel car = _mapper.Map<CarModel>(await _repository.FindByIdAsync(id));
+
+            if (car == null)
+            {
+                throw new EntityNotFoundException(nameof(Car));
+            }
+
+            car = UpdateCarProperties(car, modifiedCar);
+
+            await _repository.UpdateAsync(_mapper.Map<Car>(car));
+        }
+
+        private CarModel UpdateCarProperties(CarModel car, CarModel modifiedCar)
+        {
+            car.Brand = modifiedCar.Brand;
+            car.TransmissionType = modifiedCar.TransmissionType;
+            car.AverageFuelConsumption = modifiedCar.AverageFuelConsumption;
+            car.CostPerHour = modifiedCar.CostPerHour;
+            car.PointOfRentalId = modifiedCar.PointOfRentalId;
+            car.NumberOfSeats = modifiedCar.NumberOfSeats;
+
+            return car;
         }
     }
 }

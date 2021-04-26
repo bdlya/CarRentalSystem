@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
+using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -53,6 +55,8 @@ namespace CarRentalSystem.Infrastructure.ExceptionHandling
             {
                 case NullReferenceException e: return new[] { e.Message };
                 case UnauthorizedAccessException e: return new[] {e.Message};
+                case ValidationException e: return new[] { e.Message };
+                case EntityNotFoundException e: return new[] {e.Message};
                 default:
                     return null;
             }
@@ -64,6 +68,8 @@ namespace CarRentalSystem.Infrastructure.ExceptionHandling
             {
                 case NullReferenceException _: return HttpStatusCode.NotFound;
                 case UnauthorizedAccessException _: return HttpStatusCode.Forbidden;
+                case ValidationException _: return HttpStatusCode.NotAcceptable;
+                case EntityNotFoundException _: return HttpStatusCode.NotFound;
                 default: return HttpStatusCode.InternalServerError;
             }
         }

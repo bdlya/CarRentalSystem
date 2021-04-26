@@ -25,65 +25,68 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             _tokenCreator = tokenCreator;
         }
 
-        public async Task<UserModel> Authenticate(string login, string password)
+        public async Task<UserModel> AuthenticateAsync(string login, string password)
         {
-            User user = await Task.Run(() => user = _users.Include(token => token.RefreshToken).FirstOrDefault(u => u.Login == login));
+            UserModel user = _mapper.Map<UserModel>(await _users.IncludeAsync(token => token.RefreshToken)
+                .ContinueWith(users => users.Result
+                    .FirstOrDefault(u => u.Login == login)));
 
             if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 throw new UnauthorizedAccessException();
             }
 
-            user = _tokenCreator.CreateTokensForUser(user);
+            user = await _tokenCreator.CreateTokensForUserAsync(user);
 
-            await Task.Run(() =>_users.Update(user));
+            await _users.UpdateAsync(_mapper.Map<User>(user));
 
             return _mapper.Map<UserModel>(user);
         }
 
-        public async Task RegisterUser(UserModel model, string password)
+        public async Task RegisterUserAsync(UserModel model, string password)
         {
-            User user = _mapper.Map<User>(model);
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.Role = Policy.Customer;
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            model.Role = Policy.Customer;
+            model.PasswordHash = passwordHash;
+            model.PasswordSalt = passwordSalt;
 
-            await Task.Run(() =>_users.Create(user));
+            await _users.CreateAsync(_mapper.Map<User>(model));
         }
 
-        public async Task RemoveToken(UserModel model)
+        public async Task RemoveTokenAsync(UserModel model)
         {
-            User user = await Task.Run(() => user = _users.Get().FirstOrDefault(u => u.Login == _mapper.Map<User>(model).Login)) ;
+            UserModel user = _mapper.Map<UserModel>(await _users.GetAsync()
+                .ContinueWith(users => users.Result
+                    .FirstOrDefault(u => u.Login == model.Login)));
             user.Token = null;
 
-            await Task.Run(() =>_users.Update(user));
+            await _users.UpdateAsync(_mapper.Map<User>(user));
         }
 
-        public async Task<RefreshTokenModel> RefreshToken(string refreshToken)
+        public async Task<RefreshTokenModel> RefreshTokenAsync(string refreshToken)
         {
-            User user = await Task.Run(() =>
-                _users.Include(u => u.RefreshToken)
-                    .SingleOrDefault(u => u.RefreshToken.Token == refreshToken));
-
+            UserModel user = _mapper.Map<UserModel>(await _users.IncludeAsync(u => u.RefreshToken)
+                .ContinueWith(users => users.Result
+                    .SingleOrDefault(u => u.RefreshToken.Token == refreshToken)));
+            
             if (user == null)
             {
                 throw new UnauthorizedAccessException();
             }
 
-            RefreshToken currentRefreshToken = user.RefreshToken;
+            RefreshTokenModel currentRefreshToken = user.RefreshToken;
 
             if (!currentRefreshToken.IsActive)
             {
                 throw new UnauthorizedAccessException();
             }
 
-            user = _tokenCreator.CreateTokensForUser(user);
+            user = await _tokenCreator.CreateTokensForUserAsync(user);
 
-            await Task.Run(() => _users.Update(user));
+            await _users.UpdateAsync(_mapper.Map<User>(user));
 
-            return _mapper.Map<RefreshTokenModel>(user.RefreshToken);
+            return user.RefreshToken;
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

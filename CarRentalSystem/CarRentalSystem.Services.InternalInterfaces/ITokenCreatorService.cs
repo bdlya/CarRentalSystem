@@ -1,9 +1,10 @@
-﻿using CarRentalSystem.Domain.Entities;
+﻿using CarRentalSystem.Infrastructure.Data.Models;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Services.InternalInterfaces
 {
     public interface ITokenCreatorService
     {
-        User CreateTokensForUser(User user);
+        Task<UserModel> CreateTokensForUserAsync(UserModel user);
     }
 }

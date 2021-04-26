@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
+using CarRentalSystem.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels;
@@ -12,17 +14,19 @@ namespace CarRental.Controllers
     public class LogoutController : ControllerBase
     {
         private readonly IUserProviderService _userProviderService;
+        private readonly IMapper _mapper;
 
-        public LogoutController(IUserProviderService userProviderService)
+        public LogoutController(IUserProviderService userProviderService, IMapper mapper)
         {
             _userProviderService = userProviderService;
+            _mapper = mapper;
         }
 
         [Authorize]
         [HttpPost]
         public async Task LogOutAsync([FromBody] UserViewModel viewModel)
         {
-            await _userProviderService.RemoveToken(viewModel);
+            await _userProviderService.RemoveTokenAsync(_mapper.Map<UserModel>(viewModel));
         }
     }
 }

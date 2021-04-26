@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Domain.Interfaces
 {
     public interface IRentalRepository<TEntity> where TEntity : class
     {
-        void Create(TEntity item);
-        TEntity FindById(int id);
-        IEnumerable<TEntity> Get();
-        IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
-        void Remove(TEntity item);
-        void Update(TEntity item);
-        IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties);
+        Task CreateAsync(TEntity item);
+        Task<TEntity> FindByIdAsync(int id);
+        Task<IEnumerable<TEntity>> GetAsync();
+        Task RemoveAsync(TEntity item);
+        Task UpdateAsync(TEntity item);
+        Task<IQueryable<TEntity>> IncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties);
     }
 }

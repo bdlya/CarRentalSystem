@@ -7,7 +7,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
 using CarRentalSystem.Domain.Interfaces;
+using CarRentalSystem.Infrastructure.Data.Models;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
@@ -15,22 +18,24 @@ namespace CarRentalSystem.Infrastructure.InternalServices
     {
         private readonly IConfiguration _configuration;
         private readonly IRentalRepository<RefreshToken> _refreshTokens;
+        private readonly IMapper _mapper;
 
-        public TokenCreatorService(IConfiguration configuration, IRentalRepository<RefreshToken> refreshTokens)
+        public TokenCreatorService(IConfiguration configuration, IRentalRepository<RefreshToken> refreshTokens, IMapper mapper)
         {
             _configuration = configuration;
             _refreshTokens = refreshTokens;
+            _mapper = mapper;
         }
 
-        public User CreateTokensForUser(User user)
+        public async Task<UserModel> CreateTokensForUserAsync(UserModel user)
         {
             user.Token = CreateTokenForUser(user);
-            user.RefreshToken = CreateRefreshTokenForUser(user);
+            user.RefreshToken = await CreateRefreshTokenForUserAsync(user);
 
             return user;
         }
 
-        private string CreateTokenForUser(User user)
+        private string CreateTokenForUser(UserModel user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(_configuration["SecretKey"]);
@@ -49,26 +54,26 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             return tokenHandler.WriteToken(token);
         }
 
-        private RefreshToken CreateRefreshTokenForUser(User user)
+        private async Task<RefreshTokenModel> CreateRefreshTokenForUserAsync(UserModel user)
         {
-            RefreshToken newRefreshToken;
+            RefreshTokenModel newRefreshToken;
 
             if (user.RefreshTokenId != null)
             {
                 newRefreshToken = user.RefreshToken;
                 newRefreshToken = UpdateRefreshTokenData(newRefreshToken);
-                _refreshTokens.Update(newRefreshToken);
+                await _refreshTokens.UpdateAsync(_mapper.Map<RefreshToken>(newRefreshToken));
             }
             else
             {
-                newRefreshToken = UpdateRefreshTokenData(new RefreshToken());
-                _refreshTokens.Create(newRefreshToken);
+                newRefreshToken = UpdateRefreshTokenData(new RefreshTokenModel());
+                await _refreshTokens.CreateAsync(_mapper.Map<RefreshToken>(newRefreshToken));
             }
 
             return newRefreshToken;
         }
 
-        private RefreshToken UpdateRefreshTokenData(RefreshToken refreshToken)
+        private static RefreshTokenModel UpdateRefreshTokenData(RefreshTokenModel refreshToken)
         {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
             var randomBytes = new byte[64];

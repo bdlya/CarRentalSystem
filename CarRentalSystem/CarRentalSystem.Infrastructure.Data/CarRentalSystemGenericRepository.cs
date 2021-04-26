@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using CarRentalSystem.Domain.Entities.Base;
 using CarRentalSystem.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -19,44 +20,40 @@ namespace CarRentalSystem.Infrastructure.Data
             _dbSet = context.Set<TEntity>();
         }
 
-        public void Create(TEntity item)
+        public async Task CreateAsync(TEntity item)
         {
-            _dbSet.Add(item);
-            _context.SaveChanges();
+            await _dbSet.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
 
-        public TEntity FindById(int id)
+        public async Task<TEntity> FindByIdAsync(int id)
         {
-            return _dbSet.Find(id);
+            return await _dbSet.FindAsync(id);
         }
 
-        public IEnumerable<TEntity> Get()
+        public async Task<IEnumerable<TEntity>> GetAsync()
         {
-            return _dbSet.AsNoTracking().ToList();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
-        {
-            return _dbSet.AsNoTracking().AsEnumerable().Where(predicate).ToList();
-        }
-
-        public void Remove(TEntity item)
+        public async Task RemoveAsync(TEntity item)
         {
             _dbSet.Remove(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(TEntity item)
+        public async Task UpdateAsync(TEntity item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
+        public async Task<IQueryable<TEntity>> IncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> query = _dbSet.AsNoTracking();
-            return includeProperties
-                .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+
+            return await Task.Run(() => includeProperties
+                .Aggregate(query, (current, includeProperty) => current.Include(includeProperty)));
         }
     }
 }
