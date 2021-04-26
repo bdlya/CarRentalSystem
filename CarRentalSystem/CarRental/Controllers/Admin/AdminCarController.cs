@@ -4,6 +4,8 @@ using CarRentalSystem.View.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using AutoMapper;
+using CarRentalSystem.Infrastructure.Data.Models;
 
 namespace CarRental.Controllers.Admin
 {
@@ -13,26 +15,33 @@ namespace CarRental.Controllers.Admin
     public class AdminCarController : ControllerBase
     {
         private readonly IAdminCarFunctionalityProviderService _adminCarService;
+        private readonly IMapper _mapper;
 
-        public AdminCarController(IAdminCarFunctionalityProviderService adminCarService)
+        public AdminCarController(IAdminCarFunctionalityProviderService adminCarService, IMapper mapper)
         {
             _adminCarService = adminCarService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("getCar/{id}")]
         public async Task<IActionResult> GetCarAsync([FromRoute] int id)
         {
-            CarViewModel car = await _adminCarService.GetCarAsync(id);
+            CarModel car = await _adminCarService.GetCarAsync(id);
 
-            return Ok(new {Message = GenerateCarInfo(car)});
+            return Ok(_mapper.Map<CarViewModel>(car));
         }
 
         [HttpPost]
         [Route("addCar")]
         public async Task<IActionResult> AddCarAsync([FromBody] CarViewModel addableCar)
         {
-            await _adminCarService.AddCarAsync(addableCar);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _adminCarService.AddCarAsync(_mapper.Map<CarModel>(addableCar));
 
             return Ok(new {Message = "Car was successfully added"});
         }
@@ -50,19 +59,14 @@ namespace CarRental.Controllers.Admin
         [Route("modifyCar/{id}")]
         public async Task<IActionResult> ModifyCarAsync([FromRoute] int id, [FromBody] CarViewModel modifiedCar)
         {
-            await _adminCarService.ModifyCarAsync(id, modifiedCar);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _adminCarService.ModifyCarAsync(id, _mapper.Map<CarModel>(modifiedCar));
 
             return Ok(new {Message = "Car was successfully modified"});
-        }
-
-        private string GenerateCarInfo(CarViewModel car)
-        {
-            return $"Brand: {car.Brand}, " +
-                   $"Average fuel consumption: {car.AverageFuelConsumption}, " +
-                   $"Cost per hour: {car.CostPerHour}," +
-                   $"Number of seats: {car.NumberOfSeats}," +
-                   $"Transmission type: {car.TransmissionType}," +
-                   $"Point of rental: name: {car.PointOfRental.Name}, country: {car.PointOfRental.Country}, city: {car.PointOfRental.City}, address: {car.PointOfRental.Address}";
         }
     }
 }

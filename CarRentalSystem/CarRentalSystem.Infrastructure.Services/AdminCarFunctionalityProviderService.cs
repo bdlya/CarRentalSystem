@@ -1,33 +1,27 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
-using CarRentalSystem.Infrastructure.Data.Models;
+﻿using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
-using CarRentalSystem.View.ViewModels;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Infrastructure.Services
 {
     public class AdminCarFunctionalityProviderService: IAdminCarFunctionalityProviderService
     {
         private readonly ICarService _carService;
-        private readonly IMapper _mapper;
 
-        public AdminCarFunctionalityProviderService(ICarService carService, IMapper mapper)
+        public AdminCarFunctionalityProviderService(ICarService carService)
         {
             _carService = carService;
-            _mapper = mapper;
         }
 
-        public async Task AddCarAsync(CarViewModel addableCar)
+        public async Task AddCarAsync(CarModel addableCar)
         {
-            await _carService.AddCarAsync(_mapper.Map<CarModel>(addableCar));
+            await _carService.AddCarAsync(addableCar);
         }
 
-        public async Task<CarViewModel> GetCarAsync(int id)
+        public async Task<CarModel> GetCarAsync(int id)
         {
-            CarModel car = await _carService.GetCarAsync(id);
-
-            return _mapper.Map<CarViewModel>(car);
+            return await _carService.GetCarAsync(id);
         }
 
         public async Task DeleteCarAsync(int id)
@@ -35,9 +29,9 @@ namespace CarRentalSystem.Infrastructure.Services
             await _carService.DeleteCarAsync(id);
         }
 
-        public async Task ModifyCarAsync(int id, CarViewModel modifiedCar)
+        public async Task ModifyCarAsync(int id, CarModel modifiedCar)
         {
-            await _carService.ModifyCarAsync(id, _mapper.Map<CarModel>(modifiedCar));
+            await _carService.ModifyCarAsync(id, modifiedCar);
         }
     }
 }

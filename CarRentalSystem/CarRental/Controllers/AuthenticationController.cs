@@ -4,6 +4,8 @@ using CarRentalSystem.View.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using AutoMapper;
+using CarRentalSystem.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace CarRental.Controllers
@@ -14,21 +16,23 @@ namespace CarRental.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IUserProviderService _userProviderService;
+        private readonly IMapper _mapper;
 
-        public AuthenticationController(IUserProviderService userProviderService)
+        public AuthenticationController(IUserProviderService userProviderService, IMapper mapper)
         {
             _userProviderService = userProviderService;
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
         [HttpPost]
         public async Task<string> AuthenticateAsync([FromBody] AuthenticationViewModel model)
         {
-            UserViewModel userModel = await _userProviderService.Authenticate(model);
+            UserViewModel userViewModel = _mapper.Map<UserViewModel>(await _userProviderService.AuthenticateAsync(_mapper.Map<AuthenticationModel>(model)));
 
-            SetRefreshTokenCookie(userModel.RefreshToken.Token);
+            SetRefreshTokenCookie(userViewModel.RefreshToken.Token);
 
-            return $"Welcome, {userModel.Name} your current role is {userModel.Role} and here your token for postman test: {userModel.Token}";
+            return $"Welcome, {userViewModel.Name} your current role is {userViewModel.Role} and here your token for postman test: {userViewModel.Token}";
         }
 
         [Authorize]
@@ -38,7 +42,7 @@ namespace CarRental.Controllers
         {
             var currentRefreshToken = Request.Cookies["RefreshToken"];
 
-            RefreshTokenViewModel newRefreshToken = await _userProviderService.RefreshToken(currentRefreshToken);
+            RefreshTokenViewModel newRefreshToken = _mapper.Map<RefreshTokenViewModel>(await _userProviderService.RefreshTokenAsync(currentRefreshToken));
 
             SetRefreshTokenCookie(newRefreshToken.Token);
         }

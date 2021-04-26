@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CarRentalSystem.View.ViewModels.Base;
-using CarRentalSystem.View.ViewModels.Validation;
 
 namespace CarRentalSystem.View.ViewModels
 {
-    [AdditionalServiceValidation]
     public class AdditionalServiceViewModel: BaseEntityViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Enter name")]
+        [MinLength(3, ErrorMessage = "Name should be at least three symbols long")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Enter cost")]
+        [Range(100, 600, ErrorMessage = "Cost should be in range from 100 to 600")]
         public int Cost { get; set; }
 
         public List<OrderAdditionalServiceViewModel> OrderAdditionalServices { get; set; }

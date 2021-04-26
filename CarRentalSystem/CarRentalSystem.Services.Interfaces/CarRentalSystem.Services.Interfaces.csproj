@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CarRentalSystem.View.ViewModels\CarRentalSystem.View.ViewModels.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.Infrastructure.Data\CarRentalSystem.Infrastructure.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Infrastructure.Data.Models;
+using CarRentalSystem.Infrastructure.Data.Models.Base;
 using CarRentalSystem.View.ViewModels;
 using CarRentalSystem.View.ViewModels.Base;
 
@@ -25,8 +26,10 @@ namespace CarRentalSystem.Infrastructure.Mapping.Profiles
             CreateMap<OrderAdditionalServiceModel, OrderAdditionalServiceViewModel>().ReverseMap();
             CreateMap<AdditionalServiceModel, AdditionalServiceViewModel>().ReverseMap();
             CreateMap<RefreshTokenModel, RefreshTokenViewModel>().ReverseMap();
+            CreateMap<RegistrationViewModel, RegistrationModel>().ReverseMap();
+            CreateMap<AuthenticationViewModel, AuthenticationModel>().ReverseMap();
 
-            CreateMap<RegistrationViewModel, UserModel>();
+            CreateMap<RegistrationModel, UserModel>();
         }
     }
 }

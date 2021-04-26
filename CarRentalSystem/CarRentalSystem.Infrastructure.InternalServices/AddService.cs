@@ -4,6 +4,7 @@ using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
+using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 using CarRentalSystem.Services.InternalInterfaces;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
@@ -21,36 +22,36 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<AdditionalServiceModel> GetAdditionalServiceAsync(int id)
         {
-            AdditionalService additionalService = await _repository.FindById(id);
+            AdditionalServiceModel additionalService = _mapper.Map<AdditionalServiceModel>(await _repository.FindByIdAsync(id));
 
             if (additionalService == null)
             {
-                throw new NullReferenceException();
+                throw new IdNotFoundException();
             }
 
-            return _mapper.Map<AdditionalServiceModel>(additionalService);
+            return additionalService;
         }
 
         public async Task AddAdditionalServiceAsync(AdditionalServiceModel additionalService)
         {
-            await _repository.Create(_mapper.Map<AdditionalService>(additionalService));
+            await _repository.CreateAsync(_mapper.Map<AdditionalService>(additionalService));
         }
 
         public async Task ModifyAdditionalServiceAsync(int id, AdditionalServiceModel additionalService)
         {
-            AdditionalService addService = await _repository.FindById(id);
+            AdditionalServiceModel addService = _mapper.Map<AdditionalServiceModel>(await _repository.FindByIdAsync(id));
 
             if (addService == null)
             {
-                throw new NullReferenceException();
+                throw new IdNotFoundException();
             }
 
-            addService = UpdateAdditionalServiceProperties(addService, _mapper.Map<AdditionalService>(additionalService));
+            addService = UpdateAdditionalServiceProperties(addService, additionalService);
 
-            await _repository.Update(addService);
+            await _repository.UpdateAsync(_mapper.Map<AdditionalService>(addService));
         }
 
-        private AdditionalService UpdateAdditionalServiceProperties(AdditionalService addService, AdditionalService additionalService)
+        private AdditionalServiceModel UpdateAdditionalServiceProperties(AdditionalServiceModel addService, AdditionalServiceModel additionalService)
         {
             addService.Name = additionalService.Name;
             addService.Cost = additionalService.Cost;

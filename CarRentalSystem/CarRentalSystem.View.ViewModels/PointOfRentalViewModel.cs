@@ -1,23 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CarRentalSystem.View.ViewModels.Base;
-using CarRentalSystem.View.ViewModels.Validation;
 
 namespace CarRentalSystem.View.ViewModels
 {
-    [PointOfRentalValidation]
     public class PointOfRentalViewModel: BaseEntityViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Enter name")]
+        [MinLength(3, ErrorMessage = "Name should be at least three symbols long")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Enter country")]
+        [MinLength(3, ErrorMessage = "Country should be at least three symbols long")]
         public string Country { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Enter city")]
+        [MinLength(3, ErrorMessage = "City should be at least three symbols long")]
         public string City { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Enter address")]
+        [MinLength(3, ErrorMessage = "Address should be at least three symbols long")]
         public string Address { get; set; }
 
         public List<CarViewModel> Cars { get; set; }

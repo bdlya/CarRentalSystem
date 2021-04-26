@@ -1,11 +1,11 @@
-﻿using CarRentalSystem.Infrastructure.Data.Policies;
+﻿using AutoMapper;
+using CarRentalSystem.Infrastructure.Data.Models;
+using CarRentalSystem.Infrastructure.Data.Policies;
+using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using CarRentalSystem.Services.Interfaces;
 
 namespace CarRental.Controllers.Admin
 {
@@ -15,26 +15,33 @@ namespace CarRental.Controllers.Admin
     public class AdminPointOfRentalController : ControllerBase
     {
         private readonly IAdminPointFunctionalityProviderService _adminPointService;
+        private readonly IMapper _mapper;
 
-        public AdminPointOfRentalController(IAdminPointFunctionalityProviderService adminPointService)
+        public AdminPointOfRentalController(IAdminPointFunctionalityProviderService adminPointService, IMapper mapper)
         {
             _adminPointService = adminPointService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("getPoint/{id}")]
         public async Task<IActionResult> GetPointAsync([FromRoute] int id)
         {
-            PointOfRentalViewModel point = await _adminPointService.GetPointAsync(id);
+            PointOfRentalModel point = await _adminPointService.GetPointAsync(id);
 
-            return Ok(new { Message = GeneratePointInfo(point) });
+            return Ok(_mapper.Map<PointOfRentalViewModel>(point));
         }
 
         [HttpPost]
         [Route("addPoint")]
         public async Task<IActionResult> AddPointAsync([FromBody] PointOfRentalViewModel addablePoint)
         {
-            await _adminPointService.AddPointAsync(addablePoint);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _adminPointService.AddPointAsync(_mapper.Map<PointOfRentalModel>(addablePoint));
 
             return Ok(new { Message = "Point was successfully added" });
         }
@@ -43,26 +50,14 @@ namespace CarRental.Controllers.Admin
         [Route("modifyPoint/{id}")]
         public async Task<IActionResult> ModifyPointAsync([FromRoute] int id, [FromBody] PointOfRentalViewModel modifiedPoint)
         {
-            await _adminPointService.ModifyPointAsync(id, modifiedPoint);
-
-            return Ok(new { Message = "Point was successfully modified" });
-        }
-
-        private string GeneratePointInfo(PointOfRentalViewModel point)
-        {
-            StringBuilder builder = new StringBuilder();
-
-            foreach (var carInfo in point.Cars.Select(car => $"Brand: {car.Brand}, Average fuel consumption: {car.AverageFuelConsumption}, Cost per hour: {car.CostPerHour}," +
-                                                             $"Number of seats: {car.NumberOfSeats},Transmission type: {car.TransmissionType},"))
+            if (!ModelState.IsValid)
             {
-                builder.Append($"{carInfo} ");
+                return BadRequest(ModelState);
             }
 
-            return $"Name: {point.Name}, " +
-                   $"Country: {point.Country}, " +
-                   $"City: {point.City}, " +
-                   $"Address: {point.Address}, " +
-                   $"Cars: {builder}";
+            await _adminPointService.ModifyPointAsync(id, _mapper.Map<PointOfRentalModel>(modifiedPoint));
+
+            return Ok(new { Message = "Point was successfully modified" });
         }
     }
 }

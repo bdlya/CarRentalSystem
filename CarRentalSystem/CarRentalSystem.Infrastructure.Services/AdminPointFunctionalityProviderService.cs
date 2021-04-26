@@ -1,38 +1,32 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
-using CarRentalSystem.Infrastructure.Data.Models;
+﻿using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
-using CarRentalSystem.View.ViewModels;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Infrastructure.Services
 {
     public class AdminPointFunctionalityProviderService : IAdminPointFunctionalityProviderService
     {
         private readonly IPointService _pointService;
-        private readonly IMapper _mapper;
 
-        public AdminPointFunctionalityProviderService(IPointService pointService, IMapper mapper)
+        public AdminPointFunctionalityProviderService(IPointService pointService)
         {
             _pointService = pointService;
-            _mapper = mapper;
         }
 
-        public async Task AddPointAsync(PointOfRentalViewModel addablePoint)
+        public async Task AddPointAsync(PointOfRentalModel addablePoint)
         {
-            await _pointService.AddPointAsync(_mapper.Map<PointOfRentalModel>(addablePoint));
+            await _pointService.AddPointAsync(addablePoint);
         }
 
-        public async Task<PointOfRentalViewModel> GetPointAsync(int id)
+        public async Task<PointOfRentalModel> GetPointAsync(int id)
         {
-            PointOfRentalModel point = await _pointService.GetPointAsync(id);
-
-            return _mapper.Map<PointOfRentalViewModel>(point);
+            return await _pointService.GetPointAsync(id);
         }
 
-        public async Task ModifyPointAsync(int id, PointOfRentalViewModel modifiedPoint)
+        public async Task ModifyPointAsync(int id, PointOfRentalModel modifiedPoint)
         {
-            await _pointService.ModifyPointAsync(id, _mapper.Map<PointOfRentalModel>(modifiedPoint));
+            await _pointService.ModifyPointAsync(id, modifiedPoint);
         }
     }
 }

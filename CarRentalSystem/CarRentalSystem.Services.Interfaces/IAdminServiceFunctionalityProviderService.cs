@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using CarRentalSystem.View.ViewModels;
+﻿using CarRentalSystem.Infrastructure.Data.Models;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Services.Interfaces
 {
     public interface IAdminServiceFunctionalityProviderService
     {
-        Task<AdditionalServiceViewModel> GetAdditionalServiceAsync(int id);
-        Task AddAdditionalServiceAsync(AdditionalServiceViewModel additionalService);
-        Task ModifyAdditionalServiceAsync(int id, AdditionalServiceViewModel additionalService);
+        Task<AdditionalServiceModel> GetAdditionalServiceAsync(int id);
+        Task AddAdditionalServiceAsync(AdditionalServiceModel additionalService);
+        Task ModifyAdditionalServiceAsync(int id, AdditionalServiceModel additionalService);
     }
 }

@@ -20,37 +20,37 @@ namespace CarRentalSystem.Infrastructure.Data
             _dbSet = context.Set<TEntity>();
         }
 
-        public async Task Create(TEntity item)
+        public async Task CreateAsync(TEntity item)
         {
             await _dbSet.AddAsync(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<TEntity> FindById(int id)
+        public async Task<TEntity> FindByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<TEntity>> Get()
+        public async Task<IEnumerable<TEntity>> GetAsync()
         {
             return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public async Task Remove(TEntity item)
+        public async Task RemoveAsync(TEntity item)
         {
-            await Task.Run(() => _dbSet.Remove(item));
+            _dbSet.Remove(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(TEntity item)
+        public async Task UpdateAsync(TEntity item)
         {
-            await Task.Run(() => _context.Entry(item).State = EntityState.Modified);
+            _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IQueryable<TEntity>> Include(params Expression<Func<TEntity, object>>[] includeProperties)
+        public async Task<IQueryable<TEntity>> IncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            IQueryable<TEntity> query = await Task.Run(() => _dbSet.AsNoTracking());
+            IQueryable<TEntity> query = _dbSet.AsNoTracking();
 
             return await Task.Run(() => includeProperties
                 .Aggregate(query, (current, includeProperty) => current.Include(includeProperty)));

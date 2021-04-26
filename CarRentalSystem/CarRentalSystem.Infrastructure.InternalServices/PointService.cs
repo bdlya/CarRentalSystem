@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
@@ -23,41 +24,41 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task AddPointAsync(PointOfRentalModel addablePoint)
         {
-            await _repository.Create(_mapper.Map<PointOfRental>(addablePoint));
+            await _repository.CreateAsync(_mapper.Map<PointOfRental>(addablePoint));
         }
 
         public async Task<PointOfRentalModel> GetPointAsync(int id)
         {
-            PointOfRental point = await _repository
-                .Include(p => p.Cars)
+            PointOfRentalModel point = _mapper.Map<PointOfRentalModel>(await _repository
+                .IncludeAsync(p => p.Cars)
                 .ContinueWith(points => points.Result
                     .Include(p => p.Orders))
                 .ContinueWith(points => points.Result
-                    .FirstOrDefault(p => p.Id == id));
+                    .FirstOrDefault(p => p.Id == id)));
 
             if (point == null)
             {
-                throw new NullReferenceException();
+                throw new IdNotFoundException();
             }
 
-            return _mapper.Map<PointOfRentalModel>(point);
+            return point;
         }
 
         public async Task ModifyPointAsync(int id, PointOfRentalModel modifiedPoint)
         {
-            PointOfRental point = await _repository.FindById(id);
+            PointOfRentalModel point = _mapper.Map<PointOfRentalModel>(await _repository.FindByIdAsync(id));
 
             if (point == null)
             {
-                throw new NullReferenceException();
+                throw new IdNotFoundException();
             }
 
-            point = UpdatePointProperties(point, _mapper.Map<PointOfRental>(modifiedPoint));
+            point = UpdatePointProperties(point, modifiedPoint);
 
-            await _repository.Update(point);
+            await _repository.UpdateAsync(_mapper.Map<PointOfRental>(point));
         }
 
-        private PointOfRental UpdatePointProperties(PointOfRental point, PointOfRental modifiedPoint)
+        private PointOfRentalModel UpdatePointProperties(PointOfRentalModel point, PointOfRentalModel modifiedPoint)
         {
             point.Name = modifiedPoint.Name;
             point.Address = modifiedPoint.Address;

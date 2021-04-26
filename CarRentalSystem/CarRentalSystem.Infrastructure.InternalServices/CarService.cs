@@ -6,6 +6,7 @@ using CarRentalSystem.Services.InternalInterfaces;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
@@ -22,51 +23,51 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task AddCarAsync(CarModel addableCar)
         {
-            await _repository.Create(_mapper.Map<Car>(addableCar));
+            await _repository.CreateAsync(_mapper.Map<Car>(addableCar));
         }
 
         public async Task<CarModel> GetCarAsync(int id)
         {
-            Car car = await _repository
-                .Include(c => c.PointOfRental)
+            CarModel car = _mapper.Map<CarModel>(await _repository
+                .IncludeAsync(c => c.PointOfRental)
                 .ContinueWith(cars => cars.Result
-                    .FirstOrDefault(c => c.Id == id));
+                    .FirstOrDefault(c => c.Id == id)));
 
             if (car == null)
             {
-                throw new NullReferenceException();
+                throw new IdNotFoundException();
             }
 
-            return _mapper.Map<CarModel>(car);
+            return car;
         }
 
         public async Task DeleteCarAsync(int id)
         {
-            Car car = await _repository.FindById(id);
+            CarModel car = _mapper.Map<CarModel>(await _repository.FindByIdAsync(id));
 
             if (car == null)
             {
-                throw new NullReferenceException();
+                throw new IdNotFoundException();
             }
 
-            await _repository.Remove(car);
+            await _repository.RemoveAsync(_mapper.Map<Car>(car));
         }
 
         public async Task ModifyCarAsync(int id, CarModel modifiedCar)
         {
-            Car car = await _repository.FindById(id);
+            CarModel car = _mapper.Map<CarModel>(await _repository.FindByIdAsync(id));
 
             if (car == null)
             {
-                throw new NullReferenceException();
+                throw new IdNotFoundException();
             }
 
-            car = UpdateCarProperties(car, _mapper.Map<Car>(modifiedCar));
+            car = UpdateCarProperties(car, modifiedCar);
 
-            await _repository.Update(car);
+            await _repository.UpdateAsync(_mapper.Map<Car>(car));
         }
 
-        private Car UpdateCarProperties(Car car, Car modifiedCar)
+        private CarModel UpdateCarProperties(CarModel car, CarModel modifiedCar)
         {
             car.Brand = modifiedCar.Brand;
             car.TransmissionType = modifiedCar.TransmissionType;

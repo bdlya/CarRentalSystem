@@ -5,9 +5,9 @@ namespace CarRentalSystem.Services.InternalInterfaces
 {
     public interface IUserService
     {
-        Task<UserModel> Authenticate(string login, string password);
-        Task RegisterUser(UserModel model, string password);
-        Task RemoveToken(UserModel model);
-        Task<RefreshTokenModel> RefreshToken(string refreshToken);
+        Task<UserModel> AuthenticateAsync(string login, string password);
+        Task RegisterUserAsync(UserModel model, string password);
+        Task RemoveTokenAsync(UserModel model);
+        Task<RefreshTokenModel> RefreshTokenAsync(string refreshToken);
     }
 }

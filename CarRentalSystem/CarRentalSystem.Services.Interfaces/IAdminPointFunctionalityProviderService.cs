@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using CarRentalSystem.View.ViewModels;
+﻿using CarRentalSystem.Infrastructure.Data.Models;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Services.Interfaces
 {
     public interface IAdminPointFunctionalityProviderService
     {
-        Task AddPointAsync(PointOfRentalViewModel addablePoint);
-        Task<PointOfRentalViewModel> GetPointAsync(int id);
-        Task ModifyPointAsync(int id, PointOfRentalViewModel modifiedPoint);
+        Task AddPointAsync(PointOfRentalModel addablePoint);
+        Task<PointOfRentalModel> GetPointAsync(int id);
+        Task ModifyPointAsync(int id, PointOfRentalModel modifiedPoint);
     }
 }

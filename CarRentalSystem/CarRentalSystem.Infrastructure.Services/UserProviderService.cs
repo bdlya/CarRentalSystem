@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CarRentalSystem.Infrastructure.Data.Models;
+using CarRentalSystem.Infrastructure.Data.Models.Base;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
-using CarRentalSystem.View.ViewModels;
-using CarRentalSystem.View.ViewModels.Base;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Infrastructure.Services
 {
@@ -19,27 +18,25 @@ namespace CarRentalSystem.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public async Task<UserViewModel> Authenticate(AuthenticationViewModel model)
+        public async Task<UserModel> AuthenticateAsync(AuthenticationModel model)
         {
-            UserModel userModel = await _userService.Authenticate(model.Login, model.Password);
-            return _mapper.Map<UserViewModel>(userModel);
+            return await _userService.AuthenticateAsync(model.Login, model.Password);
         }
 
-        public async Task RegisterUser(RegistrationViewModel model)
+        public async Task RegisterUserAsync(RegistrationModel model)
         {
             UserModel userModel = _mapper.Map<UserModel>(model);
-            await _userService.RegisterUser(userModel, model.Password);
+            await _userService.RegisterUserAsync(userModel, model.Password);
         }
 
-        public async Task RemoveToken(UserViewModel viewModel)
+        public async Task RemoveTokenAsync(UserModel viewModel)
         {
-            await _userService.RemoveToken(_mapper.Map<UserModel>(viewModel));
+            await _userService.RemoveTokenAsync(viewModel);
         }
 
-        public async Task<RefreshTokenViewModel> RefreshToken(string refreshToken)
+        public async Task<RefreshTokenModel> RefreshTokenAsync(string refreshToken)
         {
-            RefreshTokenModel refreshTokenModel = await _userService.RefreshToken(refreshToken);
-            return _mapper.Map<RefreshTokenViewModel>(refreshTokenModel);
+            return await _userService.RefreshTokenAsync(refreshToken);
         }
     }
 }
