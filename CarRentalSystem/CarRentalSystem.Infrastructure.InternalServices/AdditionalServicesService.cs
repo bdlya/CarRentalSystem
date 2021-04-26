@@ -1,20 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 using CarRentalSystem.Services.InternalInterfaces;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
-    public class AddService: IAdditionalService
+    public class AdditionalServicesService: IAdditionalService
     {
         private readonly IRentalRepository<AdditionalService> _repository;
         private readonly IMapper _mapper;
 
-        public AddService(IRentalRepository<AdditionalService> repository, IMapper mapper)
+        public AdditionalServicesService(IRentalRepository<AdditionalService> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -26,7 +25,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             if (additionalService == null)
             {
-                throw new IdNotFoundException();
+                throw new EntityNotFoundException(nameof(AdditionalService));
             }
 
             return additionalService;
@@ -43,7 +42,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             if (addService == null)
             {
-                throw new IdNotFoundException();
+                throw new EntityNotFoundException(nameof(AdditionalService));
             }
 
             addService = UpdateAdditionalServiceProperties(addService, additionalService);

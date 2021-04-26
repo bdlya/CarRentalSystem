@@ -38,7 +38,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             if (point == null)
             {
-                throw new IdNotFoundException();
+                throw new EntityNotFoundException(nameof(point));
             }
 
             return point;
@@ -50,7 +50,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             if (point == null)
             {
-                throw new IdNotFoundException();
+                throw new EntityNotFoundException(nameof(point));
             }
 
             point = UpdatePointProperties(point, modifiedPoint);

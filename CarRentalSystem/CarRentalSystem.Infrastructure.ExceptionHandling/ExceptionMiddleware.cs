@@ -56,7 +56,7 @@ namespace CarRentalSystem.Infrastructure.ExceptionHandling
                 case NullReferenceException e: return new[] { e.Message };
                 case UnauthorizedAccessException e: return new[] {e.Message};
                 case ValidationException e: return new[] { e.Message };
-                case IdNotFoundException e: return new[] {e.Message};
+                case EntityNotFoundException e: return new[] {e.Message};
                 default:
                     return null;
             }
@@ -69,7 +69,7 @@ namespace CarRentalSystem.Infrastructure.ExceptionHandling
                 case NullReferenceException _: return HttpStatusCode.NotFound;
                 case UnauthorizedAccessException _: return HttpStatusCode.Forbidden;
                 case ValidationException _: return HttpStatusCode.NotAcceptable;
-                case IdNotFoundException _: return HttpStatusCode.NotFound;
+                case EntityNotFoundException _: return HttpStatusCode.NotFound;
                 default: return HttpStatusCode.InternalServerError;
             }
         }

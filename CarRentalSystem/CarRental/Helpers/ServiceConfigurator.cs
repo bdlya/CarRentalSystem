@@ -17,7 +17,7 @@ namespace CarRental.Helpers
             services.AddScoped<IPointService, PointService>();
 
             services.AddScoped<IAdminServiceFunctionalityProviderService, AdminServiceFunctionalityProviderService>();
-            services.AddScoped<IAdditionalService, AddService>();
+            services.AddScoped<IAdditionalService, AdditionalServicesService>();
 
             services.AddScoped<IUserProviderService, UserProviderService>();
             services.AddScoped<IUserService, UserService>();

@@ -1,4 +1,5 @@
-﻿using CarRentalSystem.Infrastructure.Data.Policies;
+﻿using System.ComponentModel.DataAnnotations;
+using CarRentalSystem.Infrastructure.Data.Policies;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -36,11 +37,6 @@ namespace CarRental.Controllers.Admin
         [Route("addService")]
         public async Task<IActionResult> AddServiceAsync([FromBody] AdditionalServiceViewModel additionalService)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             await _additionalService.AddAdditionalServiceAsync(_mapper.Map<AdditionalServiceModel>(additionalService));
 
             return Ok(new {Message = "Additional service was successfully added"});
@@ -50,11 +46,6 @@ namespace CarRental.Controllers.Admin
         [Route("modifyService/{id}")]
         public async Task<IActionResult> ModifyServiceAsync([FromRoute] int id, [FromBody] AdditionalServiceViewModel additionalService)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             await _additionalService.ModifyAdditionalServiceAsync(id, _mapper.Map<AdditionalServiceModel>(additionalService));
 
             return Ok(new {Message = "Additional service was successfully modified"});

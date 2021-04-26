@@ -36,11 +36,6 @@ namespace CarRental.Controllers.Admin
         [Route("addCar")]
         public async Task<IActionResult> AddCarAsync([FromBody] CarViewModel addableCar)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             await _adminCarService.AddCarAsync(_mapper.Map<CarModel>(addableCar));
 
             return Ok(new {Message = "Car was successfully added"});
@@ -59,11 +54,6 @@ namespace CarRental.Controllers.Admin
         [Route("modifyCar/{id}")]
         public async Task<IActionResult> ModifyCarAsync([FromRoute] int id, [FromBody] CarViewModel modifiedCar)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             await _adminCarService.ModifyCarAsync(id, _mapper.Map<CarModel>(modifiedCar));
 
             return Ok(new {Message = "Car was successfully modified"});

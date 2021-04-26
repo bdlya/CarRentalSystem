@@ -36,11 +36,6 @@ namespace CarRental.Controllers.Admin
         [Route("addPoint")]
         public async Task<IActionResult> AddPointAsync([FromBody] PointOfRentalViewModel addablePoint)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             await _adminPointService.AddPointAsync(_mapper.Map<PointOfRentalModel>(addablePoint));
 
             return Ok(new { Message = "Point was successfully added" });
@@ -50,11 +45,6 @@ namespace CarRental.Controllers.Admin
         [Route("modifyPoint/{id}")]
         public async Task<IActionResult> ModifyPointAsync([FromRoute] int id, [FromBody] PointOfRentalViewModel modifiedPoint)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             await _adminPointService.ModifyPointAsync(id, _mapper.Map<PointOfRentalModel>(modifiedPoint));
 
             return Ok(new { Message = "Point was successfully modified" });

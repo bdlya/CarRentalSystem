@@ -2,11 +2,10 @@
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
+using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 using CarRentalSystem.Services.InternalInterfaces;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
@@ -35,7 +34,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             if (car == null)
             {
-                throw new IdNotFoundException();
+                throw new EntityNotFoundException(nameof(Car));
             }
 
             return car;
@@ -47,7 +46,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             if (car == null)
             {
-                throw new IdNotFoundException();
+                throw new EntityNotFoundException(nameof(Car));
             }
 
             await _repository.RemoveAsync(_mapper.Map<Car>(car));
@@ -59,7 +58,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             if (car == null)
             {
-                throw new IdNotFoundException();
+                throw new EntityNotFoundException(nameof(Car));
             }
 
             car = UpdateCarProperties(car, modifiedCar);
