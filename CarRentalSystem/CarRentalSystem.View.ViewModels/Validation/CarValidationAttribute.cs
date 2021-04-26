@@ -1,22 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
+using CarRentalSystem.Services.InternalInterfaces;
 
 namespace CarRentalSystem.View.ViewModels.Validation
 {
     public class CarValidationAttribute: ValidationAttribute
     {
-        //private readonly IPointOfRentalService _pointService;
-
-        //public CarValidationAttribute(IPointOfRentalService pointService)
-        //{
-        //    _pointService = pointService;
-        //}
 
         public override bool IsValid(object value)
         {
-            CarViewModel model = value as CarViewModel;
-
-            if (model == null)
+            if (!(value is CarViewModel model))
             {
                 throw new NullReferenceException("Car was null");
             }
@@ -50,12 +44,6 @@ namespace CarRentalSystem.View.ViewModels.Validation
             {
                 throw new ValidationException("Cost per hour is incorrect");
             }
-
-            //bool pointIsExists = await _pointService.IsPointExists(model.PointOfRentalId);
-            //if (!pointIsExists)
-            //{
-            //    return false;
-            //}
 
             return true;
         }
