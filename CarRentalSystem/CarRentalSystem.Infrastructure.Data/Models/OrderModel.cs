@@ -18,10 +18,6 @@ namespace CarRentalSystem.Infrastructure.Data.Models
 
         public DateTime EndDate { get; set; }
 
-        public PointOfRentalModel PointOfRental { get; set; }
-
-        public int PointOfRentalId { get; set; }
-
         public List<OrderAdditionalServiceModel> OrderAdditionalServices { get; set; }
 
         public int TotalCost { get; set; }

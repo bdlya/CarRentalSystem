@@ -35,7 +35,7 @@ namespace CarRental
         public void ConfigureServices(IServiceCollection services)
         {
             // Adds services for controllers
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen();
 

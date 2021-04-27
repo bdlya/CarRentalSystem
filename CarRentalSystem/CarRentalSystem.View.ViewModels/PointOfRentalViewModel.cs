@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CarRentalSystem.View.ViewModels.Base;
+using Newtonsoft.Json;
 
 namespace CarRentalSystem.View.ViewModels
 {
@@ -24,12 +25,11 @@ namespace CarRentalSystem.View.ViewModels
 
         public List<CarViewModel> Cars { get; set; }
 
-        public List<OrderViewModel> Orders { get; set; }
+        public int CarCount => Cars.Count;
 
         public PointOfRentalViewModel()
         {
             Cars = new List<CarViewModel>();
-            Orders = new List<OrderViewModel>();
         }
     }
 }

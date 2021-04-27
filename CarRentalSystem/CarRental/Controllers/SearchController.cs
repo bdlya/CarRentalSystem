@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using AutoMapper;
 using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Infrastructure.Data.Policies;
 using CarRentalSystem.Services.Interfaces;
@@ -24,11 +26,21 @@ namespace CarRental.Controllers
         }
 
         [HttpGet]
+        [Route("points")]
         public async Task<IActionResult> FindPointsAsync([FromBody] PointSearchViewModel searchModel)
         {
             var points = await _searchProviderService.FindPointsAsync(_mapper.Map<PointSearchModel>(searchModel));
 
-            return Ok(points);
+            return Ok(points.Select(point => _mapper.Map<PointOfRentalViewModel>(point)));
+        }
+
+        [HttpGet]
+        [Route("point{id}/{date}/cars")]
+        public async Task<IActionResult> FindFreeCarsAsync([FromRoute] int id, DateTime date)
+        {
+            var cars = await _searchProviderService.FindCarsAsync(id, date);
+
+            return Ok(cars.Select(car => _mapper.Map<CarViewModel>(car)));
         }
     }
 }
