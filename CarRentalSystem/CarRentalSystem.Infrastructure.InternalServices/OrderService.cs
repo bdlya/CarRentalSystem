@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
@@ -81,7 +82,23 @@ namespace CarRentalSystem.Infrastructure.InternalServices
                     .Include(orders => orders.OrderAdditionalServices)
                     .ThenInclude(orderAdditionalService => orderAdditionalService.AdditionalService)
                     .FirstOrDefault(o => o.Id == car.CurrentOrderId)));
+
+            order.TotalCost = CountOrderTotalCost(order);
+
+            await _orders.UpdateAsync(_mapper.Map<Order>(order));
+
             return order;
+        }
+
+        private static int CountOrderTotalCost(OrderModel order)
+        {
+            double cost = 0;
+
+            TimeSpan span = order.EndDate.Subtract(order.StartDate);
+
+            cost += span.TotalHours * order.Car.CostPerHour + order.OrderAdditionalServices.Sum(orderService => orderService.AdditionalService.Cost);
+
+            return (int)cost;
         }
     }
 }

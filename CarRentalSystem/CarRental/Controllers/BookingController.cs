@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
+using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Infrastructure.Data.Policies;
+using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
 using CarRentalSystem.View.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
-using CarRentalSystem.Infrastructure.Data.Models;
-using CarRentalSystem.Services.Interfaces;
 
 namespace CarRental.Controllers
 {
