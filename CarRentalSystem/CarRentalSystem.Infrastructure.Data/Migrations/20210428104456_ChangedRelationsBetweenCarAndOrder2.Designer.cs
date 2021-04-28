@@ -4,14 +4,16 @@ using CarRentalSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarRentalSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CarRentalSystemContext))]
-    partial class CarRentalSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210428104456_ChangedRelationsBetweenCarAndOrder2")]
+    partial class ChangedRelationsBetweenCarAndOrder2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

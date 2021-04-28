@@ -8,6 +8,7 @@ using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Infrastructure.Data.Policies;
+using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 using CarRentalSystem.Services.InternalInterfaces;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
@@ -87,6 +88,20 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             await _users.UpdateAsync(_mapper.Map<User>(user));
 
             return user.RefreshToken;
+        }
+
+        public async Task AddOrderAsync(int id, OrderModel order)
+        {
+            UserModel user = _mapper.Map<UserModel>(await _users.FindByIdAsync(id));
+
+            if (user == null)
+            {
+                throw new EntityNotFoundException(nameof(User));
+            }
+
+            user.Orders.Add(order);
+
+            await _users.UpdateAsync(_mapper.Map<User>(user));
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

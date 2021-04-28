@@ -8,11 +8,11 @@ namespace CarRentalSystem.View.ViewModels
     {
         public UserViewModel CurrentCustomer { get; set; }
 
-        public int CurrentCustomerId { get; set; }
+        public int? CurrentCustomerId { get; set; }
 
         public CarViewModel Car { get; set; }
 
-        public int CarId { get; set; }
+        public int? CarId { get; set; }
 
         public DateTime StartDate { get; set; }
 

@@ -4,14 +4,16 @@ using CarRentalSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarRentalSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CarRentalSystemContext))]
-    partial class CarRentalSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210428102542_ChangedRelationsBetweenCarAndOrder")]
+    partial class ChangedRelationsBetweenCarAndOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,10 +83,6 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrentOrderId")
-                        .IsUnique()
-                        .HasFilter("[CurrentOrderId] IS NOT NULL");
-
                     b.HasIndex("PointOfRentalId");
 
                     b.ToTable("Cars");
@@ -135,6 +133,10 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarId")
+                        .IsUnique()
+                        .HasFilter("[CarId] IS NOT NULL");
 
                     b.HasIndex("CurrentCustomerId");
 
@@ -262,26 +264,26 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.Car", b =>
                 {
-                    b.HasOne("CarRentalSystem.Domain.Entities.Order", "CurrentOrder")
-                        .WithOne("Car")
-                        .HasForeignKey("CarRentalSystem.Domain.Entities.Car", "CurrentOrderId");
-
                     b.HasOne("CarRentalSystem.Domain.Entities.PointOfRental", "PointOfRental")
                         .WithMany("Cars")
                         .HasForeignKey("PointOfRentalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CurrentOrder");
-
                     b.Navigation("PointOfRental");
                 });
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.Order", b =>
                 {
+                    b.HasOne("CarRentalSystem.Domain.Entities.Car", "Car")
+                        .WithOne("CurrentOrder")
+                        .HasForeignKey("CarRentalSystem.Domain.Entities.Order", "CarId");
+
                     b.HasOne("CarRentalSystem.Domain.Entities.User", "CurrentCustomer")
                         .WithMany("Orders")
                         .HasForeignKey("CurrentCustomerId");
+
+                    b.Navigation("Car");
 
                     b.Navigation("CurrentCustomer");
                 });
@@ -319,10 +321,13 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                     b.Navigation("OrderAdditionalServices");
                 });
 
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Car", b =>
+                {
+                    b.Navigation("CurrentOrder");
+                });
+
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.Order", b =>
                 {
-                    b.Navigation("Car");
-
                     b.Navigation("OrderAdditionalServices");
                 });
 

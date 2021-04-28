@@ -8,11 +8,11 @@ namespace CarRentalSystem.Domain.Entities
     {
         public User CurrentCustomer { get; set; }
 
-        public int CurrentCustomerId { get; set; }
+        public int? CurrentCustomerId { get; set; }
 
         public Car Car { get; set; }
 
-        public int CarId { get; set; }
+        public int? CarId { get; set; }
 
         public DateTime StartDate { get; set; }
 

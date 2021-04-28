@@ -44,7 +44,8 @@ namespace CarRental
             services.AddScoped<DbContext, CarRentalSystemContext>();
             services.AddDbContext<CarRentalSystemContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    migrationOptions => migrationOptions.MigrationsAssembly("CarRentalSystem.Infrastructure.Data")));
+                    migrationOptions => migrationOptions.MigrationsAssembly("CarRentalSystem.Infrastructure.Data"))
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             services.AddScoped(typeof(IRentalRepository<>), typeof(CarRentalSystemGenericRepository<>));
 

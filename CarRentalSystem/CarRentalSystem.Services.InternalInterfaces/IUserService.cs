@@ -9,5 +9,6 @@ namespace CarRentalSystem.Services.InternalInterfaces
         Task RegisterUserAsync(UserModel model, string password);
         Task RemoveTokenAsync(UserModel model);
         Task<RefreshTokenModel> RefreshTokenAsync(string refreshToken);
+        Task AddOrderAsync(int id, OrderModel order);
     }
 }

@@ -8,11 +8,11 @@ namespace CarRentalSystem.Infrastructure.Data.Models
     {
         public UserModel CurrentCustomer { get; set; }
 
-        public int CurrentCustomerId { get; set; }
+        public int? CurrentCustomerId { get; set; }
 
         public CarModel Car { get; set; }
 
-        public int CarId { get; set; }
+        public int? CarId { get; set; }
 
         public DateTime StartDate { get; set; }
 
