@@ -92,7 +92,9 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task AddOrderAsync(int id, OrderModel order)
         {
-            UserModel user = _mapper.Map<UserModel>(await _users.FindByIdAsync(id));
+            UserModel user = _mapper.Map<UserModel>(await _users.IncludeAsync(u => u.Orders)
+                .ContinueWith(result => result.Result
+                    .FirstOrDefault(u => u.Id == id)));
 
             if (user == null)
             {

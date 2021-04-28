@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using CarRentalSystem.Infrastructure.Data.Policies;
 using CarRentalSystem.Services.InternalInterfaces;
 using CarRentalSystem.View.ViewModels;
@@ -44,6 +46,22 @@ namespace CarRental.Controllers
             return Ok(new {Message = "Dates are chosen"});
         }
 
+        [HttpPost]
+        [Route("car{carId}/services")]
+        public async Task<IActionResult> ChooseAdditionalServicesAsync([FromRoute] int carId, [FromBody] int[] additionalServicesIds)
+        {
+            await _bookingService.ChooseAdditionalServicesAsync(carId, additionalServicesIds.ToList());
 
+            return Ok(new {Message = "Services are chosen"});
+        }
+
+        [HttpGet]
+        [Route("car{carId}/summary")]
+        public async Task<IActionResult> GetSummaryAsync([FromRoute] int carId)
+        {
+            OrderViewModel order = _mapper.Map<OrderViewModel>(await _bookingService.GetSummaryAsync(carId));
+
+            return Ok(order);
+        }
     }
 }

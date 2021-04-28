@@ -27,7 +27,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<CarModel> GetCarAsync(int id)
         {
-            CarModel car = _mapper.Map<CarModel>(await _repository.IncludeAsync()
+            CarModel car = _mapper.Map<CarModel>(await _repository.IncludeAsync(c => c.CurrentOrder)
                 .ContinueWith(cars => cars.Result
                     .FirstOrDefault(c => c.Id == id)));
 
