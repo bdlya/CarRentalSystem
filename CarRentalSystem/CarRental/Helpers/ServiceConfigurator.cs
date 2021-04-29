@@ -26,6 +26,7 @@ namespace CarRental.Helpers
 
             services.AddScoped<IBookingProviderService, BookingProviderService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderAdditionalService, OrderAdditionalServicesService>();
         }
     }
 }

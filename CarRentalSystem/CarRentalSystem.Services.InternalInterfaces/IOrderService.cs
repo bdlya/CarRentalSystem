@@ -6,8 +6,9 @@ namespace CarRentalSystem.Services.InternalInterfaces
 {
     public interface IOrderService
     {
-        Task CreateOrderAsync(int userId, int carId, BookingDatesModel bookingDates);
-        Task AddAdditionalServicesAsync(int carId, List<AdditionalServiceModel> additionalServices);
-        Task<OrderModel> GetOrderAsync(int carId);
+        Task<OrderModel> CreateOrderAsync(int userId, int carId);
+        Task ChooseDatesAsync(int orderId, BookingDatesModel bookingDates);
+        Task AddAdditionalServicesAsync(int orderId, List<OrderAdditionalServiceModel> orderAdditionalServices);
+        Task<OrderModel> GetOrderAsync(int orderId);
     }
 }

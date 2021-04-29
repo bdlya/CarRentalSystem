@@ -1,13 +1,12 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.InternalInterfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
@@ -16,24 +15,20 @@ namespace CarRentalSystem.Infrastructure.InternalServices
         private readonly ICarService _carService;
         private readonly IUserService _userService;
         private readonly IRentalRepository<Order> _orders;
-        private readonly IRentalRepository<OrderAdditionalService> _orderAdditionalServices;
         private readonly IMapper _mapper;
 
-        public OrderService(ICarService carService, IUserService userService, IRentalRepository<Order> orders, IMapper mapper, IRentalRepository<OrderAdditionalService> orderAdditionalServices)
+        public OrderService(ICarService carService, IUserService userService, IRentalRepository<Order> orders, IMapper mapper)
         {
             _carService = carService;
             _userService = userService;
             _orders = orders;
             _mapper = mapper;
-            _orderAdditionalServices = orderAdditionalServices;
         }
 
-        public async Task CreateOrderAsync(int userId, int carId, BookingDatesModel bookingDates)
+        public async Task<OrderModel> CreateOrderAsync(int userId, int carId)
         {
             OrderModel currentOrder = new OrderModel
             {
-                StartDate = bookingDates.StartDate,
-                EndDate = bookingDates.EndDate,
                 CarId = carId,
                 CurrentCustomerId = userId
             };
@@ -48,40 +43,40 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             await _carService.AddOrderAsync(carId, currentOrder);
             await _userService.AddOrderAsync(userId, currentOrder);
+
+            return currentOrder;
         }
 
-        public async Task AddAdditionalServicesAsync(int carId, List<AdditionalServiceModel> additionalServices)
+        public async Task ChooseDatesAsync(int orderId, BookingDatesModel bookingDates)
         {
-            CarModel car = await _carService.GetCarAsync(carId);
+            OrderModel order = _mapper.Map<OrderModel>(await _orders.FindByIdAsync(orderId));
 
-            OrderModel order = car.CurrentOrder;
-
-            foreach (var service in additionalServices)
-            {
-                var orderAdditionalService = new OrderAdditionalServiceModel
-                {
-                    OrderId = order.Id,
-                    AdditionalServiceId = service.Id
-                };
-
-                await _orderAdditionalServices.CreateAsync(_mapper.Map<OrderAdditionalService>(orderAdditionalService));
-
-                order.OrderAdditionalServices.Add(orderAdditionalService);
-            }
+            order.StartDate = bookingDates.StartDate;
+            order.EndDate = bookingDates.EndDate;
 
             await _orders.UpdateAsync(_mapper.Map<Order>(order));
         }
 
-        public async Task<OrderModel> GetOrderAsync(int carId)
+        public async Task AddAdditionalServicesAsync(int orderId, List<OrderAdditionalServiceModel> orderAdditionalServices)
         {
-            CarModel car = await _carService.GetCarAsync(carId);
+            OrderModel order = _mapper.Map<OrderModel>(await _orders
+                .IncludeAsync(orders => orders.OrderAdditionalServices)
+                .ContinueWith(result => result.Result
+                    .FirstOrDefault(o => o.Id == orderId)));
 
+            order.OrderAdditionalServices.AddRange(orderAdditionalServices);
+
+            await _orders.UpdateAsync(_mapper.Map<Order>(order));
+        }
+
+        public async Task<OrderModel> GetOrderAsync(int orderId)
+        {
             OrderModel order = _mapper.Map<OrderModel>(await _orders.IncludeAsync(o => o.CurrentCustomer)
                 .ContinueWith(result => result.Result
                     .Include(orders => orders.Car)
                     .Include(orders => orders.OrderAdditionalServices)
                     .ThenInclude(orderAdditionalService => orderAdditionalService.AdditionalService)
-                    .FirstOrDefault(o => o.Id == car.CurrentOrderId)));
+                    .FirstOrDefault(o => o.Id == orderId)));
 
             order.TotalCost = CountOrderTotalCost(order);
 
@@ -92,13 +87,8 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         private static int CountOrderTotalCost(OrderModel order)
         {
-            double cost = 0;
-
-            TimeSpan span = order.EndDate.Subtract(order.StartDate);
-
-            cost += span.TotalHours * order.Car.CostPerHour + order.OrderAdditionalServices.Sum(orderService => orderService.AdditionalService.Cost);
-
-            return (int)cost;
+            return (int)order.EndDate.Subtract(order.StartDate).TotalHours * order.Car.CostPerHour +
+                   order.OrderAdditionalServices.Sum(orderService => orderService.AdditionalService.Cost);
         }
     }
 }
