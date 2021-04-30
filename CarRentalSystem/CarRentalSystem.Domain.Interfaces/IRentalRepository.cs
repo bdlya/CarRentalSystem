@@ -10,9 +10,8 @@ namespace CarRentalSystem.Domain.Interfaces
     {
         Task CreateAsync(TEntity item);
         Task<TEntity> FindByIdAsync(int id);
-        Task<IEnumerable<TEntity>> GetAsync();
         Task RemoveAsync(TEntity item);
         Task UpdateAsync(TEntity item);
-        Task<IQueryable<TEntity>> IncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties);
+        Task<IQueryable<TEntity>> GetAsQueryable();
     }
 }

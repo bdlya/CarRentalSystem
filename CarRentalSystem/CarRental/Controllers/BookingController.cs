@@ -42,7 +42,7 @@ namespace CarRental.Controllers
         {
             OrderViewModel order = _mapper.Map<OrderViewModel>(await _bookingService.CreateOrderAsync(userId, carId));
 
-            return Ok(new {Message = "Order was created"});
+            return Created("",new {Message = "Order was created"});
         }
 
         [HttpPost]

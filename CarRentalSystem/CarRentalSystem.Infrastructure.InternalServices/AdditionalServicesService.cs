@@ -54,7 +54,7 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<List<AdditionalServiceModel>> GetAdditionalServicesAsync(List<int> additionalServiceIds)
         {
-            var additionalServicesModel = await _repository.IncludeAsync();
+            var additionalServicesModel = await _repository.GetAsQueryable();
 
             var additionalServices = additionalServicesModel.AsEnumerable()
                 .Select(service => _mapper.Map<AdditionalServiceModel>(service)).ToList();

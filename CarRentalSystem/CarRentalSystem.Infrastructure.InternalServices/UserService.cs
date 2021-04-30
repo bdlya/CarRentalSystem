@@ -10,6 +10,7 @@ using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Infrastructure.Data.Policies;
 using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 using CarRentalSystem.Services.InternalInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
@@ -28,10 +29,11 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<UserModel> AuthenticateAsync(string login, string password)
         {
-            UserModel user = _mapper.Map<UserModel>(await _users.IncludeAsync(token => token.RefreshToken)
-                .ContinueWith(users => users.Result
-                    .FirstOrDefault(u => u.Login == login)));
-
+            var users = await _users.GetAsQueryable();
+            UserModel user = _mapper.Map<UserModel>(users
+                .Include(u => u.RefreshToken)
+                .FirstOrDefault(u => u.Login == login));
+            
             if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 throw new UnauthorizedAccessException();
@@ -57,9 +59,9 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task RemoveTokenAsync(UserModel model)
         {
-            UserModel user = _mapper.Map<UserModel>(await _users.GetAsync()
-                .ContinueWith(users => users.Result
-                    .FirstOrDefault(u => u.Login == model.Login)));
+            var users = await _users.GetAsQueryable();
+            UserModel user = _mapper.Map<UserModel>(users.FirstOrDefault(u => u.Login == model.Login));
+
             user.Token = null;
 
             await _users.UpdateAsync(_mapper.Map<User>(user));
@@ -67,10 +69,11 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<RefreshTokenModel> RefreshTokenAsync(string refreshToken)
         {
-            UserModel user = _mapper.Map<UserModel>(await _users.IncludeAsync(u => u.RefreshToken)
-                .ContinueWith(users => users.Result
-                    .SingleOrDefault(u => u.RefreshToken.Token == refreshToken)));
-            
+            var users = await _users.GetAsQueryable();
+            UserModel user = _mapper.Map<UserModel>(users
+                .Include(u => u.RefreshToken)
+                .FirstOrDefault(u => u.RefreshToken.Token == refreshToken));
+
             if (user == null)
             {
                 throw new UnauthorizedAccessException();
@@ -92,9 +95,10 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task AddOrderAsync(int id, OrderModel order)
         {
-            UserModel user = _mapper.Map<UserModel>(await _users.IncludeAsync(u => u.Orders)
-                .ContinueWith(result => result.Result
-                    .FirstOrDefault(u => u.Id == id)));
+            var users = await _users.GetAsQueryable();
+            UserModel user = _mapper.Map<UserModel>(users
+                .Include(u => u.Orders)
+                .FirstOrDefault(u => u.Id == id));
 
             if (user == null)
             {

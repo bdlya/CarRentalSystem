@@ -39,7 +39,7 @@ namespace CarRental.Controllers.Admin
         {
             await _additionalService.AddAdditionalServiceAsync(_mapper.Map<AdditionalServiceModel>(additionalService));
 
-            return Ok(new {Message = "Additional service was successfully added"});
+            return Created("",new {Message = "Additional service was successfully added"});
         }
 
         [HttpPost]

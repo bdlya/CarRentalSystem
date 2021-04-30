@@ -38,7 +38,7 @@ namespace CarRental.Controllers.Admin
         {
             await _adminCarService.AddCarAsync(_mapper.Map<CarModel>(addableCar));
 
-            return Ok(new {Message = "Car was successfully added"});
+            return Created("",new {Message = "Car was successfully added"});
         }
 
         [HttpPost]

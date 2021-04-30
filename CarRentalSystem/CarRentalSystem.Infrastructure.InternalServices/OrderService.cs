@@ -35,11 +35,10 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             await _orders.CreateAsync(_mapper.Map<Order>(currentOrder));
 
-            currentOrder = _mapper.Map<OrderModel>(await _orders
-                .IncludeAsync()
-                .ContinueWith(r => r.Result
-                    .OrderBy(order => order.Id)
-                    .LastOrDefault(order => order.CarId == carId && order.CurrentCustomerId == userId)));
+            var orders = await _orders.GetAsQueryable();
+            currentOrder = _mapper.Map<OrderModel>(orders
+                .OrderBy(o => o.Id)
+                .LastOrDefault(o => o.CarId == carId && o.CurrentCustomerId == userId));
 
             await _carService.AddOrderAsync(carId, currentOrder);
             await _userService.AddOrderAsync(userId, currentOrder);
@@ -59,10 +58,10 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task AddAdditionalServicesAsync(int orderId, List<OrderAdditionalServiceModel> orderAdditionalServices)
         {
-            OrderModel order = _mapper.Map<OrderModel>(await _orders
-                .IncludeAsync(orders => orders.OrderAdditionalServices)
-                .ContinueWith(result => result.Result
-                    .FirstOrDefault(o => o.Id == orderId)));
+            var orders = await _orders.GetAsQueryable();
+            OrderModel order = _mapper.Map<OrderModel>(orders
+                .Include(o => o.OrderAdditionalServices)
+                .FirstOrDefault(o => o.Id == orderId));
 
             order.OrderAdditionalServices.AddRange(orderAdditionalServices);
 
@@ -71,12 +70,13 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<OrderModel> GetOrderAsync(int orderId)
         {
-            OrderModel order = _mapper.Map<OrderModel>(await _orders.IncludeAsync(o => o.CurrentCustomer)
-                .ContinueWith(result => result.Result
-                    .Include(orders => orders.Car)
-                    .Include(orders => orders.OrderAdditionalServices)
-                    .ThenInclude(orderAdditionalService => orderAdditionalService.AdditionalService)
-                    .FirstOrDefault(o => o.Id == orderId)));
+            var orders = await _orders.GetAsQueryable();
+            OrderModel order = _mapper.Map<OrderModel>(orders
+                .Include(o => o.CurrentCustomer)
+                .Include(o => o.Car)
+                .Include(o => o.OrderAdditionalServices)
+                .ThenInclude(oas => oas.AdditionalService)
+                .FirstOrDefault(o => o.Id == orderId));
 
             order.TotalCost = CountOrderTotalCost(order);
 

@@ -6,6 +6,7 @@ using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 using CarRentalSystem.Services.InternalInterfaces;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
@@ -27,9 +28,10 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<PointOfRentalModel> GetPointAsync(int id)
         {
-            PointOfRentalModel point = _mapper.Map<PointOfRentalModel>(await _repository.IncludeAsync(p => p.Cars)
-                .ContinueWith(points => points.Result
-                    .FirstOrDefault(p => p.Id == id)));
+            var points = await _repository.GetAsQueryable();
+            PointOfRentalModel point = _mapper.Map<PointOfRentalModel>(points
+                .Include(p => p.Cars)
+                .FirstOrDefault(p => p.Id == id));
 
             if (point == null)
             {
@@ -51,6 +53,18 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             point = UpdatePointProperties(point, modifiedPoint);
 
             await _repository.UpdateAsync(_mapper.Map<PointOfRental>(point));
+        }
+
+        public async Task<IQueryable<PointOfRentalModel>> GetPointsAsync()
+        {
+            var points = await _repository.GetAsQueryable();
+
+            return points
+                .Include(p => p.Cars)
+                .ThenInclude(c => c.CurrentOrder)
+                .AsEnumerable()
+                .Select(p => _mapper.Map<PointOfRentalModel>(p))
+                .AsQueryable();
         }
 
         private PointOfRentalModel UpdatePointProperties(PointOfRentalModel point, PointOfRentalModel modifiedPoint)

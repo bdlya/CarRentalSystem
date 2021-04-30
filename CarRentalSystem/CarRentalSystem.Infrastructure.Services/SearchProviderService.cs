@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using CarRentalSystem.Domain.Entities;
-using CarRentalSystem.Domain.Interfaces;
-using CarRentalSystem.Infrastructure.Data.Models;
+﻿using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using CarRentalSystem.Services.InternalInterfaces;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,25 +9,17 @@ namespace CarRentalSystem.Infrastructure.Services
 {
     public class SearchProviderService: ISearchProviderService
     {
-        private readonly IRentalRepository<PointOfRental> _repository;
-        private readonly IMapper _mapper;
+        private readonly IPointService _points;
 
-        public SearchProviderService(IRentalRepository<PointOfRental> repository, IMapper mapper)
+        public SearchProviderService(IPointService points)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _points = points;
         }
 
         public async Task<IQueryable<PointOfRentalModel>> FindPointsAsync(PointSearchModel searchModel)
         {
-            var pointsModel = await _repository.IncludeAsync()
-                .ContinueWith(point => point.Result
-                    .Include(point => point.Cars))
-                .ContinueWith(point => point.Result
-                    .ThenInclude(car => car.CurrentOrder));
-
-            var points = pointsModel.AsEnumerable().Select(point => _mapper.Map<PointOfRentalModel>(point)).AsQueryable();
-
+            var points = await _points.GetPointsAsync();
+            
             if (!string.IsNullOrEmpty(searchModel.Country))
             {
                 points = points.Where(point => point.Country == searchModel.Country);
@@ -44,21 +33,17 @@ namespace CarRentalSystem.Infrastructure.Services
             if (searchModel.DateOfOrder >= DateTime.Today)
             {
                 points.ToList().ForEach(point => point.Cars.Where(car => IsRequiredCar(car, searchModel.DateOfOrder)));
-                points = points.Where(point => point.Cars.Count != 0).OrderByDescending(point => point.Cars.Count);
             }
 
-            return points;
+            return points.Where(point => point.Cars.Count != 0).OrderByDescending(point => point.Cars.Count);
         }
 
         public async Task<IQueryable<CarModel>> FindCarsAsync(int id, DateTime date)
         {
-            var requiredPoint = await _repository.IncludeAsync()
-                .ContinueWith(point => point.Result
-                    .Include(p => p.Cars))
-                .ContinueWith(point => point.Result
-                    .FirstOrDefaultAsync(p => p.Id == id).Result);
+            var point = await _points.GetPointAsync(id);
 
-            var cars = _mapper.Map<PointOfRentalModel>(requiredPoint).Cars.AsQueryable()
+            var cars = point.Cars
+                .AsQueryable()
                 .Where(car => IsRequiredCar(car, date));
 
             return cars;

@@ -1,10 +1,10 @@
-﻿using CarRentalSystem.Services.Interfaces;
+﻿using AutoMapper;
+using CarRentalSystem.Infrastructure.Data.Models.Base;
+using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.View.ViewModels.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using AutoMapper;
-using CarRentalSystem.Infrastructure.Data.Models.Base;
 
 namespace CarRental.Controllers
 {
@@ -24,9 +24,11 @@ namespace CarRental.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task RegisterAsync([FromBody] RegistrationViewModel model)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegistrationViewModel model)
         {
             await _userProviderService.RegisterUserAsync(_mapper.Map<RegistrationModel>(model));
+
+            return Created("", new {Message = "User was registered"});
         }
     }
 }

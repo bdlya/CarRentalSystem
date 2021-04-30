@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace CarRental.Controllers
 {
     [Authorize(Policy = Policy.Customer)]
-    [Route("[controller]")]
+    [Route("customer{userId}/[controller]")]
     [ApiController]
     public class SearchController : ControllerBase
     {

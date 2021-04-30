@@ -6,6 +6,7 @@ using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
 using CarRentalSystem.Services.InternalInterfaces;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
@@ -27,9 +28,10 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task<CarModel> GetCarAsync(int id)
         {
-            CarModel car = _mapper.Map<CarModel>(await _repository.IncludeAsync(c => c.CurrentOrder)
-                .ContinueWith(cars => cars.Result
-                    .FirstOrDefault(c => c.Id == id)));
+            var cars = await _repository.GetAsQueryable();
+            CarModel car = _mapper.Map<CarModel>(cars
+                .Include(c => c.CurrentOrder)
+                .FirstOrDefault(c => c.Id == id));
 
             if (car == null)
             {
@@ -67,10 +69,10 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
         public async Task AddOrderAsync(int id, OrderModel order)
         {
-            CarModel car = _mapper.Map<CarModel>(await _repository
-                .IncludeAsync(c => c.CurrentOrder)
-                .ContinueWith(result => result.Result
-                    .FirstOrDefault(c => c.Id == id)));
+            var cars = await _repository.GetAsQueryable();
+            CarModel car = _mapper.Map<CarModel>(cars
+                .Include(c => c.CurrentOrder)
+                .FirstOrDefault(c => c.Id == id));
 
             if (car == null)
             {
