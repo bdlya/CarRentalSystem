@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using CarRentalSystem.View.ViewModels.Base;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace CarRentalSystem.View.ViewModels
@@ -29,6 +31,7 @@ namespace CarRentalSystem.View.ViewModels
 
         public int? CurrentOrderId { get; set; }
 
+        [JsonIgnore]
         public PointOfRentalViewModel PointOfRental { get; set; }
 
         [Required(ErrorMessage = "Enter point of rental id")]

@@ -8,19 +8,15 @@ namespace CarRentalSystem.Infrastructure.Data.Models
     {
         public UserModel CurrentCustomer { get; set; }
 
-        public int CurrentCustomerId { get; set; }
+        public int? CurrentCustomerId { get; set; }
 
         public CarModel Car { get; set; }
 
-        public int CarId { get; set; }
+        public int? CarId { get; set; }
 
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
-
-        public PointOfRentalModel PointOfRental { get; set; }
-
-        public int PointOfRentalId { get; set; }
 
         public List<OrderAdditionalServiceModel> OrderAdditionalServices { get; set; }
 

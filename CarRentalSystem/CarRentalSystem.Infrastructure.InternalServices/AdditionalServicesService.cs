@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
@@ -48,6 +50,23 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             addService = UpdateAdditionalServiceProperties(addService, additionalService);
 
             await _repository.UpdateAsync(_mapper.Map<AdditionalService>(addService));
+        }
+
+        public async Task<List<AdditionalServiceModel>> GetAdditionalServicesAsync(List<int> additionalServiceIds)
+        {
+            var additionalServicesModel = await _repository.GetAsQueryable();
+
+            var additionalServices = additionalServicesModel.AsEnumerable()
+                .Select(service => _mapper.Map<AdditionalServiceModel>(service)).ToList();
+
+            List<AdditionalServiceModel> services = new List<AdditionalServiceModel>();
+
+            foreach (int id in additionalServiceIds)
+            {
+                services.AddRange(additionalServices.Where(service => service.Id == id));
+            }
+
+            return services;
         }
 
         private AdditionalServiceModel UpdateAdditionalServiceProperties(AdditionalServiceModel addService, AdditionalServiceModel additionalService)

@@ -15,12 +15,9 @@ namespace CarRentalSystem.Infrastructure.Data.Models
 
         public List<CarModel> Cars { get; set; }
 
-        public List<OrderModel> Orders { get; set; }
-
         public PointOfRentalModel()
         {
             Cars = new List<CarModel>();
-            Orders = new List<OrderModel>();
         }
     }
 }

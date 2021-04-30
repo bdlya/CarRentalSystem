@@ -23,11 +23,6 @@ namespace CarRentalSystem.Infrastructure.Data.Configurations
                 .WithOne(orderService => orderService.Order)
                 .HasForeignKey(orderService => orderService.OrderId);
 
-            builder
-                .HasOne(order => order.PointOfRental)
-                .WithMany(point => point.Orders)
-                .HasForeignKey(order => order.PointOfRentalId);
-
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
         }
     }

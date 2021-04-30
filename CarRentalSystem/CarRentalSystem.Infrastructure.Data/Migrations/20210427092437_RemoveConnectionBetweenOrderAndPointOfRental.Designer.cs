@@ -4,14 +4,16 @@ using CarRentalSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarRentalSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CarRentalSystemContext))]
-    partial class CarRentalSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210427092437_RemoveConnectionBetweenOrderAndPointOfRental")]
+    partial class RemoveConnectionBetweenOrderAndPointOfRental
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,10 +121,10 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
+                    b.Property<int>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CurrentCustomerId")
+                    b.Property<int>("CurrentCustomerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
@@ -281,7 +283,9 @@ namespace CarRentalSystem.Infrastructure.Data.Migrations
                 {
                     b.HasOne("CarRentalSystem.Domain.Entities.User", "CurrentCustomer")
                         .WithMany("Orders")
-                        .HasForeignKey("CurrentCustomerId");
+                        .HasForeignKey("CurrentCustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CurrentCustomer");
                 });

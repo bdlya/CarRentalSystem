@@ -24,9 +24,11 @@ namespace CarRental.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task LogOutAsync([FromBody] UserViewModel viewModel)
+        public async Task<IActionResult> LogOutAsync([FromBody] UserViewModel viewModel)
         {
             await _userProviderService.RemoveTokenAsync(_mapper.Map<UserModel>(viewModel));
+
+            return Ok(new {Message = "Logout successful"});
         }
     }
 }

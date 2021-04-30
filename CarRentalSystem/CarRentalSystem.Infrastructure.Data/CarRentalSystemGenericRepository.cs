@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using CarRentalSystem.Domain.Entities.Base;
+﻿using CarRentalSystem.Domain.Entities.Base;
 using CarRentalSystem.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Infrastructure.Data
 {
@@ -31,11 +28,6 @@ namespace CarRentalSystem.Infrastructure.Data
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAsync()
-        {
-            return await _dbSet.AsNoTracking().ToListAsync();
-        }
-
         public async Task RemoveAsync(TEntity item)
         {
             _dbSet.Remove(item);
@@ -48,12 +40,9 @@ namespace CarRentalSystem.Infrastructure.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IQueryable<TEntity>> IncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties)
+        public async Task<IQueryable<TEntity>> GetAsQueryable()
         {
-            IQueryable<TEntity> query = _dbSet.AsNoTracking();
-
-            return await Task.Run(() => includeProperties
-                .Aggregate(query, (current, includeProperty) => current.Include(includeProperty)));
+            return await Task.FromResult(_dbSet.AsNoTracking());
         }
     }
 }

@@ -35,7 +35,7 @@ namespace CarRental
         public void ConfigureServices(IServiceCollection services)
         {
             // Adds services for controllers
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen();
 
@@ -44,7 +44,8 @@ namespace CarRental
             services.AddScoped<DbContext, CarRentalSystemContext>();
             services.AddDbContext<CarRentalSystemContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    migrationOptions => migrationOptions.MigrationsAssembly("CarRentalSystem.Infrastructure.Data")));
+                    migrationOptions => migrationOptions.MigrationsAssembly("CarRentalSystem.Infrastructure.Data"))
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             services.AddScoped(typeof(IRentalRepository<>), typeof(CarRentalSystemGenericRepository<>));
 

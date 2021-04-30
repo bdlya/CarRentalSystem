@@ -26,25 +26,27 @@ namespace CarRental.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<string> AuthenticateAsync([FromBody] AuthenticationViewModel model)
+        public async Task<IActionResult> AuthenticateAsync([FromBody] AuthenticationViewModel model)
         {
             UserViewModel userViewModel = _mapper.Map<UserViewModel>(await _userProviderService.AuthenticateAsync(_mapper.Map<AuthenticationModel>(model)));
 
             SetRefreshTokenCookie(userViewModel.RefreshToken.Token);
 
-            return $"Welcome, {userViewModel.Name} your current role is {userViewModel.Role} and here your token for postman test: {userViewModel.Token}";
+            return Ok(new {Message = $"Welcome, {userViewModel.Name} your current role is {userViewModel.Role} and here your token for postman test: {userViewModel.Token}"});
         }
 
         [Authorize]
         [HttpPost]
         [Route("refresh-token")]
-        public async Task RefreshToken()
+        public async Task<IActionResult> RefreshToken()
         {
             var currentRefreshToken = Request.Cookies["RefreshToken"];
 
             RefreshTokenViewModel newRefreshToken = _mapper.Map<RefreshTokenViewModel>(await _userProviderService.RefreshTokenAsync(currentRefreshToken));
 
             SetRefreshTokenCookie(newRefreshToken.Token);
+
+            return Ok(new {Message = "Token was refreshed"});
         }
 
         private void SetRefreshTokenCookie(string token)

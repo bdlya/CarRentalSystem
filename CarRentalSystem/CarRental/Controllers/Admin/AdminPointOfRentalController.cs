@@ -38,7 +38,7 @@ namespace CarRental.Controllers.Admin
         {
             await _adminPointService.AddPointAsync(_mapper.Map<PointOfRentalModel>(addablePoint));
 
-            return Ok(new { Message = "Point was successfully added" });
+            return Created("",new { Message = "Point was successfully added" });
         }
 
         [HttpPost]

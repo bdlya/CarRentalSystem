@@ -13,11 +13,6 @@ namespace CarRentalSystem.Infrastructure.Data.Configurations
                 .WithOne(car => car.PointOfRental)
                 .HasForeignKey(car => car.PointOfRentalId);
 
-            builder
-                .HasMany(point => point.Orders)
-                .WithOne(order => order.PointOfRental)
-                .HasForeignKey(order => order.PointOfRentalId);
-            
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
         }
     }
