@@ -18,6 +18,8 @@ namespace CarRentalSystem.View.ViewModels
 
         public DateTime EndDate { get; set; }
 
+        public bool IsActive { get; set; }
+
         public List<OrderAdditionalServiceViewModel> OrderAdditionalServices { get; set; }
 
         public int TotalCost { get; set; }

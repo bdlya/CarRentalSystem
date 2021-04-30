@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using CarRentalSystem.Domain.Entities;
 using CarRentalSystem.Domain.Interfaces;
 using CarRentalSystem.Infrastructure.Data.Models;
@@ -30,8 +31,14 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             OrderModel currentOrder = new OrderModel
             {
                 CarId = carId,
-                CurrentCustomerId = userId
+                CurrentCustomerId = userId,
+                IsActive = true
             };
+
+            if (await IsCarOrdered(carId))
+            {
+                throw new Exception("Car is already ordered");
+            }
 
             await _orders.CreateAsync(_mapper.Map<Order>(currentOrder));
 
@@ -85,10 +92,49 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             return order;
         }
 
+        public async Task<IQueryable<OrderModel>> GetUserOrdersAsync(int userId)
+        {
+            var orders = await _orders.GetAsQueryable();
+
+            return orders
+                .Include(o => o.Car)
+                .ThenInclude(c => c.PointOfRental)
+                .Include(o => o.OrderAdditionalServices)
+                .ThenInclude(oas => oas.AdditionalService)
+                .AsEnumerable()
+                .Select(o => _mapper.Map<OrderModel>(o))
+                .AsQueryable();
+        }
+
+        public async Task<bool> CheckOrderActivityAsync(OrderModel order)
+        {
+            if (order.IsActive && DateTime.Now > order.EndDate)
+            {
+                order.IsActive = false;
+            }
+
+            await _orders.UpdateAsync(_mapper.Map<Order>(order));
+
+            return order.IsActive;
+        }
+
         private static int CountOrderTotalCost(OrderModel order)
         {
             return (int)order.EndDate.Subtract(order.StartDate).TotalHours * order.Car.CostPerHour +
                    order.OrderAdditionalServices.Sum(orderService => orderService.AdditionalService.Cost);
+        }
+
+        private async Task<bool> IsCarOrdered(int carId)
+        {
+            CarModel car = await _carService.GetCarAsync(carId);
+
+            OrderModel order = car.CurrentOrder;
+            if (order == null)
+            {
+                return false;
+            }
+
+            return await CheckOrderActivityAsync(order);
         }
     }
 }

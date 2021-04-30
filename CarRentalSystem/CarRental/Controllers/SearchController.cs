@@ -35,10 +35,10 @@ namespace CarRental.Controllers
         }
 
         [HttpGet]
-        [Route("point{id}/{date}/cars")]
-        public async Task<IActionResult> FindFreeCarsAsync([FromRoute] int id, DateTime date)
+        [Route("point{id}/cars")]
+        public async Task<IActionResult> FindFreeCarsAsync([FromRoute] int id)
         {
-            var cars = await _searchProviderService.FindCarsAsync(id, date);
+            var cars = await _searchProviderService.FindCarsAsync(id);
 
             return Ok(cars.Select(car => _mapper.Map<CarViewModel>(car)));
         }
