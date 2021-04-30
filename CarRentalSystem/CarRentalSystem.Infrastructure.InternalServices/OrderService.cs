@@ -118,6 +118,25 @@ namespace CarRentalSystem.Infrastructure.InternalServices
             return order.IsActive;
         }
 
+        public async Task CancelOrderAsync(int orderId)
+        {
+            OrderModel order = _mapper.Map<OrderModel>(await _orders.FindByIdAsync(orderId));
+
+            order.IsActive = false;
+
+            await _orders.UpdateAsync(_mapper.Map<Order>(order));
+        }
+
+        public async Task DeleteOrderAsync(int orderId)
+        {
+            var orders = await _orders.GetAsQueryable();
+            OrderModel order = _mapper.Map<OrderModel>(orders
+                .Include(o => o.Car)
+                .FirstOrDefault(o => o.Id == orderId));
+
+            await _orders.RemoveAsync(_mapper.Map<Order>(order));
+        }
+
         private static int CountOrderTotalCost(OrderModel order)
         {
             return (int)order.EndDate.Subtract(order.StartDate).TotalHours * order.Car.CostPerHour +

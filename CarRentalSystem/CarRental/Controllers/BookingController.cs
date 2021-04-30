@@ -71,5 +71,14 @@ namespace CarRental.Controllers
 
             return Ok(order);
         }
+
+        [HttpPost]
+        [Route("car{carId}/order{orderId}/delete")]
+        public async Task<IActionResult> DeleteOrderAsync([FromRoute] int orderId)
+        {
+            await _bookingService.DeleteOrderAsync(orderId);
+
+            return Ok(new {Message = "Order was successfully deleted"});
+        }
     }
 }

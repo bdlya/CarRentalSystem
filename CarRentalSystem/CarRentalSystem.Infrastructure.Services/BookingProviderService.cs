@@ -44,5 +44,10 @@ namespace CarRentalSystem.Infrastructure.Services
         {
             return await _orderService.GetOrderAsync(orderId);
         }
+
+        public async Task DeleteOrderAsync(int orderId)
+        {
+            await _orderService.DeleteOrderAsync(orderId);
+        }
     }
 }
