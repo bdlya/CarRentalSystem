@@ -45,22 +45,22 @@ namespace CarRental.Controllers
             return Created("",new {Message = "Order was created"});
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("car{carId}/order{orderId}/date")]
         public async Task<IActionResult> ChooseDatesAsync([FromRoute] int orderId, [FromBody] BookingDatesViewModel bookingDates)
         {
             await _bookingService.ChooseDatesAsync(orderId, _mapper.Map<BookingDatesModel>(bookingDates));
 
-            return Ok(new {Message = "Dates are chosen"});
+            return NoContent();
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("car{carId}/order{orderId}/services")]
         public async Task<IActionResult> ChooseAdditionalServicesAsync([FromRoute] int orderId, [FromBody] int[] additionalServicesIds)
         {
             await _bookingService.ChooseAdditionalServicesAsync(orderId, additionalServicesIds.ToList());
 
-            return Ok(new {Message = "Services are chosen"});
+            return NoContent();
         }
 
         [HttpGet]
@@ -72,13 +72,13 @@ namespace CarRental.Controllers
             return Ok(order);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("car{carId}/order{orderId}/delete")]
         public async Task<IActionResult> DeleteOrderAsync([FromRoute] int orderId)
         {
             await _bookingService.DeleteOrderAsync(orderId);
 
-            return Ok(new {Message = "Order was successfully deleted"});
+            return NoContent();
         }
     }
 }

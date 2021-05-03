@@ -44,13 +44,13 @@ namespace CarRental.Controllers
             return Ok(order);
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("{userId}/order{orderId}/cancel")]
         public async Task<IActionResult> CancelOrderAsync([FromRoute] int orderId)
         {
             await _userProfileProvider.CancelOrderAsync(orderId);
 
-            return Ok(new {Message = "Order was canceled"});
+            return NoContent();
         }
     }
 }

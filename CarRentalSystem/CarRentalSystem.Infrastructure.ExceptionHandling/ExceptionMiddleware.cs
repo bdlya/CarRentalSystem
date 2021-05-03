@@ -70,6 +70,7 @@ namespace CarRentalSystem.Infrastructure.ExceptionHandling
                 case UnauthorizedAccessException _: return HttpStatusCode.Forbidden;
                 case ValidationException _: return HttpStatusCode.NotAcceptable;
                 case EntityNotFoundException _: return HttpStatusCode.NotFound;
+                case BookedCarException _: return HttpStatusCode.NotAcceptable;
                 default: return HttpStatusCode.InternalServerError;
             }
         }

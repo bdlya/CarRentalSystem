@@ -41,13 +41,13 @@ namespace CarRental.Controllers.Admin
             return Created("",new { Message = "Point was successfully added" });
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("modifyPoint/{id}")]
         public async Task<IActionResult> ModifyPointAsync([FromRoute] int id, [FromBody] PointOfRentalViewModel modifiedPoint)
         {
             await _adminPointService.ModifyPointAsync(id, _mapper.Map<PointOfRentalModel>(modifiedPoint));
 
-            return Ok(new { Message = "Point was successfully modified" });
+            return NoContent();
         }
     }
 }

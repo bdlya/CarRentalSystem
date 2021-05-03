@@ -41,22 +41,22 @@ namespace CarRental.Controllers.Admin
             return Created("",new {Message = "Car was successfully added"});
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("deleteCar/{id}")]
         public async Task<IActionResult> DeleteCarAsync([FromRoute] int id)
         {
             await _adminCarService.DeleteCarAsync(id);
 
-            return Ok(new {Message = "Car was successfully deleted"});
+            return NoContent();
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("modifyCar/{id}")]
         public async Task<IActionResult> ModifyCarAsync([FromRoute] int id, [FromBody] CarViewModel modifiedCar)
         {
             await _adminCarService.ModifyCarAsync(id, _mapper.Map<CarModel>(modifiedCar));
 
-            return Ok(new {Message = "Car was successfully modified"});
+            return NoContent();
         }
     }
 }
