@@ -37,6 +37,8 @@ namespace CarRental.Helpers
             {
                 options.AddPolicy(Policy.Administrator, Policy.AdministratorPolicy());
                 options.AddPolicy(Policy.Customer, Policy.CustomerPolicy());
+                options.AddPolicy(Policy.AdministratorOwner, Policy.AdministratorOwnerPolicy());
+                options.AddPolicy(Policy.OwnerOrAdministrator, Policy.OwnerOrAdministratorPolicy());
             });
 
             services.AddScoped<ITokenCreatorService, TokenCreatorService>();
