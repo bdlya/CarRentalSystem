@@ -1,35 +1,35 @@
-﻿using System;
+﻿using AutoMapper;
+using CarRentalSystem.Domain.Entities;
+using CarRentalSystem.Domain.Interfaces;
+using CarRentalSystem.Infrastructure.Data.Models;
+using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
+using CarRentalSystem.Services.InternalInterfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
-using CarRentalSystem.Domain.Entities;
-using CarRentalSystem.Domain.Interfaces;
-using CarRentalSystem.Infrastructure.Data.Models;
 using CarRentalSystem.Infrastructure.Data.Policies;
-using CarRentalSystem.Infrastructure.ExceptionHandling.Exceptions;
-using CarRentalSystem.Services.InternalInterfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Infrastructure.InternalServices
 {
     public class UserService: IUserService
     {
-        private readonly IRentalRepository<User> _users;
+        private readonly IRentalRepository<User> _userRepository;
         private readonly IMapper _mapper;
         private readonly ITokenCreatorService _tokenCreator;
 
-        public UserService(IRentalRepository<User> users, IMapper mapper, ITokenCreatorService tokenCreator)
+        public UserService(IRentalRepository<User> userRepository, IMapper mapper, ITokenCreatorService tokenCreator)
         {
-            _users = users;
+            _userRepository = userRepository;
             _mapper = mapper;
             _tokenCreator = tokenCreator;
         }
 
         public async Task<UserModel> AuthenticateAsync(string login, string password)
         {
-            var users = await _users.GetAsQueryable();
+            var users = await _userRepository.GetAsQueryable();
             UserModel user = _mapper.Map<UserModel>(users
                 .Include(u => u.RefreshToken)
                 .FirstOrDefault(u => u.Login == login));
@@ -41,35 +41,35 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             user = await _tokenCreator.CreateTokensForUserAsync(user);
 
-            await _users.UpdateAsync(_mapper.Map<User>(user));
+            await _userRepository.UpdateAsync(_mapper.Map<User>(user));
 
             return _mapper.Map<UserModel>(user);
         }
 
-        public async Task RegisterUserAsync(UserModel model, string password)
+        public async Task RegisterUserAsync(UserModel model, string password, string role)
         {
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            model.Role = Policy.Customer;
+            model.Role = role;
             model.PasswordHash = passwordHash;
             model.PasswordSalt = passwordSalt;
 
-            await _users.CreateAsync(_mapper.Map<User>(model));
+            await _userRepository.CreateAsync(_mapper.Map<User>(model));
         }
 
         public async Task RemoveTokenAsync(UserModel model)
         {
-            var users = await _users.GetAsQueryable();
+            var users = await _userRepository.GetAsQueryable();
             UserModel user = _mapper.Map<UserModel>(users.FirstOrDefault(u => u.Login == model.Login));
 
             user.Token = null;
 
-            await _users.UpdateAsync(_mapper.Map<User>(user));
+            await _userRepository.UpdateAsync(_mapper.Map<User>(user));
         }
 
         public async Task<RefreshTokenModel> RefreshTokenAsync(string refreshToken)
         {
-            var users = await _users.GetAsQueryable();
+            var users = await _userRepository.GetAsQueryable();
             UserModel user = _mapper.Map<UserModel>(users
                 .Include(u => u.RefreshToken)
                 .FirstOrDefault(u => u.RefreshToken.Token == refreshToken));
@@ -88,14 +88,14 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             user = await _tokenCreator.CreateTokensForUserAsync(user);
 
-            await _users.UpdateAsync(_mapper.Map<User>(user));
+            await _userRepository.UpdateAsync(_mapper.Map<User>(user));
 
             return user.RefreshToken;
         }
 
         public async Task AddOrderAsync(int id, OrderModel order)
         {
-            var users = await _users.GetAsQueryable();
+            var users = await _userRepository.GetAsQueryable();
             UserModel user = _mapper.Map<UserModel>(users
                 .Include(u => u.Orders)
                 .FirstOrDefault(u => u.Id == id));
@@ -107,7 +107,21 @@ namespace CarRentalSystem.Infrastructure.InternalServices
 
             user.Orders.Add(order);
 
-            await _users.UpdateAsync(_mapper.Map<User>(user));
+            await _userRepository.UpdateAsync(_mapper.Map<User>(user));
+        }
+
+        public async Task DeleteUserAsync(int id)
+        {
+            await _userRepository.RemoveAsync(await _userRepository.FindByIdAsync(id));
+        }
+
+        public async Task<IQueryable<UserModel>> GetAllAdminsAsync()
+        {
+            var users = await _userRepository.GetAsQueryable();
+
+            return users
+                .Where(user => user.Role == Policy.Administrator)
+                .Select(user => _mapper.Map<UserModel>(user));
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

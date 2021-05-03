@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CarRental.Controllers.Admin
 {
-    [Authorize(Policy = Policy.Administrator)]
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class AdminPointOfRentalController : ControllerBase
@@ -25,6 +25,7 @@ namespace CarRental.Controllers.Admin
 
         [HttpGet]
         [Route("getPoint/{id}")]
+        [Authorize(Policy = Policy.OwnerOrAdministrator)]
         public async Task<IActionResult> GetPointAsync([FromRoute] int id)
         {
             PointOfRentalModel point = await _adminPointService.GetPointAsync(id);
@@ -34,6 +35,7 @@ namespace CarRental.Controllers.Admin
 
         [HttpPost]
         [Route("addPoint")]
+        [Authorize(Policy = Policy.AdministratorOwner)]
         public async Task<IActionResult> AddPointAsync([FromBody] PointOfRentalViewModel addablePoint)
         {
             await _adminPointService.AddPointAsync(_mapper.Map<PointOfRentalModel>(addablePoint));
@@ -43,6 +45,7 @@ namespace CarRental.Controllers.Admin
 
         [HttpPatch]
         [Route("modifyPoint/{id}")]
+        [Authorize(Policy = Policy.AdministratorOwner)]
         public async Task<IActionResult> ModifyPointAsync([FromRoute] int id, [FromBody] PointOfRentalViewModel modifiedPoint)
         {
             await _adminPointService.ModifyPointAsync(id, _mapper.Map<PointOfRentalModel>(modifiedPoint));

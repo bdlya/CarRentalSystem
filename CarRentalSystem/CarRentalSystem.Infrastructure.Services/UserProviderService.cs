@@ -4,6 +4,7 @@ using CarRentalSystem.Infrastructure.Data.Models.Base;
 using CarRentalSystem.Services.Interfaces;
 using CarRentalSystem.Services.InternalInterfaces;
 using System.Threading.Tasks;
+using CarRentalSystem.Infrastructure.Data.Policies;
 
 namespace CarRentalSystem.Infrastructure.Services
 {
@@ -26,7 +27,7 @@ namespace CarRentalSystem.Infrastructure.Services
         public async Task RegisterUserAsync(RegistrationModel model)
         {
             UserModel userModel = _mapper.Map<UserModel>(model);
-            await _userService.RegisterUserAsync(userModel, model.Password);
+            await _userService.RegisterUserAsync(userModel, model.Password, Policy.Customer);
         }
 
         public async Task RemoveTokenAsync(UserModel viewModel)

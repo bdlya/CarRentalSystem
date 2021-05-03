@@ -1,7 +1,9 @@
 ﻿using CarRentalSystem.Domain.Entities;
+using CarRentalSystem.Infrastructure.Data.Policies;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CarRentalSystem.Infrastructure.Data
 {
@@ -27,72 +29,35 @@ namespace CarRentalSystem.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            CreateTestDataBase(modelBuilder);
+            CreateInitialDataBase(modelBuilder);
         }
 
-        private void CreateTestDataBase(ModelBuilder modelBuilder)
+        private static void CreateInitialDataBase(ModelBuilder modelBuilder)
         {
-            PointOfRental firstPoint = new PointOfRental
+            const string adminOwnerPassword = "HnEjhGC5";
+            CreatePasswordHash(adminOwnerPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+            User adminOwner = new User
             {
                 Id = 1,
-                Name = "First Point",
-                Country = "Belarus",
-                City = "Minsk",
-                Address = "First Address"
+                Name = "Admin",
+                SurName = "Owner",
+                Login = "adminOwner",
+                Role = Policy.AdministratorOwner,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
             };
 
-            Car nissan = new Car
-            {
-                Id = 1,
-                Brand = "Nissan",
-                NumberOfSeats = 2,
-                AverageFuelConsumption = 100,
-                CostPerHour = 1000,
-                TransmissionType = "Mechanic",
-                PointOfRentalId = 1,
-            };
+            modelBuilder
+                .Entity<User>()
+                .HasData(adminOwner);
+        }
 
-            Car toyota = new Car
-            {
-                Id = 2,
-                Brand = "Toyota",
-                NumberOfSeats = 4,
-                AverageFuelConsumption = 200,
-                CostPerHour = 500,
-                TransmissionType = "Automatic",
-                PointOfRentalId = 1,
-            };
-
-            AdditionalService babyChair = new AdditionalService
-            {
-                Id = 1,
-                Name = "Baby chair",
-                Cost = 20
-            };
-
-            AdditionalService fullTank = new AdditionalService
-            {
-                Id = 2,
-                Name = "Fill a full tank",
-                Cost = 100
-            };
-
-            modelBuilder.Entity<PointOfRental>().HasData(new List<PointOfRental>
-            {
-                firstPoint
-            });
-
-            modelBuilder.Entity<Car>().HasData(new List<Car>
-            {
-                nissan,
-                toyota
-            });
-
-            modelBuilder.Entity<AdditionalService>().HasData(new List<AdditionalService>
-            {
-                babyChair,
-                fullTank
-            });
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using var hmac = new HMACSHA512();
+            passwordSalt = hmac.Key;
+            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         }
     }
 }
