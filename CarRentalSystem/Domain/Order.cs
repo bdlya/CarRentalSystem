@@ -18,6 +18,8 @@ namespace CarRentalSystem.Domain.Entities
 
         public DateTime EndDate { get; set; }
 
+        public bool IsActive { get; set; }
+
         public List<OrderAdditionalService> OrderAdditionalServices { get; set; }
 
         public int TotalCost { get; set; }

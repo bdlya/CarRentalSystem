@@ -10,5 +10,6 @@ namespace CarRentalSystem.Services.Interfaces
         Task ChooseDatesAsync(int orderId, BookingDatesModel bookingDates);
         Task ChooseAdditionalServicesAsync(int orderId, List<int> additionalServicesIds);
         Task<OrderModel> GetSummaryAsync(int orderId);
+        Task DeleteOrderAsync(int orderId);
     }
 }

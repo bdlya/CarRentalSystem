@@ -32,11 +32,11 @@ namespace CarRental.Controllers
 
             SetRefreshTokenCookie(userViewModel.RefreshToken.Token);
 
-            return Ok(new {Message = $"Welcome, {userViewModel.Name} your current role is {userViewModel.Role} and here your token for postman test: {userViewModel.Token}"});
+            return Created("",new {Message = $"Welcome, {userViewModel.Name} your current role is {userViewModel.Role} and here your token for postman test: {userViewModel.Token}"});
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpPatch]
         [Route("refresh-token")]
         public async Task<IActionResult> RefreshToken()
         {
@@ -46,7 +46,7 @@ namespace CarRental.Controllers
 
             SetRefreshTokenCookie(newRefreshToken.Token);
 
-            return Ok(new {Message = "Token was refreshed"});
+            return NoContent();
         }
 
         private void SetRefreshTokenCookie(string token)

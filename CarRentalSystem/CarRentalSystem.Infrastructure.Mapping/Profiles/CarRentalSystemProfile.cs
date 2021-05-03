@@ -30,6 +30,7 @@ namespace CarRentalSystem.Infrastructure.Mapping.Profiles
             CreateMap<AuthenticationViewModel, AuthenticationModel>().ReverseMap();
             CreateMap<PointSearchViewModel, PointSearchModel>().ReverseMap();
             CreateMap<BookingDatesViewModel, BookingDatesModel>().ReverseMap();
+            CreateMap<OrderSearchViewModel, OrderSearchModel>().ReverseMap();
 
             CreateMap<RegistrationModel, UserModel>();
         }

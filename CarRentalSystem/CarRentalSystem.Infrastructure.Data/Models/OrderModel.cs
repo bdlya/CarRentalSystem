@@ -18,6 +18,8 @@ namespace CarRentalSystem.Infrastructure.Data.Models
 
         public DateTime EndDate { get; set; }
 
+        public bool IsActive { get; set; }
+
         public List<OrderAdditionalServiceModel> OrderAdditionalServices { get; set; }
 
         public int TotalCost { get; set; }

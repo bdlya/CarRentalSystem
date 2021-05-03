@@ -42,13 +42,13 @@ namespace CarRental.Controllers.Admin
             return Created("",new {Message = "Additional service was successfully added"});
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("modifyService/{id}")]
         public async Task<IActionResult> ModifyServiceAsync([FromRoute] int id, [FromBody] AdditionalServiceViewModel additionalService)
         {
             await _additionalService.ModifyAdditionalServiceAsync(id, _mapper.Map<AdditionalServiceModel>(additionalService));
 
-            return Ok(new {Message = "Additional service was successfully modified"});
+            return NoContent();
         }
     }
 }
