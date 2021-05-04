@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CarRentalSystem.Application.Data.Models.Main;
 using CarRentalSystem.Application.Data.Models.Support;
 
-namespace CarRentalSystem.Application.InternalServices.Interfaces.Main
+namespace CarRentalSystem.Application.InternalInterfaces.Main
 {
     public interface IUserService
     {

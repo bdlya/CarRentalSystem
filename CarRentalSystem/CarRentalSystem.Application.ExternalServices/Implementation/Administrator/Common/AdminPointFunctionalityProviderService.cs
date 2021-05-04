@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using CarRentalSystem.Application.Data.Models.Main;
-using CarRentalSystem.Application.ExternalServices.Interfaces.Administrator.Common;
-using CarRentalSystem.Application.InternalServices.Interfaces.Main;
+﻿using CarRentalSystem.Application.Data.Models.Main;
+using CarRentalSystem.Application.ExternalInterfaces.Administrator.Common;
+using CarRentalSystem.Application.InternalInterfaces.Main;
+using System.Threading.Tasks;
 
 namespace CarRentalSystem.Application.ExternalServices.Implementation.Administrator.Common
 {

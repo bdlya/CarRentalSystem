@@ -1,7 +1,7 @@
 ﻿using CarRentalSystem.Application.Data.Models.Main;
 using CarRentalSystem.Application.Data.Models.Support;
-using CarRentalSystem.Application.ExternalServices.Interfaces.User;
-using CarRentalSystem.Application.InternalServices.Interfaces.Main;
+using CarRentalSystem.Application.ExternalInterfaces.User;
+using CarRentalSystem.Application.InternalInterfaces.Main;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

@@ -5,8 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CarRentalSystem.Application.Data\CarRentalSystem.Application.Data.csproj" />
-    <ProjectReference Include="..\CarRentalSystem.Infrastructure.InternalServices\CarRentalSystem.Application.InternalServices.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.Application.ExternalInterfaces\CarRentalSystem.Application.ExternalInterfaces.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.Application.InternalInterfaces\CarRentalSystem.Application.InternalInterfaces.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.Infrastructure.Data\CarRentalSystem.Infrastructure.Data.csproj" />
   </ItemGroup>
 
 </Project>

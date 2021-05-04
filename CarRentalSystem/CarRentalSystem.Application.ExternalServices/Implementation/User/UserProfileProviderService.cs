@@ -1,6 +1,6 @@
 ﻿using CarRentalSystem.Application.Data.Models.Main;
-using CarRentalSystem.Application.ExternalServices.Interfaces.User;
-using CarRentalSystem.Application.InternalServices.Interfaces.Main;
+using CarRentalSystem.Application.ExternalInterfaces.User;
+using CarRentalSystem.Application.InternalInterfaces.Main;
 using System.Threading.Tasks;
 
 namespace CarRentalSystem.Application.ExternalServices.Implementation.User

@@ -1,7 +1,7 @@
-﻿using CarRentalSystem.Application.ExternalServices.Interfaces.Administrator.Moderator;
+﻿using CarRentalSystem.Application.Data.Models.Main;
+using CarRentalSystem.Application.ExternalInterfaces.Administrator.Moderator;
+using CarRentalSystem.Application.InternalInterfaces.Main;
 using System.Threading.Tasks;
-using CarRentalSystem.Application.Data.Models.Main;
-using CarRentalSystem.Application.InternalServices.Interfaces.Main;
 
 namespace CarRentalSystem.Application.ExternalServices.Implementation.Administrator.Moderator
 {

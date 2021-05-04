@@ -1,10 +1,10 @@
 ﻿using CarRentalSystem.Application.Data.Models.Main;
 using CarRentalSystem.Application.Data.Models.Support;
-using CarRentalSystem.Application.ExternalServices.Interfaces.User;
-using CarRentalSystem.Application.InternalServices.Interfaces.Main;
+using CarRentalSystem.Application.ExternalInterfaces.User;
+using CarRentalSystem.Application.InternalInterfaces.Main;
+using CarRentalSystem.Application.InternalInterfaces.Support;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CarRentalSystem.Application.InternalServices.Interfaces.Support;
 
 namespace CarRentalSystem.Application.ExternalServices.Implementation.User
 {

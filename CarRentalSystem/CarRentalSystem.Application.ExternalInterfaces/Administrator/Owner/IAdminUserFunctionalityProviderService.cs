@@ -3,7 +3,7 @@ using CarRentalSystem.Application.Data.Models.Support;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CarRentalSystem.Application.ExternalServices.Interfaces.Administrator.Owner
+namespace CarRentalSystem.Application.ExternalInterfaces.Administrator.Owner
 {
     public interface IAdminUserFunctionalityProviderService
     {

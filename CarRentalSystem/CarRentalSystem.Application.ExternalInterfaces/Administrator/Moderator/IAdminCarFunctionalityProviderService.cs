@@ -1,7 +1,7 @@
 ﻿using CarRentalSystem.Application.Data.Models.Main;
 using System.Threading.Tasks;
 
-namespace CarRentalSystem.Application.ExternalServices.Interfaces.Administrator.Moderator
+namespace CarRentalSystem.Application.ExternalInterfaces.Administrator.Moderator
 {
     public interface IAdminCarFunctionalityProviderService
     {

@@ -1,5 +1,5 @@
-﻿using CarRentalSystem.Application.InternalServices.Implementation.Support;
-using CarRentalSystem.Application.InternalServices.Interfaces.Support;
+﻿using CarRentalSystem.Application.InternalInterfaces.Support;
+using CarRentalSystem.Application.InternalServices.Implementation.Support;
 using CarRentalSystem.Infrastructure.Data.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;

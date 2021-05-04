@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CarRentalSystem.Application.Data\CarRentalSystem.Application.Data.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.Application.InternalInterfaces\CarRentalSystem.Application.InternalInterfaces.csproj" />
     <ProjectReference Include="..\CarRentalSystem.Domain.Interfaces\CarRentalSystem.Domain.Interfaces.csproj" />
     <ProjectReference Include="..\CarRentalSystem.Infrastructure.Data\CarRentalSystem.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\CarRentalSystem.Infrastructure.ExceptionHandling\CarRentalSystem.Infrastructure.ExceptionHandling.csproj" />

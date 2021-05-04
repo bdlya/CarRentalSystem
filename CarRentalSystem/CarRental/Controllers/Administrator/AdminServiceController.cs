@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using CarRentalSystem.Application.Data.Models.Main;
-using CarRentalSystem.Application.ExternalServices.Interfaces.Administrator.Moderator;
+using CarRentalSystem.Application.ExternalInterfaces.Administrator.Moderator;
 using CarRentalSystem.Infrastructure.Data.Authorization;
+using CarRentalSystem.Presentation.Data.ViewModels.Main;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using CarRentalSystem.Presentation.Data.ViewModels.Main;
 
 namespace CarRentalSystem.Presentation.API.Controllers.Administrator
 {

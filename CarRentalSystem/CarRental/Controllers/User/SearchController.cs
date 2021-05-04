@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CarRentalSystem.Application.Data.Models.Support;
-using CarRentalSystem.Application.ExternalServices.Interfaces.User;
+using CarRentalSystem.Application.ExternalInterfaces.User;
 using CarRentalSystem.Infrastructure.Data.Authorization;
 using CarRentalSystem.Presentation.Data.ViewModels.Main;
 using CarRentalSystem.Presentation.Data.ViewModels.Support;

@@ -2,7 +2,7 @@
 using CarRentalSystem.Application.Data.Models.Main;
 
 
-namespace CarRentalSystem.Application.InternalServices.Interfaces.Main
+namespace CarRentalSystem.Application.InternalInterfaces.Main
 {
     public interface ICarService
     {

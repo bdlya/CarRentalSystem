@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CarRentalSystem.Application.Data.Models.Support;
-using CarRentalSystem.Application.ExternalServices.Interfaces.Common;
+using CarRentalSystem.Application.ExternalInterfaces.Common;
 using CarRentalSystem.Presentation.Data.ViewModels.Main;
 using CarRentalSystem.Presentation.Data.ViewModels.Support;
 using Microsoft.AspNetCore.Authorization;

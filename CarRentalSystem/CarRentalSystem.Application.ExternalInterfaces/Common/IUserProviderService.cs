@@ -2,7 +2,7 @@
 using CarRentalSystem.Application.Data.Models.Main;
 using CarRentalSystem.Application.Data.Models.Support;
 
-namespace CarRentalSystem.Application.ExternalServices.Interfaces.Common
+namespace CarRentalSystem.Application.ExternalInterfaces.Common
 {
     public interface IUserProviderService
     {

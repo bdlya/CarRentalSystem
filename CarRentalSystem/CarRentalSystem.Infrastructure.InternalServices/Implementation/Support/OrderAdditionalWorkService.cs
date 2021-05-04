@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CarRentalSystem.Application.Data.Models.Main;
 using CarRentalSystem.Application.Data.Models.Support;
-using CarRentalSystem.Application.InternalServices.Interfaces.Support;
+using CarRentalSystem.Application.InternalInterfaces.Support;
 using CarRentalSystem.Domain.Entities.Support;
 using CarRentalSystem.Domain.Interfaces.Repository;
 using System.Collections.Generic;
