@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CarRentalSystem.Infrastructure.Data\CarRentalSystem.Infrastructure.Data.csproj" />
-    <ProjectReference Include="..\CarRentalSystem.View.ViewModels\CarRentalSystem.View.ViewModels.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.Application.Data\CarRentalSystem.Application.Data.csproj" />
+    <ProjectReference Include="..\CarRentalSystem.Presentation.Data\CarRentalSystem.Presentation.Data.csproj" />
     <ProjectReference Include="..\Domain\CarRentalSystem.Domain.Entities.csproj" />
   </ItemGroup>
 

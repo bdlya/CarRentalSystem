@@ -6,13 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.14" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CarRentalSystem.Domain.Interfaces\CarRentalSystem.Domain.Interfaces.csproj" />
-    <ProjectReference Include="..\Domain\CarRentalSystem.Domain.Entities.csproj" />
   </ItemGroup>
 
 </Project>

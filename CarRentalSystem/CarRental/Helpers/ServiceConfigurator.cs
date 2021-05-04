@@ -1,10 +1,20 @@
-﻿using CarRentalSystem.Infrastructure.InternalServices;
-using CarRentalSystem.Infrastructure.Services;
-using CarRentalSystem.Services.Interfaces;
-using CarRentalSystem.Services.InternalInterfaces;
+﻿using CarRentalSystem.Application.ExternalInterfaces.Administrator.Common;
+using CarRentalSystem.Application.ExternalInterfaces.Administrator.Moderator;
+using CarRentalSystem.Application.ExternalInterfaces.Administrator.Owner;
+using CarRentalSystem.Application.ExternalInterfaces.Common;
+using CarRentalSystem.Application.ExternalInterfaces.User;
+using CarRentalSystem.Application.ExternalServices.Implementation.Administrator.Common;
+using CarRentalSystem.Application.ExternalServices.Implementation.Administrator.Moderator;
+using CarRentalSystem.Application.ExternalServices.Implementation.Administrator.Owner;
+using CarRentalSystem.Application.ExternalServices.Implementation.Common;
+using CarRentalSystem.Application.ExternalServices.Implementation.User;
+using CarRentalSystem.Application.InternalInterfaces.Main;
+using CarRentalSystem.Application.InternalInterfaces.Support;
+using CarRentalSystem.Application.InternalServices.Implementation.Main;
+using CarRentalSystem.Application.InternalServices.Implementation.Support;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CarRental.Helpers
+namespace CarRentalSystem.Presentation.API.Helpers
 {
     public static class ServiceConfigurator
     {
@@ -16,8 +26,8 @@ namespace CarRental.Helpers
             services.AddScoped<IAdminPointFunctionalityProviderService, AdminPointFunctionalityProviderService>();
             services.AddScoped<IPointService, PointService>();
 
-            services.AddScoped<IAdminServiceFunctionalityProviderService, AdminServiceFunctionalityProviderService>();
-            services.AddScoped<IAdditionalService, AdditionalServicesService>();
+            services.AddScoped<IAdminServiceFunctionalityProviderService, AdminWorkFunctionalityProviderService>();
+            services.AddScoped<IAdditionalWorkService, AdditionalWorkService>();
 
             services.AddScoped<IUserProviderService, UserProviderService>();
             services.AddScoped<IUserService, UserService>();
@@ -26,7 +36,7 @@ namespace CarRental.Helpers
 
             services.AddScoped<IBookingProviderService, BookingProviderService>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IOrderAdditionalService, OrderAdditionalServicesService>();
+            services.AddScoped<IOrderAdditionalWorkService, OrderAdditionalWorkService>();
 
             services.AddScoped<IUserProfileProviderService, UserProfileProviderService>();
 

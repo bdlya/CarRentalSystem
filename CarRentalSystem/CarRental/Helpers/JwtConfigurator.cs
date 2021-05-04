@@ -1,13 +1,13 @@
-﻿using System.Text;
-using CarRentalSystem.Infrastructure.Data.Policies;
-using CarRentalSystem.Infrastructure.InternalServices;
-using CarRentalSystem.Services.InternalInterfaces;
+﻿using CarRentalSystem.Application.InternalInterfaces.Support;
+using CarRentalSystem.Application.InternalServices.Implementation.Support;
+using CarRentalSystem.Infrastructure.Data.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
-namespace CarRental.Helpers
+namespace CarRentalSystem.Presentation.API.Helpers
 {
     public static class JwtConfigurator
     {

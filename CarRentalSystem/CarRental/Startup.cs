@@ -1,15 +1,16 @@
-using CarRental.Helpers;
-using CarRentalSystem.Domain.Interfaces;
-using CarRentalSystem.Infrastructure.Data;
-using CarRentalSystem.Infrastructure.ExceptionHandling;
+using CarRentalSystem.Domain.Interfaces.Repository;
+using CarRentalSystem.Infrastructure.ExceptionHandling.Handling;
 using CarRentalSystem.Infrastructure.Mapping.Profiles;
+using CarRentalSystem.Persistence.Data.Context;
+using CarRentalSystem.Persistence.Services.Implementations.Repository;
+using CarRentalSystem.Presentation.API.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CarRental
+namespace CarRentalSystem.Presentation.API
 {
     /// <summary>
     /// Configures services and the application's request pipeline.
@@ -44,10 +45,10 @@ namespace CarRental
             services.AddScoped<DbContext, CarRentalSystemContext>();
             services.AddDbContext<CarRentalSystemContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    migrationOptions => migrationOptions.MigrationsAssembly("CarRentalSystem.Infrastructure.Data"))
+                    migrationOptions => migrationOptions.MigrationsAssembly("CarRentalSystem.Persistence.Data"))
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
-            services.AddScoped(typeof(IRentalRepository<>), typeof(CarRentalSystemGenericRepository<>));
+            services.AddScoped(typeof(ICarRentalSystemRepository<>), typeof(CarRentalSystemRepository<>));
 
             JwtConfigurator.Configure(Configuration, services);
             ServiceConfigurator.ConfigureProjectServices(services);
