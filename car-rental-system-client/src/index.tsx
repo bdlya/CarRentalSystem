@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { routing } from './constants/Routing'
+import { routes } from './routes'
 
 ReactDOM.render(
-  routing,
+  routes,
   document.getElementById('root')
 );
 
