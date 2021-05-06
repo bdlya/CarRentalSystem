@@ -1,6 +1,6 @@
 import React from "react"
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom"
-import { authenticationService } from '../../utils/services/starting/authentication.service'
+import { authenticationService } from '../pages/common/authorization/services/authentication.service'
 
 type RouteComponent = React.FunctionComponent<RouteComponentProps<{}>> | React.ComponentClass<any>
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import Header from '../../components/common/Header';
-import { authenticationService } from '../../utils/services/starting/authentication.service';
+import { authenticationService } from '../services/authentication.service';
 import Card from '@material-ui/core/Card';
 import { Button, CardActions, CardContent, TextField } from '@material-ui/core';
 import { RouteComponentProps } from 'react-router-dom';
@@ -39,7 +38,6 @@ export default class Authorization extends React.Component<RouteComponentProps<F
     render(){
         return (
             <React.Fragment>
-                <Header />
                 <div>
                     Sign in
                 </div>

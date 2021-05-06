@@ -1,8 +1,8 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
-import { User } from '../../types/User';
-import { UserRole } from '../../types/UserRole';
-import { authenticationService } from '../../utils/services/starting/authentication.service';
+import { User } from '../../../../types/User';
+import { UserRole } from '../../../../types/UserRole';
+import { authenticationService } from '../../authorization/services/authentication.service';
 import { RouteComponentProps } from 'react-router-dom';
 
 type HomeState = {

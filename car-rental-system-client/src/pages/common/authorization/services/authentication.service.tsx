@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { BehaviorSubject } from 'rxjs';
-import { User } from '../../../types/User';
+import { User } from '../../../../types/User';
 
 const currentUserSubject : BehaviorSubject<User | null> = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser') || 'null'));
 const axios = require('axios');
