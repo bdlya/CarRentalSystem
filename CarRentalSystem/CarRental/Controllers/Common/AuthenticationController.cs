@@ -27,13 +27,13 @@ namespace CarRentalSystem.Presentation.API.Controllers.Common
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> AuthenticateAsync([FromBody] AuthenticationViewModel model)
+        public async Task<UserViewModel> AuthenticateAsync([FromBody] AuthenticationViewModel model)
         {
             UserViewModel userViewModel = _mapper.Map<UserViewModel>(await _userProviderService.AuthenticateAsync(_mapper.Map<AuthenticationModel>(model)));
 
-            SetRefreshTokenCookie(userViewModel.RefreshToken.Token);
+            //SetRefreshTokenCookie(userViewModel.RefreshToken.Token);
 
-            return Created("",new {Message = $"Welcome, {userViewModel.Name} your current role is {userViewModel.Role} and here your token for postman test: {userViewModel.Token}"});
+            return userViewModel;
         }
 
         [Authorize]

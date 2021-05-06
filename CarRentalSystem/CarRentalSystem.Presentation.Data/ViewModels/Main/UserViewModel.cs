@@ -12,15 +12,9 @@ namespace CarRentalSystem.Presentation.Data.ViewModels.Main
 
         public string Login { get; set; }
 
-        public byte[] PasswordHash { get; set; }
-
-        public byte[] PasswordSalt { get; set; }
-
         public string Role { get; set; }
 
         public string Token { get; set; }
-
-        public int RefreshTokenId { get; set; }
 
         public RefreshTokenViewModel RefreshToken { get; set; }
 
