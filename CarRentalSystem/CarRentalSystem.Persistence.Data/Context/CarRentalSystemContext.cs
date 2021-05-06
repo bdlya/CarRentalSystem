@@ -43,7 +43,7 @@ namespace CarRentalSystem.Persistence.Data.Context
                 Name = "Admin",
                 SurName = "Owner",
                 Login = "adminOwner",
-                Role = "AdminOwner",
+                Role = "AdministratorOwner",
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt
             };

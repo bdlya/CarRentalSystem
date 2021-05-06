@@ -70,6 +70,11 @@ namespace CarRentalSystem.Presentation.API
                 endpoint.SwaggerEndpoint("/swagger/v1/swagger.json", "Car rental API");
             });
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
             // Adds middleware that redirects http requests to http.
             app.UseHttpsRedirection();
 
