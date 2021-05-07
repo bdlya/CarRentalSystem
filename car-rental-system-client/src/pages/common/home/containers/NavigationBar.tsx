@@ -27,7 +27,7 @@ export default class NavigationBar extends React.Component<UserState>{
     render(){
         const {currentUser, isAdmin, isAdminOwner} = this.state;
         return(
-            <div>
+            <div style={{margin: "100px"}}>
                 {currentUser &&
                 <AppBar>
                     <Toolbar>

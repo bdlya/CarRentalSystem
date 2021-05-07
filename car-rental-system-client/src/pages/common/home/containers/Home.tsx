@@ -4,6 +4,7 @@ import { UserRole } from '../../../../types/UserRole';
 import { authenticationService } from '../../authorization/services/authentication.service';
 import { RouteComponentProps } from 'react-router-dom';
 import NavigationBar from "./NavigationBar"
+import HomeInfo from "./HomeInfo"
 
 export interface UserState extends RouteComponentProps {
     currentUser: User | null,
@@ -46,16 +47,25 @@ export default class Home extends React.Component<RouteComponentProps>{
         const currentUser = this.state.currentUser;
         return (
             <div>
-                {currentUser && 
-                    <NavigationBar 
+            {currentUser &&
+            <React.Fragment>
+                <NavigationBar 
                     currentUser={this.state.currentUser} 
                     isAdmin = {this.state.isAdmin} 
                     isAdminOwner = {this.state.isAdminOwner}
                     history = {this.state.history}
                     location = {this.state.location}
                     match = {this.state.match}/>
-                }       
-            </div>
+                <HomeInfo
+                    currentUser={this.state.currentUser} 
+                    isAdmin = {this.state.isAdmin} 
+                    isAdminOwner = {this.state.isAdminOwner}
+                    history = {this.state.history}
+                    location = {this.state.location}
+                    match = {this.state.match}/>
+            </React.Fragment>
+            }
+            </div> 
         )
     }
 }
