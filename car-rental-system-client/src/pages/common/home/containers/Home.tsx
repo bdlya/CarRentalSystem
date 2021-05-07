@@ -1,57 +1,59 @@
-import { Button } from '@material-ui/core';
 import React from 'react';
 import { User } from '../../../../types/User';
 import { UserRole } from '../../../../types/UserRole';
 import { authenticationService } from '../../authorization/services/authentication.service';
 import { RouteComponentProps } from 'react-router-dom';
+import NavigationBar from "./NavigationBar"
 
-type HomeState = {
+export interface UserState extends RouteComponentProps {
     currentUser: User | null,
     isAdmin: boolean,
     isAdminOwner: boolean,
 }
 
 export default class Home extends React.Component<RouteComponentProps>{
-    constructor(props: RouteComponentProps){
-        super(props);
 
-        this.handleOnClick = this.handleOnClick.bind(this);
-    }
+    _isMounted: boolean = false;
 
-    state: HomeState = {
+    state: UserState = {
         currentUser: null,
         isAdmin: false,
         isAdminOwner: false,
-    }
-
-    handleOnClick(){
-        authenticationService.logout();
-        this.props.history.push("/authorization")
+        history: this.props.history,
+        location: this.props.location,
+        match: this.props.match
     }
 
     componentDidMount(){
-        authenticationService.currentUser.subscribe(user => this.setState({
-            currentUser: user,
-            isAdmin: user && user.role === UserRole.Administrator,
-            isAdminOwner: user && user.role === UserRole.AdministratorOwner
-        }))
+        this._isMounted = true;
+
+        authenticationService.currentUser.subscribe(user => {
+            if(this._isMounted){
+                this.setState({
+                    currentUser: user,
+                    isAdmin: user && user.role === UserRole.Administrator,
+                    isAdminOwner: user && user.role === UserRole.AdministratorOwner
+                })
+            }
+        })
+    }
+
+    componentWillUnmount(){
+       this._isMounted = false;
     }
 
     render(){
-        const {currentUser, isAdmin, isAdminOwner} = this.state;
+        const currentUser = this.state.currentUser;
         return (
             <div>
                 {currentUser && 
-                    <div>
-                        <p>Hello user</p>
-                        {isAdmin && <p>admin</p>}
-                        {isAdminOwner && <p>adminOwner</p>}
-                        <div>
-                            <Button onClick={this.handleOnClick}>
-                                Log out
-                            </Button>
-                        </div>
-                    </div>
+                    <NavigationBar 
+                    currentUser={this.state.currentUser} 
+                    isAdmin = {this.state.isAdmin} 
+                    isAdminOwner = {this.state.isAdminOwner}
+                    history = {this.state.history}
+                    location = {this.state.location}
+                    match = {this.state.match}/>
                 }       
             </div>
         )
