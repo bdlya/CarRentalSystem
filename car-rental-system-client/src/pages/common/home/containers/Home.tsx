@@ -5,6 +5,7 @@ import { authenticationService } from '../../authorization/services/authenticati
 import { RouteComponentProps } from 'react-router-dom';
 import NavigationBar from "./NavigationBar"
 import HomeInfo from "./HomeInfo"
+import { Footer } from '../components/Footer';
 
 export interface UserState extends RouteComponentProps {
     currentUser: User | null,
@@ -63,6 +64,7 @@ export default class Home extends React.Component<RouteComponentProps>{
                     history = {this.state.history}
                     location = {this.state.location}
                     match = {this.state.match}/>
+                <Footer />
             </React.Fragment>
             }
             </div> 
