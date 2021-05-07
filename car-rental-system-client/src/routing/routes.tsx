@@ -9,6 +9,8 @@ import UserManagement from "../pages/admin/adminowner/containers/UserManagement"
 import PointManagement from "../pages/admin/adminowner/containers/PointManagement";
 import CarManagement from "../pages/admin/adminManager/containers/CarManagement";
 import AdditionalWorkManagement from "../pages/admin/adminManager/containers/AdditionalWorkManagement";
+import Booking from '../pages/user/containers/Booking'
+import Profile from "../pages/user/containers/Profile";
 
 export const routes = (
     <Router>
@@ -20,5 +22,7 @@ export const routes = (
         <PrivateRoute exact path ="/pointManagement" roles={[UserRole.AdministratorOwner]} component = { PointManagement } />
         <PrivateRoute exact path ="/carManagement" roles={[UserRole.Administrator]} component = { CarManagement } />
         <PrivateRoute exact path ="/additionalWorkManagement" roles={[UserRole.Administrator]} component = { AdditionalWorkManagement } />
+        <PrivateRoute exact path ="/booking" roles={[UserRole.User]} component = { Booking } />
+        <PrivateRoute exact path ="/profile" roles={[UserRole.User]} component = { Profile } />
     </Router>
 )

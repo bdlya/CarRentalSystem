@@ -53,8 +53,8 @@ export default class NavigationBar extends React.Component<UserState>{
                     }
                     {(!isAdminOwner && !isAdmin) &&
                     <div>
-                    <Button>Booking</Button>
-                    <Button>Profile</Button>
+                    <Button onClick={() => this.nextPath("/booking")}>Booking</Button>
+                    <Button onClick={() => this.nextPath("/profile")}>Profile</Button>
                     </div>
                     }
                     <Button onClick={this.handleOnLogout}>
