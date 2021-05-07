@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router'
 import { Layout } from '../../../common/home/components/Layout'
 
 export default class PointManagement extends React.Component<RouteComponentProps>{
-    srender(){
+    render(){
         return(
             <React.Fragment>
                <Layout props={this.props}>
