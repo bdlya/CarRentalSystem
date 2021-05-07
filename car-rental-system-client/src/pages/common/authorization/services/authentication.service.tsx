@@ -9,7 +9,6 @@ export const authenticationService = {
     login,
     logout,
     getCurrentUserValue,
-    currentUser: currentUserSubject.asObservable()
 }
 
 function login(login: string, password: string, push: (path: string) => void){

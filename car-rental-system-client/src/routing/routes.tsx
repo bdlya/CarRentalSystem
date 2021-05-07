@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Registration from '../pages/common/registration/containers/Registration';
 import Authorization from '../pages/common/authorization/containers/Authorization';
 import Hello from '../pages/common/hello/containers/Hello';
-import Home from "../pages/common/home/containers/Home";
+import Home from "../pages/common/home/components/Home";
 import { PrivateRoute }  from './PrivateRoute'
 import { UserRole } from "../types/UserRole";
 import UserManagement from "../pages/admin/adminowner/containers/UserManagement";

@@ -1,10 +1,14 @@
 import { AppBar, Button, Toolbar } from "@material-ui/core";
 import React from "react"
-import { UserState } from './Home'
 import { authenticationService } from '../../authorization/services/authentication.service';
+import { RouteComponentProps } from "react-router";
+import { User } from "../../../../types/User";
+import { UserRole } from "../../../../types/UserRole";
+import { UserState } from '../../../../types/UserState';
 
-export default class NavigationBar extends React.Component<UserState>{
-    constructor(props: UserState){
+
+export default class NavigationBar extends React.Component<RouteComponentProps>{
+    constructor(props: RouteComponentProps){
         super(props);
 
         this.handleOnLogout = this.handleOnLogout.bind(this);
@@ -12,17 +16,26 @@ export default class NavigationBar extends React.Component<UserState>{
     }
 
     state: UserState = {
-        currentUser: this.props.currentUser,
-        isAdmin: this.props.isAdmin,
-        isAdminOwner: this.props.isAdminOwner,
-        history: this.props.history,
-        location: this.props.location,
-        match: this.props.match
+        currentUser: null,
+        isAdmin: false,
+        isAdminOwner: false,
+    }
+
+    componentDidMount(){
+        let user: User | null = authenticationService.getCurrentUserValue();
+        if(user){
+            this.setState({
+                currentUser: user,
+                isAdmin: user && user.role === UserRole.Administrator,
+                isAdminOwner: user && user.role === UserRole.AdministratorOwner
+            })
+
+        }
     }
 
     handleOnLogout(){
         authenticationService.logout();
-        this.state.history.push("/authorization")
+        this.nextPath("/authorization")
     }
 
     nextPath(path: string){

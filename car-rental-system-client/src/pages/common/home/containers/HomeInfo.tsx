@@ -1,14 +1,26 @@
 import React from 'react'
-import { UserState } from './Home';
+import { RouteComponentProps } from 'react-router';
+import { User } from '../../../../types/User';
+import { UserRole } from '../../../../types/UserRole';
+import { UserState } from '../../../../types/UserState';
+import { authenticationService } from '../../authorization/services/authentication.service';
 
-export default class HomeInfo extends React.Component<UserState>{
+export default class HomeInfo extends React.Component<RouteComponentProps>{
     state: UserState = {
-        currentUser: this.props.currentUser,
-        isAdmin: this.props.isAdmin,
-        isAdminOwner: this.props.isAdminOwner,
-        history: this.props.history,
-        location: this.props.location,
-        match: this.props.match
+        currentUser: null,
+        isAdmin: false,
+        isAdminOwner: false,
+    }
+
+    componentDidMount(){
+        let user: User | null = authenticationService.getCurrentUserValue();
+        if(user){
+            this.setState({
+                currentUser: user,
+                isAdmin: user && user.role === UserRole.Administrator,
+                isAdminOwner: user && user.role === UserRole.AdministratorOwner
+            })
+        }
     }
 
     render(){
