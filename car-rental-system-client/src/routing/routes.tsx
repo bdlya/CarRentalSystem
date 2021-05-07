@@ -7,6 +7,8 @@ import { PrivateRoute }  from './PrivateRoute'
 import { UserRole } from "../types/UserRole";
 import UserManagement from "../pages/admin/adminowner/containers/UserManagement";
 import PointManagement from "../pages/admin/adminowner/containers/PointManagement";
+import CarManagement from "../pages/admin/adminManager/containers/CarManagement";
+import AdditionalWorkManagement from "../pages/admin/adminManager/containers/AdditionalWorkManagement";
 
 export const routes = (
     <Router>
@@ -14,7 +16,9 @@ export const routes = (
         <Route exact path="/registration" component={ Registration } />
         <Route exact path="/authorization" component={ Authorization } />
         <PrivateRoute exact path="/home" roles={null} component={ Home } />
-        <PrivateRoute exact path ="/userManagement" roles={[UserRole.AdministratorOwner]} component = {UserManagement} />
-        <PrivateRoute exact path ="/pointManagement" roles={[UserRole.AdministratorOwner]} component = {PointManagement} />
+        <PrivateRoute exact path ="/userManagement" roles={[UserRole.AdministratorOwner]} component = { UserManagement } />
+        <PrivateRoute exact path ="/pointManagement" roles={[UserRole.AdministratorOwner]} component = { PointManagement } />
+        <PrivateRoute exact path ="/carManagement" roles={[UserRole.Administrator]} component = { CarManagement } />
+        <PrivateRoute exact path ="/additionalWorkManagement" roles={[UserRole.Administrator]} component = { AdditionalWorkManagement } />
     </Router>
 )

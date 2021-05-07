@@ -5,11 +5,11 @@ import { Footer } from '../../../common/home/components/Footer'
 import { UserState } from '../../../common/home/containers/Home'
 import NavigationBar from '../../../common/home/containers/NavigationBar'
 
-export default class PointManagement extends React.Component<RouteComponentProps>{
+export default class AdditionalWorkManagement extends React.Component<RouteComponentProps>{
     state: UserState = {
         currentUser: authenticationService.getCurrentUserValue(),
-        isAdmin: false,
-        isAdminOwner: true,
+        isAdmin: true,
+        isAdminOwner: false,
         history: this.props.history,
         location: this.props.location,
         match: this.props.match
@@ -25,7 +25,7 @@ export default class PointManagement extends React.Component<RouteComponentProps
                     history = {this.state.history}
                     location = {this.state.location}
                     match = {this.state.match} />
-                <p>PointManagement</p>
+                <p>AdditionalWorkManagement</p>
                 <Footer />
             </React.Fragment>
         )
