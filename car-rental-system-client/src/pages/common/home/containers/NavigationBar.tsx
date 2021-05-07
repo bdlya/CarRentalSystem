@@ -7,7 +7,8 @@ export default class NavigationBar extends React.Component<UserState>{
     constructor(props: UserState){
         super(props);
 
-        this.handleOnClick = this.handleOnClick.bind(this);
+        this.handleOnLogout = this.handleOnLogout.bind(this);
+        this.nextPath = this.nextPath.bind(this)
     }
 
     state: UserState = {
@@ -19,9 +20,13 @@ export default class NavigationBar extends React.Component<UserState>{
         match: this.props.match
     }
 
-    handleOnClick(){
+    handleOnLogout(){
         authenticationService.logout();
         this.state.history.push("/authorization")
+    }
+
+    nextPath(path: string){
+        this.props.history.push(path);
     }
 
     render(){
@@ -31,13 +36,13 @@ export default class NavigationBar extends React.Component<UserState>{
                 {currentUser &&
                 <AppBar>
                     <Toolbar>
-                    <Button>
+                    <Button onClick={() => this.nextPath("/home")}>
                         Home
                     </Button>
                     {isAdminOwner &&
                     <div>
-                    <Button>User Management</Button>
-                    <Button>Point Management</Button>
+                    <Button onClick={() => this.nextPath("/userManagement")}>User Management</Button>
+                    <Button onClick={() => this.nextPath("/pointManagement")}>Point Management</Button>
                     </div>
                     }
                     {isAdmin &&
@@ -52,7 +57,7 @@ export default class NavigationBar extends React.Component<UserState>{
                     <Button>Profile</Button>
                     </div>
                     }
-                    <Button onClick={this.handleOnClick}>
+                    <Button onClick={this.handleOnLogout}>
                         Logout
                     </Button>
                     </Toolbar>

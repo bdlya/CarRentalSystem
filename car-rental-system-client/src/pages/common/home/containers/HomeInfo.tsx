@@ -2,10 +2,6 @@ import React from 'react'
 import { UserState } from './Home';
 
 export default class HomeInfo extends React.Component<UserState>{
-    constructor(props: UserState){
-        super(props);
-    }
-
     state: UserState = {
         currentUser: this.props.currentUser,
         isAdmin: this.props.isAdmin,
