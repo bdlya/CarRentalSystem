@@ -31,8 +31,7 @@ export default class Authorization extends React.Component<RouteComponentProps<F
     }
 
     handleOnSubmit(){
-        authenticationService.login(this.state.login, this.state.password);
-        this.props.history.push("/home")
+        authenticationService.login(this.state.login, this.state.password, this.props.history.push);
     }
 
     render(){

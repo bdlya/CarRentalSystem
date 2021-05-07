@@ -12,7 +12,7 @@ export const authenticationService = {
     currentUser: currentUserSubject.asObservable()
 }
 
-function login(login: string, password: string){
+function login(login: string, password: string, push: (path: string) => void){
    axios.post('https://localhost:44337/authentication',{
        Login: login,
        Password: password
@@ -21,6 +21,7 @@ function login(login: string, password: string){
        const user: User = response.data;
        localStorage.setItem('currentUser', JSON.stringify(user));
        currentUserSubject.next(user);
+       push("/home")
    })
    .catch((error: string) =>{
        console.log(error)
@@ -33,6 +34,5 @@ function logout(){
 }
 
 function getCurrentUserValue(){
-    
     return currentUserSubject.value;
 }
