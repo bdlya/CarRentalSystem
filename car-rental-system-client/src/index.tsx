@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { routes } from './routing/routes'
+import 'fontsource-roboto';
 
 ReactDOM.render(
   routes,

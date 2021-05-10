@@ -1,0 +1,28 @@
+body{
+    margin: 0;
+}
+
+::selection{
+    color: #202020;
+    background-color: #b30000;
+}
+
+.backgroundContainer{
+    background-image: url('./assets/images/helloBackground.jpg');
+    background-size: cover;
+    position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+}
+
+.textContainer{
+    position: absolute; top: 20%;
+    color: #e0e0e0;
+    text-shadow: 2px 4px 3px #202020;
+    text-align: center;
+}
+
+.bottomTextContainer{
+    position: absolute; bottom: 2%; left: 48%;
+    color: #e0e0e0;
+    text-shadow: 2px 4px 3px #202020;
+    text-align: center;
+}
