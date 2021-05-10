@@ -6,6 +6,7 @@ using CarRentalSystem.Persistence.Services.Implementations.Repository;
 using CarRentalSystem.Presentation.API.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +53,10 @@ namespace CarRentalSystem.Presentation.API
 
             JwtConfigurator.Configure(Configuration, services);
             ServiceConfigurator.ConfigureProjectServices(services);
+
+            services.Configure<ApiBehaviorOptions>(apiBehaviorOptions =>
+                apiBehaviorOptions.InvalidModelStateResponseFactory = actionContext => 
+                    new BadRequestObjectResult(actionContext.ModelState));
         }
 
         /// <summary>
