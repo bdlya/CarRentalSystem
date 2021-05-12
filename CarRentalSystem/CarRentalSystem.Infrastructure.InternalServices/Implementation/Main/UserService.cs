@@ -51,7 +51,7 @@ namespace CarRentalSystem.Application.InternalServices.Implementation.Main
         public async Task RegisterUserAsync(UserModel model, string password, string role)
         {
             var users = await _userRepository.GetAsQueryable();
-            UserModel user = _mapper.Map<UserModel>(users.FirstOrDefault(u => u.Login == model.Login));
+            var user = users.FirstOrDefault(u => u.Login == model.Login);
 
             if (user != null)
             {
