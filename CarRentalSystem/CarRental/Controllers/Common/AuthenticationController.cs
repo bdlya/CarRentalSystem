@@ -27,13 +27,13 @@ namespace CarRentalSystem.Presentation.API.Controllers.Common
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<UserViewModel> AuthenticateAsync([FromBody] AuthenticationViewModel model)
+        public async Task<IActionResult> AuthenticateAsync([FromBody] AuthenticationViewModel model)
         {
             UserViewModel userViewModel = _mapper.Map<UserViewModel>(await _userProviderService.AuthenticateAsync(_mapper.Map<AuthenticationModel>(model)));
 
             //SetRefreshTokenCookie(userViewModel.RefreshToken.Token);
 
-            return userViewModel;
+            return Created("/authentication", userViewModel);
         }
 
         [Authorize]
