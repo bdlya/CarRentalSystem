@@ -33,8 +33,8 @@ function register(name: string, surname: string, login: string, password: string
        const data = error.response?.data;
 
        if(typeof data == 'string'){
-           result.message = String(data)
-           result.type = "Form"
+           result.message = String(data.split(',')[2].split('=')[1]);
+           result.type = "Form";
        }
        else{
         for (let prop in data) {

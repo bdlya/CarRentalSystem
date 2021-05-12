@@ -50,6 +50,14 @@ namespace CarRentalSystem.Application.InternalServices.Implementation.Main
 
         public async Task RegisterUserAsync(UserModel model, string password, string role)
         {
+            var users = await _userRepository.GetAsQueryable();
+            UserModel user = _mapper.Map<UserModel>(users.FirstOrDefault(u => u.Login == model.Login));
+
+            if (user != null)
+            {
+                throw new LoginAlreadyExistsException(model.Login);
+            }
+
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
             model.Role = role;
