@@ -24,7 +24,7 @@ export const routes = (
         <PrivateRoute exact path ="/pointManagement" roles={[UserRole.AdministratorOwner]} component = { PointManagement } />
         <PrivateRoute exact path ="/carManagement" roles={[UserRole.Administrator]} component = { CarManagement } />
         <PrivateRoute exact path ="/additionalWorkManagement" roles={[UserRole.Administrator]} component = { AdditionalWorkManagement } />
-        <PrivateRoute exact path ="/booking" roles={[UserRole.User]} component = { Booking } />
+        <PrivateRoute exact path ="/booking/:id" roles={[UserRole.User]} component = { Booking } />
         <PrivateRoute exact path ="/profile" roles={[UserRole.User]} component = { Profile } />
         <PrivateRoute exact path ="/cars/:id" roles={[UserRole.User]} component = { Cars } />
         <PrivateRoute exact path ="/points" roles={[UserRole.User]} component = { Points } />

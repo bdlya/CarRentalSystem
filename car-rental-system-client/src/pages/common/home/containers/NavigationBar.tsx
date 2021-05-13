@@ -83,7 +83,7 @@ export default class NavigationBar extends React.Component<RouteComponentProps>{
                     <div>
                     <Button onClick={this.handleMenu}>Booking</Button>
                     <Menu open={isOpen} anchorEl={anchorEl} onClose={this.handleClose}>
-                        <MenuItem onClick={() => this.nextPath("/cars")}>Cars</MenuItem>
+                        <MenuItem onClick={() => this.nextPath("/cars/0")}>Cars</MenuItem>
                         <MenuItem onClick={() => this.nextPath("/points")}>Points</MenuItem>
                     </Menu>
                     <Button onClick={() => this.nextPath("/profile")}>Profile</Button>

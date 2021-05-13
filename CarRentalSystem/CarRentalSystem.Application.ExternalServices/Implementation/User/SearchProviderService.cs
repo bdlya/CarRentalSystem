@@ -3,6 +3,7 @@ using CarRentalSystem.Application.Data.Models.Support;
 using CarRentalSystem.Application.ExternalInterfaces.User;
 using CarRentalSystem.Application.InternalInterfaces.Main;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -41,15 +42,26 @@ namespace CarRentalSystem.Application.ExternalServices.Implementation.User
             return points.Where(point => point.Cars.Count != 0).OrderByDescending(point => point.Cars.Count);
         }
 
-        public async Task<IQueryable<CarModel>> FindCarsAsync(int id)
+        public async Task<IQueryable<CarModel>> FindCarsAsync(int id, CarSearchModel searchModel)
         {
-            var point = await _points.GetPointAsync(id);
+            var cars = await GetCars(id);
 
-            var cars = point.Cars
-                .AsQueryable()
-                .Where(car => IsRequiredCar(car).Result);
+            if (!string.IsNullOrEmpty(searchModel.Brand))
+            {
+                cars = cars.Where(car => car.Brand == searchModel.Brand);
+            }
 
-            return cars;
+            if (!string.IsNullOrEmpty(searchModel.TransmissionType))
+            {
+                cars = cars.Where(point => point.TransmissionType == searchModel.TransmissionType);
+            }
+
+            if (searchModel.NumberOfSeats > 0)
+            {
+                cars = cars.Where(car => car.NumberOfSeats == searchModel.NumberOfSeats);
+            }
+
+            return cars.AsQueryable();
         }
 
         public async Task<IQueryable<OrderModel>> FindUserOrdersAsync(int userId, OrderSearchModel searchModel)
@@ -76,6 +88,29 @@ namespace CarRentalSystem.Application.ExternalServices.Implementation.User
             }
 
             return orders.AsQueryable();
+        }
+
+        private async Task<IQueryable<CarModel>> GetCars(int id)
+        {
+            List<CarModel> cars = new List<CarModel>();
+
+            if (id == 0)
+            {
+                var points = await _points.GetPointsAsync();
+                foreach (var point in points)
+                {
+                    cars.AddRange(point.Cars.Where(car => IsRequiredCar(car).Result));
+                }
+            }
+            else
+            {
+                var point = await _points.GetPointAsync(id);
+                cars = point.Cars
+                    .AsQueryable()
+                    .Where(car => IsRequiredCar(car).Result).ToList();
+            }
+
+            return cars.AsQueryable();
         }
 
         private async Task<bool> IsRequiredCar(CarModel car)

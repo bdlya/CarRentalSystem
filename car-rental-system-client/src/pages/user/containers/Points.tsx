@@ -5,8 +5,6 @@ import Point from '../../../types/Point';
 import { Layout } from '../../common/home/components/Layout';
 import { pointService } from '../services/point.service';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { DatePicker } from '@material-ui/pickers';
-import { Link } from 'react-router-dom';
 
 type PointsState = {
     points: Point[] | null,
@@ -93,7 +91,7 @@ export default class Points extends React.Component<RouteComponentProps>{
                     </Card>
                    {points?.map((point) => (
                    <Card>
-                       <ButtonBase onClick={() => this.nextPath(`cars/${ point.id }`)}>
+                       <ButtonBase onClick={() => this.nextPath(`/cars/${ point.id }`)}>
                            <CardContent>
                            {point.id} {point.name} {point.country} {point.city} {point.address}
                            </CardContent>
