@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CarRentalSystem.Persistence.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,21 +18,7 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdditionalServices", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SurName = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_AdditionalWorks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,33 +38,70 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Revoked = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SurName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Login = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_RefreshTokens_RefreshTokenId",
+                        column: x => x.RefreshTokenId,
+                        principalTable: "RefreshTokens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentCustomerId = table.Column<int>(type: "int", nullable: false),
-                    CarId = table.Column<int>(type: "int", nullable: false),
+                    CurrentCustomerId = table.Column<int>(type: "int", nullable: true),
+                    CarId = table.Column<int>(type: "int", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PointOfRentalId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     TotalCost = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Customers_CurrentCustomerId",
+                        name: "FK_Orders_Users_CurrentCustomerId",
                         column: x => x.CurrentCustomerId,
-                        principalTable: "Customers",
+                        principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_PointOfRentals_PointOfRentalId",
-                        column: x => x.PointOfRentalId,
-                        principalTable: "PointOfRentals",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,7 +132,7 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                         column: x => x.PointOfRentalId,
                         principalTable: "PointOfRentals",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,15 +145,15 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderAdditionalServices", x => new { x.AdditionalServiceId, x.OrderId });
+                    table.PrimaryKey("PK_OrderAdditionalWorks", x => new { x.AdditionalServiceId, x.OrderId });
                     table.ForeignKey(
-                        name: "FK_OrderAdditionalServices_AdditionalServices_AdditionalServiceId",
+                        name: "FK_OrderAdditionalWorks_AdditionalWorks_AdditionalServiceId",
                         column: x => x.AdditionalServiceId,
                         principalTable: "AdditionalWorks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderAdditionalServices_Orders_OrderId",
+                        name: "FK_OrderAdditionalWorks_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
@@ -138,56 +161,22 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "AdditionalWorks",
-                columns: new[] { "Id", "Cost", "Name" },
-                values: new object[,]
-                {
-                    { 1, 20, "Baby chair" },
-                    { 2, 100, "Fill a full tank" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Customers",
-                columns: new[] { "Id", "Name", "SurName" },
-                values: new object[,]
-                {
-                    { 1, "John", "Mars" },
-                    { 2, "Arthur", "Morgan" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "PointOfRentals",
                 columns: new[] { "Id", "Address", "City", "Country", "Name" },
-                values: new object[] { 1, "First Address", "Minsk", "Belarus", "First Point" });
-
-            migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "Id", "CarId", "CurrentCustomerId", "EndDate", "PointOfRentalId", "StartDate", "TotalCost" },
-                values: new object[] { 1, 1, 1, new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), 1, new DateTime(2021, 4, 16, 13, 20, 56, 678, DateTimeKind.Local).AddTicks(9770), 0 });
-
-            migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "Id", "CarId", "CurrentCustomerId", "EndDate", "PointOfRentalId", "StartDate", "TotalCost" },
-                values: new object[] { 2, 2, 2, new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), 1, new DateTime(2021, 4, 16, 13, 20, 56, 680, DateTimeKind.Local).AddTicks(1815), 0 });
-
-            migrationBuilder.InsertData(
-                table: "Cars",
-                columns: new[] { "Id", "AverageFuelConsumption", "Brand", "CostPerHour", "CurrentOrderId", "NumberOfSeats", "PointOfRentalId", "TransmissionType" },
                 values: new object[,]
                 {
-                    { 1, 100, "Nissan", 1000, 1, 2, 1, "Mechanic" },
-                    { 2, 200, "Toyota", 500, 2, 4, 1, "Automatic" }
+                    { 1, "Default address street one", "Minsk", "Belarus", "CFL" },
+                    { 2, "Default address street two", "Hrodna", "Belarus", "CFL" },
+                    { 3, "Default address street three", "Moscow", "Russia", "SpaceStation" },
+                    { 4, "Default address street four", "Montreal", "Canada", "Independence" },
+                    { 5, "Default address street five", "Toronto", "Canada", "NoTime" },
+                    { 6, "Default address street six", "Toronto", "Canada", "Expensive" }
                 });
 
             migrationBuilder.InsertData(
-                table: "OrderAdditionalWorks",
-                columns: new[] { "AdditionalServiceId", "OrderId", "Id" },
-                values: new object[,]
-                {
-                    { 1, 1, 1 },
-                    { 2, 1, 2 },
-                    { 1, 2, 3 }
-                });
+                table: "Users",
+                columns: new[] { "Id", "Login", "Name", "PasswordHash", "PasswordSalt", "RefreshTokenId", "Role", "SurName", "Token" },
+                values: new object[] { 1, "adminOwner", "Admin", new byte[] { 240, 126, 46, 99, 109, 238, 44, 51, 146, 150, 143, 137, 158, 38, 29, 220, 73, 153, 159, 92, 123, 122, 69, 31, 169, 141, 149, 207, 32, 185, 117, 227, 147, 225, 86, 103, 229, 202, 28, 61, 76, 96, 202, 28, 179, 91, 237, 110, 245, 174, 255, 176, 252, 113, 174, 111, 147, 81, 236, 109, 111, 5, 74, 19 }, new byte[] { 176, 142, 49, 104, 140, 111, 97, 113, 126, 97, 217, 55, 174, 46, 34, 189, 30, 213, 154, 136, 136, 76, 176, 223, 233, 55, 154, 237, 84, 141, 123, 139, 111, 185, 240, 190, 134, 89, 182, 140, 139, 61, 37, 226, 18, 117, 3, 245, 46, 115, 110, 47, 255, 77, 169, 164, 37, 126, 91, 224, 80, 34, 139, 236, 65, 213, 203, 229, 213, 62, 113, 179, 230, 32, 99, 209, 64, 126, 244, 57, 0, 86, 251, 62, 101, 69, 217, 230, 88, 218, 182, 252, 69, 235, 45, 97, 111, 145, 241, 30, 119, 23, 82, 121, 99, 158, 47, 107, 137, 231, 52, 79, 157, 150, 178, 204, 62, 161, 75, 17, 198, 139, 54, 211, 46, 188, 204, 221 }, null, "AdministratorOwner", "Owner", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_CurrentOrderId",
@@ -202,7 +191,7 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                 column: "PointOfRentalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderAdditionalServices_OrderId",
+                name: "IX_OrderAdditionalWorks_OrderId",
                 table: "OrderAdditionalWorks",
                 column: "OrderId");
 
@@ -212,9 +201,11 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                 column: "CurrentCustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_PointOfRentalId",
-                table: "Orders",
-                column: "PointOfRentalId");
+                name: "IX_Users_RefreshTokenId",
+                table: "Users",
+                column: "RefreshTokenId",
+                unique: true,
+                filter: "[RefreshTokenId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -226,16 +217,19 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                 name: "OrderAdditionalWorks");
 
             migrationBuilder.DropTable(
+                name: "PointOfRentals");
+
+            migrationBuilder.DropTable(
                 name: "AdditionalWorks");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "PointOfRentals");
+                name: "RefreshTokens");
         }
     }
 }

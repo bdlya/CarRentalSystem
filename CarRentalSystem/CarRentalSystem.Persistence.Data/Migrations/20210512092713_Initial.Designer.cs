@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalSystem.Persistence.Data.Migrations
 {
     [DbContext(typeof(CarRentalSystemContext))]
-    [Migration("20210427092437_RemoveConnectionBetweenOrderAndPointOfRental")]
-    partial class RemoveConnectionBetweenOrderAndPointOfRental
+    [Migration("20210512092713_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.AdditionalService", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.AdditionalWork", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,23 +37,9 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AdditionalWorks");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Cost = 20,
-                            Name = "Baby chair"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Cost = 100,
-                            Name = "Fill a full tank"
-                        });
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Car", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.Car", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,45 +76,26 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                     b.HasIndex("PointOfRentalId");
 
                     b.ToTable("Cars");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AverageFuelConsumption = 100,
-                            Brand = "Nissan",
-                            CostPerHour = 1000,
-                            NumberOfSeats = 2,
-                            PointOfRentalId = 1,
-                            TransmissionType = "Mechanic"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AverageFuelConsumption = 200,
-                            Brand = "Toyota",
-                            CostPerHour = 500,
-                            NumberOfSeats = 4,
-                            PointOfRentalId = 1,
-                            TransmissionType = "Automatic"
-                        });
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Order", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CarId")
+                    b.Property<int?>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CurrentCustomerId")
+                    b.Property<int?>("CurrentCustomerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -143,25 +110,7 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.OrderAdditionalService", b =>
-                {
-                    b.Property<int>("AdditionalServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("AdditionalServiceId", "OrderId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderAdditionalWorks");
-                });
-
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.PointOfRental", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.PointOfRental", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -188,41 +137,54 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "First Address",
+                            Address = "Default address street one",
                             City = "Minsk",
                             Country = "Belarus",
-                            Name = "First Point"
+                            Name = "CFL"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Default address street two",
+                            City = "Hrodna",
+                            Country = "Belarus",
+                            Name = "CFL"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Default address street three",
+                            City = "Moscow",
+                            Country = "Russia",
+                            Name = "SpaceStation"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Default address street four",
+                            City = "Montreal",
+                            Country = "Canada",
+                            Name = "Independence"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "Default address street five",
+                            City = "Toronto",
+                            Country = "Canada",
+                            Name = "NoTime"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Address = "Default address street six",
+                            City = "Toronto",
+                            Country = "Canada",
+                            Name = "Expensive"
                         });
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.User", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -260,15 +222,72 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                         .HasFilter("[RefreshTokenId] IS NOT NULL");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Login = "adminOwner",
+                            Name = "Admin",
+                            PasswordHash = new byte[] { 240, 126, 46, 99, 109, 238, 44, 51, 146, 150, 143, 137, 158, 38, 29, 220, 73, 153, 159, 92, 123, 122, 69, 31, 169, 141, 149, 207, 32, 185, 117, 227, 147, 225, 86, 103, 229, 202, 28, 61, 76, 96, 202, 28, 179, 91, 237, 110, 245, 174, 255, 176, 252, 113, 174, 111, 147, 81, 236, 109, 111, 5, 74, 19 },
+                            PasswordSalt = new byte[] { 176, 142, 49, 104, 140, 111, 97, 113, 126, 97, 217, 55, 174, 46, 34, 189, 30, 213, 154, 136, 136, 76, 176, 223, 233, 55, 154, 237, 84, 141, 123, 139, 111, 185, 240, 190, 134, 89, 182, 140, 139, 61, 37, 226, 18, 117, 3, 245, 46, 115, 110, 47, 255, 77, 169, 164, 37, 126, 91, 224, 80, 34, 139, 236, 65, 213, 203, 229, 213, 62, 113, 179, 230, 32, 99, 209, 64, 126, 244, 57, 0, 86, 251, 62, 101, 69, 217, 230, 88, 218, 182, 252, 69, 235, 45, 97, 111, 145, 241, 30, 119, 23, 82, 121, 99, 158, 47, 107, 137, 231, 52, 79, 157, 150, 178, 204, 62, 161, 75, 17, 198, 139, 54, 211, 46, 188, 204, 221 },
+                            Role = "AdministratorOwner",
+                            SurName = "Owner"
+                        });
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Car", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Support.OrderAdditionalWork", b =>
                 {
-                    b.HasOne("CarRentalSystem.Domain.Entities.Order", "CurrentOrder")
-                        .WithOne("Car")
-                        .HasForeignKey("CarRentalSystem.Domain.Entities.Car", "CurrentOrderId");
+                    b.Property<int>("AdditionalServiceId")
+                        .HasColumnType("int");
 
-                    b.HasOne("CarRentalSystem.Domain.Entities.PointOfRental", "PointOfRental")
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("AdditionalServiceId", "OrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderAdditionalWorks");
+                });
+
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Support.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.Car", b =>
+                {
+                    b.HasOne("CarRentalSystem.Domain.Entities.Main.Order", "CurrentOrder")
+                        .WithOne("Car")
+                        .HasForeignKey("CarRentalSystem.Domain.Entities.Main.Car", "CurrentOrderId");
+
+                    b.HasOne("CarRentalSystem.Domain.Entities.Main.PointOfRental", "PointOfRental")
                         .WithMany("Cars")
                         .HasForeignKey("PointOfRentalId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -279,26 +298,33 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                     b.Navigation("PointOfRental");
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Order", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.Order", b =>
                 {
-                    b.HasOne("CarRentalSystem.Domain.Entities.User", "CurrentCustomer")
+                    b.HasOne("CarRentalSystem.Domain.Entities.Main.User", "CurrentCustomer")
                         .WithMany("Orders")
-                        .HasForeignKey("CurrentCustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CurrentCustomerId");
 
                     b.Navigation("CurrentCustomer");
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.OrderAdditionalService", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.User", b =>
                 {
-                    b.HasOne("CarRentalSystem.Domain.Entities.AdditionalService", "AdditionalService")
+                    b.HasOne("CarRentalSystem.Domain.Entities.Support.RefreshToken", "RefreshToken")
+                        .WithOne("User")
+                        .HasForeignKey("CarRentalSystem.Domain.Entities.Main.User", "RefreshTokenId");
+
+                    b.Navigation("RefreshToken");
+                });
+
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Support.OrderAdditionalWork", b =>
+                {
+                    b.HasOne("CarRentalSystem.Domain.Entities.Main.AdditionalWork", "AdditionalService")
                         .WithMany("OrderAdditionalWorks")
                         .HasForeignKey("AdditionalServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CarRentalSystem.Domain.Entities.Order", "Order")
+                    b.HasOne("CarRentalSystem.Domain.Entities.Main.Order", "Order")
                         .WithMany("OrderAdditionalWorks")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -309,40 +335,31 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.User", b =>
-                {
-                    b.HasOne("CarRentalSystem.Domain.Entities.RefreshToken", "RefreshToken")
-                        .WithOne("User")
-                        .HasForeignKey("CarRentalSystem.Domain.Entities.User", "RefreshTokenId");
-
-                    b.Navigation("RefreshToken");
-                });
-
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.AdditionalService", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.AdditionalWork", b =>
                 {
                     b.Navigation("OrderAdditionalWorks");
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Order", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.Order", b =>
                 {
                     b.Navigation("Car");
 
                     b.Navigation("OrderAdditionalWorks");
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.PointOfRental", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.PointOfRental", b =>
                 {
                     b.Navigation("Cars");
                 });
 
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CarRentalSystem.Domain.Entities.User", b =>
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.User", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("CarRentalSystem.Domain.Entities.Support.RefreshToken", b =>
+                {
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

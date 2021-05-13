@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace CarRentalSystem.Presentation.API.Controllers.User
 {
     [Authorize(Policy = Policy.Customer)]
-    [Route("customer{userId}/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class SearchController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace CarRentalSystem.Presentation.API.Controllers.User
 
         [HttpGet]
         [Route("points")]
-        public async Task<IActionResult> FindPointsAsync([FromBody] PointSearchViewModel searchModel)
+        public async Task<IActionResult> FindPointsAsync([FromQuery] PointSearchViewModel searchModel)
         {
             var points = await _searchProviderService.FindPointsAsync(_mapper.Map<PointSearchModel>(searchModel));
 

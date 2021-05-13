@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalSystem.Persistence.Data.Migrations
 {
     [DbContext(typeof(CarRentalSystemContext))]
-    [Migration("20210504073702_SeedAdminOwnerData")]
-    partial class SeedAdminOwnerData
+    [Migration("20210512112139_SeedCars")]
+    partial class SeedCars
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -76,6 +76,208 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                     b.HasIndex("PointOfRentalId");
 
                     b.ToTable("Cars");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AverageFuelConsumption = 10,
+                            Brand = "Audi",
+                            CostPerHour = 100,
+                            NumberOfSeats = 4,
+                            PointOfRentalId = 1,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AverageFuelConsumption = 20,
+                            Brand = "Audi",
+                            CostPerHour = 200,
+                            NumberOfSeats = 2,
+                            PointOfRentalId = 1,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AverageFuelConsumption = 30,
+                            Brand = "Audi",
+                            CostPerHour = 300,
+                            NumberOfSeats = 6,
+                            PointOfRentalId = 1,
+                            TransmissionType = "Automatic"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AverageFuelConsumption = 15,
+                            Brand = "Toyota",
+                            CostPerHour = 150,
+                            NumberOfSeats = 4,
+                            PointOfRentalId = 1,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AverageFuelConsumption = 25,
+                            Brand = "Toyota",
+                            CostPerHour = 250,
+                            NumberOfSeats = 2,
+                            PointOfRentalId = 1,
+                            TransmissionType = "Automatic"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AverageFuelConsumption = 50,
+                            Brand = "Toyota",
+                            CostPerHour = 500,
+                            NumberOfSeats = 10,
+                            PointOfRentalId = 2,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AverageFuelConsumption = 50,
+                            Brand = "Mitsubishi",
+                            CostPerHour = 500,
+                            NumberOfSeats = 10,
+                            PointOfRentalId = 2,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AverageFuelConsumption = 35,
+                            Brand = "Mitsubishi",
+                            CostPerHour = 400,
+                            NumberOfSeats = 1,
+                            PointOfRentalId = 2,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AverageFuelConsumption = 60,
+                            Brand = "Mitsubishi",
+                            CostPerHour = 1000,
+                            NumberOfSeats = 4,
+                            PointOfRentalId = 2,
+                            TransmissionType = "Automatic"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AverageFuelConsumption = 10,
+                            Brand = "Nissan",
+                            CostPerHour = 100,
+                            NumberOfSeats = 4,
+                            PointOfRentalId = 3,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AverageFuelConsumption = 100,
+                            Brand = "Nissan",
+                            CostPerHour = 900,
+                            NumberOfSeats = 3,
+                            PointOfRentalId = 3,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            AverageFuelConsumption = 10,
+                            Brand = "Nissan",
+                            CostPerHour = 100,
+                            NumberOfSeats = 4,
+                            PointOfRentalId = 3,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            AverageFuelConsumption = 90,
+                            Brand = "BMV",
+                            CostPerHour = 150,
+                            NumberOfSeats = 5,
+                            PointOfRentalId = 4,
+                            TransmissionType = "Automatic"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            AverageFuelConsumption = 15,
+                            Brand = "BMV",
+                            CostPerHour = 400,
+                            NumberOfSeats = 2,
+                            PointOfRentalId = 4,
+                            TransmissionType = "Automatic"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            AverageFuelConsumption = 80,
+                            Brand = "BMV",
+                            CostPerHour = 150,
+                            NumberOfSeats = 4,
+                            PointOfRentalId = 5,
+                            TransmissionType = "Automatic"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            AverageFuelConsumption = 100,
+                            Brand = "Mercedes",
+                            CostPerHour = 160,
+                            NumberOfSeats = 1,
+                            PointOfRentalId = 6,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            AverageFuelConsumption = 90,
+                            Brand = "Mercedes",
+                            CostPerHour = 150,
+                            NumberOfSeats = 5,
+                            PointOfRentalId = 6,
+                            TransmissionType = "Automatic"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            AverageFuelConsumption = 75,
+                            Brand = "Volvo",
+                            CostPerHour = 300,
+                            NumberOfSeats = 4,
+                            PointOfRentalId = 6,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            AverageFuelConsumption = 60,
+                            Brand = "Volvo",
+                            CostPerHour = 300,
+                            NumberOfSeats = 3,
+                            PointOfRentalId = 6,
+                            TransmissionType = "Mechanic"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            AverageFuelConsumption = 200,
+                            Brand = "Volvo",
+                            CostPerHour = 500,
+                            NumberOfSeats = 2,
+                            PointOfRentalId = 6,
+                            TransmissionType = "Automatic"
+                        });
                 });
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.Order", b =>
@@ -132,6 +334,56 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PointOfRentals");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Default address street one",
+                            City = "Minsk",
+                            Country = "Belarus",
+                            Name = "CFL"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Default address street two",
+                            City = "Hrodna",
+                            Country = "Belarus",
+                            Name = "CFL"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Default address street three",
+                            City = "Moscow",
+                            Country = "Russia",
+                            Name = "SpaceStation"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Default address street four",
+                            City = "Montreal",
+                            Country = "Canada",
+                            Name = "Independence"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "Default address street five",
+                            City = "Toronto",
+                            Country = "Canada",
+                            Name = "NoTime"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Address = "Default address street six",
+                            City = "Toronto",
+                            Country = "Canada",
+                            Name = "Expensive"
+                        });
                 });
 
             modelBuilder.Entity("CarRentalSystem.Domain.Entities.Main.User", b =>
@@ -179,9 +431,9 @@ namespace CarRentalSystem.Persistence.Data.Migrations
                             Id = 1,
                             Login = "adminOwner",
                             Name = "Admin",
-                            PasswordHash = new byte[] { 236, 83, 207, 234, 107, 183, 178, 235, 166, 37, 73, 3, 69, 250, 25, 139, 237, 88, 24, 144, 154, 43, 140, 3, 116, 205, 159, 235, 172, 100, 166, 237, 130, 13, 39, 28, 149, 131, 118, 215, 27, 116, 66, 237, 58, 51, 125, 55, 77, 87, 40, 208, 230, 112, 4, 132, 61, 19, 104, 240, 224, 48, 57, 72 },
-                            PasswordSalt = new byte[] { 14, 110, 170, 218, 186, 70, 217, 136, 77, 83, 71, 165, 242, 201, 18, 58, 197, 46, 178, 62, 217, 12, 246, 81, 148, 6, 55, 21, 83, 24, 91, 64, 221, 67, 186, 42, 152, 164, 203, 128, 99, 178, 87, 160, 70, 142, 68, 61, 111, 110, 161, 230, 190, 153, 178, 119, 8, 119, 183, 168, 122, 125, 106, 142, 146, 234, 114, 54, 118, 9, 194, 13, 246, 243, 42, 205, 101, 144, 99, 68, 131, 24, 142, 82, 208, 85, 98, 236, 44, 117, 123, 69, 114, 57, 102, 45, 57, 171, 32, 170, 83, 20, 68, 93, 239, 227, 58, 163, 20, 108, 120, 212, 227, 228, 37, 97, 236, 229, 143, 16, 184, 15, 52, 19, 25, 168, 4, 217 },
-                            Role = "AdminOwner",
+                            PasswordHash = new byte[] { 43, 43, 133, 89, 219, 196, 245, 16, 8, 168, 13, 83, 105, 252, 10, 182, 160, 91, 72, 121, 139, 225, 188, 77, 194, 94, 126, 69, 183, 144, 76, 45, 148, 13, 221, 250, 126, 148, 204, 11, 81, 165, 192, 20, 89, 253, 44, 49, 59, 218, 83, 185, 94, 48, 181, 87, 157, 160, 54, 95, 186, 112, 179, 245 },
+                            PasswordSalt = new byte[] { 216, 47, 168, 31, 181, 1, 197, 122, 7, 224, 95, 245, 69, 121, 139, 3, 192, 17, 14, 126, 175, 120, 146, 8, 193, 138, 200, 52, 252, 46, 254, 208, 248, 129, 61, 108, 94, 163, 151, 94, 199, 219, 205, 138, 25, 67, 242, 109, 62, 192, 15, 22, 230, 30, 249, 160, 129, 122, 49, 164, 216, 119, 190, 158, 110, 200, 69, 53, 110, 145, 157, 144, 34, 130, 74, 43, 102, 85, 3, 74, 76, 9, 44, 55, 153, 210, 173, 130, 213, 141, 215, 18, 227, 193, 211, 140, 178, 216, 53, 165, 160, 225, 162, 5, 160, 9, 40, 106, 50, 123, 90, 83, 136, 103, 1, 127, 191, 166, 64, 11, 171, 172, 117, 227, 234, 42, 128, 244 },
+                            Role = "AdministratorOwner",
                             SurName = "Owner"
                         });
                 });

@@ -1,4 +1,4 @@
-import { AppBar, Button, Toolbar } from "@material-ui/core";
+import { AppBar, Button, Menu, MenuItem, Toolbar } from "@material-ui/core";
 import React from "react"
 import { authenticationService } from '../../authorization/services/authentication.service';
 import { RouteComponentProps } from "react-router";
@@ -6,6 +6,9 @@ import { User } from "../../../../types/User";
 import { UserRole } from "../../../../types/UserRole";
 import { UserState } from '../../../../types/UserState';
 
+interface NavigationBarState extends UserState{
+    anchorEl: any
+}
 
 export default class NavigationBar extends React.Component<RouteComponentProps>{
     constructor(props: RouteComponentProps){
@@ -13,12 +16,16 @@ export default class NavigationBar extends React.Component<RouteComponentProps>{
 
         this.handleOnLogout = this.handleOnLogout.bind(this);
         this.nextPath = this.nextPath.bind(this)
+
+        this.handleMenu = this.handleMenu.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
-    state: UserState = {
+    state: NavigationBarState = {
         currentUser: null,
         isAdmin: false,
         isAdminOwner: false,
+        anchorEl: false
     }
 
     componentDidMount(){
@@ -29,7 +36,6 @@ export default class NavigationBar extends React.Component<RouteComponentProps>{
                 isAdmin: user && user.role === UserRole.Administrator,
                 isAdminOwner: user && user.role === UserRole.AdministratorOwner
             })
-
         }
     }
 
@@ -42,8 +48,17 @@ export default class NavigationBar extends React.Component<RouteComponentProps>{
         this.props.history.push(path);
     }
 
+    handleMenu(event: any){
+        this.setState({anchorEl: event.currentTarget})
+    }
+
+    handleClose(){
+        this.setState({anchorEl: null})
+    }
+
     render(){
-        const {currentUser, isAdmin, isAdminOwner} = this.state;
+        const {currentUser, isAdmin, isAdminOwner, anchorEl} = this.state;
+        const isOpen = Boolean(anchorEl);
         return(
             <div style={{margin: "100px"}}>
                 {currentUser &&
@@ -66,7 +81,11 @@ export default class NavigationBar extends React.Component<RouteComponentProps>{
                     }
                     {(!isAdminOwner && !isAdmin) &&
                     <div>
-                    <Button onClick={() => this.nextPath("/booking")}>Booking</Button>
+                    <Button onClick={this.handleMenu}>Booking</Button>
+                    <Menu open={isOpen} anchorEl={anchorEl} onClose={this.handleClose}>
+                        <MenuItem onClick={() => this.nextPath("/cars")}>Cars</MenuItem>
+                        <MenuItem onClick={() => this.nextPath("/points")}>Points</MenuItem>
+                    </Menu>
                     <Button onClick={() => this.nextPath("/profile")}>Profile</Button>
                     </div>
                     }
