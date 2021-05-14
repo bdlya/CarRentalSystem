@@ -13,5 +13,7 @@ namespace CarRentalSystem.Application.InternalInterfaces.Main
         Task ModifyAdditionalWorkAsync(int id, AdditionalWorkModel additionalService);
 
         Task<List<AdditionalWorkModel>> GetAdditionalWorksAsync(List<int> additionalServiceIds);
+
+        Task<List<AdditionalWorkModel>> GetAdditionalWorksAsync();
     }
 }

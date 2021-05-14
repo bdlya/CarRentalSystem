@@ -20,36 +20,40 @@ namespace CarRentalSystem.Application.ExternalServices.Implementation.User
             _additionalService = additionalService;
             _orderAdditionalService = orderAdditionalService;
         }
-        public async Task<OrderModel> CreateOrderAsync(int userId, int carId)
-        {
-            return await _orderService.CreateOrderAsync(userId, carId);
-        }
 
-        public async Task ChooseDatesAsync(int orderId, BookingDatesModel bookingDates)
-        { 
-            await _orderService.ChooseDatesAsync(orderId, bookingDates);
-        }
-
-        public async Task ChooseAdditionalServicesAsync(int orderId, List<int> additionalServicesIds)
+        public async Task<OrderModel> GetSummaryAsync(OrderCreationModel order)
         {
-            if (additionalServicesIds.Count != 0)
+            OrderModel orderSummary = await _orderService.CreateOrderAsync(order);
+
+            if (order.AdditionalServicesIds.Count != 0)
             {
-                var additionalServices = await _additionalService.GetAdditionalWorksAsync(additionalServicesIds);
-
-                var orderAdditionalServices = await _orderAdditionalService.CreateOrderAdditionalServicesAsync(orderId, additionalServices);
-
-                await _orderService.AddAdditionalServicesAsync(orderId, orderAdditionalServices);
+                orderSummary = await AddAdditionalServices(orderSummary, order.AdditionalServicesIds);
             }
+
+            orderSummary.TotalCost = _orderService.CountOrderTotalCost(orderSummary);
+
+            return orderSummary;
         }
 
-        public async Task<OrderModel> GetSummaryAsync(int orderId)
+        public async Task<List<AdditionalWorkModel>> GetAdditionalWorks()
         {
-            return await _orderService.GetOrderAsync(orderId);
+            return await _additionalService.GetAdditionalWorksAsync();
         }
 
         public async Task DeleteOrderAsync(int orderId)
         {
             await _orderService.DeleteOrderAsync(orderId);
+        }
+
+        private async Task<OrderModel> AddAdditionalServices(OrderModel orderSummary, List<int> additionalServicesIds)
+        {
+            var additionalServices = await _additionalService.GetAdditionalWorksAsync(additionalServicesIds);
+
+            var orderAdditionalServices =  await _orderAdditionalService.CreateOrderAdditionalServicesAsync(orderSummary.Id, additionalServices);
+
+            orderSummary.OrderAdditionalServices.AddRange(orderAdditionalServices);
+
+            return orderSummary;
         }
     }
 }

@@ -8,11 +8,7 @@ namespace CarRentalSystem.Application.InternalInterfaces.Main
 {
     public interface IOrderService
     {
-        Task<OrderModel> CreateOrderAsync(int userId, int carId);
-
-        Task ChooseDatesAsync(int orderId, BookingDatesModel bookingDates);
-
-        Task AddAdditionalServicesAsync(int orderId, List<OrderAdditionalWorkModel> orderAdditionalServices);
+        Task<OrderModel> CreateOrderAsync(OrderCreationModel order);
 
         Task<OrderModel> GetOrderAsync(int orderId);
 
@@ -23,5 +19,7 @@ namespace CarRentalSystem.Application.InternalInterfaces.Main
         Task CancelOrderAsync(int orderId);
 
         Task DeleteOrderAsync(int orderId);
+
+        int CountOrderTotalCost(OrderModel order);
     }
 }

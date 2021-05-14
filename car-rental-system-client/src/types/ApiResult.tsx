@@ -4,4 +4,5 @@ export interface ApiResult{
     type?: string
     message?: string
     data?: any[]
+    singleData?: any
 }

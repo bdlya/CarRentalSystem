@@ -38,6 +38,7 @@ namespace CarRentalSystem.Persistence.Data.Context
             AddUsers(modelBuilder);
             AddPoints(modelBuilder);
             AddCars(modelBuilder);
+            AddAdditionalWorks(modelBuilder);
         }
 
         private static void AddUsers(ModelBuilder modelBuilder)
@@ -177,6 +178,39 @@ namespace CarRentalSystem.Persistence.Data.Context
                     eighteenthCar,
                     nineteenthCar,
                     twentiethCar
+                });
+        }
+
+        private static void AddAdditionalWorks(ModelBuilder modelBuilder)
+        {
+            AdditionalWork firstAdditionalWork = new AdditionalWork
+            {
+                Id = 1,
+                Name = "Child seat",
+                Cost = 100
+            };
+
+            AdditionalWork secondAdditionalWork = new AdditionalWork
+            {
+                Id = 2,
+                Name = "Dry cleaning",
+                Cost = 500
+            };
+
+            AdditionalWork thirdAdditionalWork = new AdditionalWork
+            {
+                Id = 3,
+                Name = "Full tank",
+                Cost = 250
+            };
+
+            modelBuilder
+                .Entity<AdditionalWork>()
+                .HasData(new List<AdditionalWork>
+                {
+                    firstAdditionalWork,
+                    secondAdditionalWork,
+                    thirdAdditionalWork
                 });
         }
 

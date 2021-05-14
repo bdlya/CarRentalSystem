@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace CarRentalSystem.Presentation.API.Controllers.User
 {
     [Authorize(Policy = Policy.Customer)]
-    [Route("customer{userId}/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class BookingController : ControllerBase
     {
@@ -29,48 +29,33 @@ namespace CarRentalSystem.Presentation.API.Controllers.User
         }
 
         [HttpGet]
-        [Route("car{carId}")]
-        public async Task<IActionResult> GetCarAsync([FromRoute] int carId)
+        [Route("car")]
+        public async Task<IActionResult> GetCarAsync([FromQuery] int carId)
         {
             CarViewModel car = _mapper.Map<CarViewModel>(await _carService.GetCarAsync(carId));
 
             return Ok(car);
         }
 
-        [HttpPost]
-        [Route("car{carId}/order")]
-        public async Task<IActionResult> CreateOrderAsync([FromRoute] int userId, [FromRoute] int carId)
+        [HttpGet]
+        [Route("/summary")]
+        public async Task<IActionResult> GetSummaryAsync([FromQuery] OrderCreationViewModel order)
         {
-            OrderViewModel order = _mapper.Map<OrderViewModel>(await _bookingService.CreateOrderAsync(userId, carId));
+            OrderViewModel orderSummary = _mapper.Map<OrderViewModel>(await _bookingService.GetSummaryAsync(_mapper.Map<OrderCreationModel>(order)));
 
-            return Created("",new {Message = "Order was created"});
-        }
-
-        [HttpPatch]
-        [Route("car{carId}/order{orderId}/date")]
-        public async Task<IActionResult> ChooseDatesAsync([FromRoute] int orderId, [FromBody] BookingDatesViewModel bookingDates)
-        {
-            await _bookingService.ChooseDatesAsync(orderId, _mapper.Map<BookingDatesModel>(bookingDates));
-
-            return NoContent();
-        }
-
-        [HttpPatch]
-        [Route("car{carId}/order{orderId}/services")]
-        public async Task<IActionResult> ChooseAdditionalServicesAsync([FromRoute] int orderId, [FromBody] int[] additionalServicesIds)
-        {
-            await _bookingService.ChooseAdditionalServicesAsync(orderId, additionalServicesIds.ToList());
-
-            return NoContent();
+            return Ok(orderSummary);
         }
 
         [HttpGet]
-        [Route("car{carId}/order{orderId}/summary")]
-        public async Task<IActionResult> GetSummaryAsync([FromRoute] int orderId)
+        [Route("additionalWorks")]
+        public async Task<IActionResult> GetAdditionalServices()
         {
-            OrderViewModel order = _mapper.Map<OrderViewModel>(await _bookingService.GetSummaryAsync(orderId));
+            var additionalWorks = await _bookingService.GetAdditionalWorks();
 
-            return Ok(order);
+            var additionalWorksModel = additionalWorks.AsEnumerable()
+                .Select(work => _mapper.Map<AdditionalWorkViewModel>(work)).ToList();
+
+            return Ok(additionalWorksModel);
         }
 
         [HttpDelete]

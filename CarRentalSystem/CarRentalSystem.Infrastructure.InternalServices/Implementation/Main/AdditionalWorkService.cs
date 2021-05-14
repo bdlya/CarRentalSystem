@@ -54,19 +54,29 @@ namespace CarRentalSystem.Application.InternalServices.Implementation.Main
 
         public async Task<List<AdditionalWorkModel>> GetAdditionalWorksAsync(List<int> additionalServiceIds)
         {
-            var additionalServicesModel = await _additionalWorkRepository.GetAsQueryable();
+            var additionalWorks = await _additionalWorkRepository.GetAsQueryable();
 
-            var additionalServices = additionalServicesModel.AsEnumerable()
-                .Select(service => _mapper.Map<AdditionalWorkModel>(service)).ToList();
+            var additionalWorksModel = additionalWorks.AsEnumerable()
+                .Select(work => _mapper.Map<AdditionalWorkModel>(work)).ToList();
 
             List<AdditionalWorkModel> services = new List<AdditionalWorkModel>();
 
             foreach (int id in additionalServiceIds)
             {
-                services.AddRange(additionalServices.Where(service => service.Id == id));
+                services.AddRange(additionalWorksModel.Where(service => service.Id == id));
             }
 
             return services;
+        }
+
+        public async Task<List<AdditionalWorkModel>> GetAdditionalWorksAsync()
+        {
+            var additionalWorks = await _additionalWorkRepository.GetAsQueryable();
+
+            var additionalWorksModel = additionalWorks.AsEnumerable()
+                .Select(work => _mapper.Map<AdditionalWorkModel>(work)).ToList();
+
+            return additionalWorksModel;
         }
 
         private AdditionalWorkModel UpdateAdditionalServiceProperties(AdditionalWorkModel addService, AdditionalWorkModel additionalService)
